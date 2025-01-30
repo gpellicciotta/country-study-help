@@ -1,0 +1,71 @@
+/* General CSS Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #f4f4f4;
+  color: #333;
+}
+
+/* Styles for the search section */
+#search {
+  background-color: #007BFF;
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+
+#search p {
+  margin: 0 0 10px;
+}
+
+#search input[type='text'] {
+  width: 80%;
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+}
+
+/* Styles for the results section */
+#results {
+  padding: 20px;
+  display: grid;
+  grid-auto-columns: max-content;
+  justify-items: stretch;
+  align-items: stretch;
+  gap: 0.25rem;
+}
+ 
+#results h1 {
+  font-size: 24px;
+  font-family: 'Roboto Mono', monospace;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+#results p {
+  display: grid;
+  justify-items: stretch;
+  align-items: stretch;  
+}
+
+#results a {
+  width: 100%;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  text-decoration: none;
+  background-color: #007BFF;
+}
+
+#results a:hover {
+  text-decoration: underline;
+}

@@ -9,10 +9,9 @@ The intention is to make it super-simple to:
 ## Simple UI
 
 The interface will simply be a web-page with:
-- A drop-down, allowing to select the language of interest (the choice will be remembered locally)
-- A text-box allowing to enter a word 
-
-The output will then be links to the information found
+- A text-box allowing to enter a name (of a country or capital): 
+  auto-complete will help and when there is a result, the info of that country will be shown 
+- Three quiz-buttons: "Random Flag", "Random Country", "Random Capital"
 
 ## Architecture
 
@@ -21,9 +20,4 @@ No logging in, but also no remembering of countries previously searched (beyond 
 
 ## What works, and what doesn't
 
-- Once opened, tabs/windows will get re-used
-- No language selection yet: it is hardcoded to Italian for now
-- No image search yet
-- Pronunciation link works by linking to https://forvo.com
-- Dictionary link works by linking to https://www.thefreedictionary.org
-- Use links work by linking to https://context.reverso.net
+- Nothing works

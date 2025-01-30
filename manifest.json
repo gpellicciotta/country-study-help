@@ -1,0 +1,12 @@
+{
+  "short_name": "Country Study Help",
+  "name": "Country Study Help",
+  "description": "Search info about a country, or a do a quiz to memory flags, countries and capitals.",
+  "scope": "/",
+  "start_url": "/",
+  "background_color": "#0e6eb8",
+  "theme_color": "#0e6eb8",
+  "display": "standalone",
+  "shortcuts": [],
+  "icons": []
+}

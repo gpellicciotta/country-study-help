@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <title>Word Study Help</title>
+    <meta charset='utf-8'>
+    <meta name='description' content='Country Study Help'>
+    <meta name='keywords' content='Search info about a country, or a do a quiz to memory flags, countries and capitals'>
+    <meta name='author' content='Giovanni Pellicciotta'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <meta name='theme-color' content='#0e6eb8'>
+    <link rel='manifest' href='./manifest.json'>
+    <link rel='shortcut icon' href='./img/worl-map.ico'>
+    <link type='text/css' rel='preload' as='style' onload='this.rel="stylesheet"' href='https://fonts.googleapis.com/css?family=Roboto&display=swap'>
+    <link href='./style.css' rel='stylesheet'>
+    <base href='/'> <!-- For testing in VS Code -->
+    <script src='https://kit.fontawesome.com/1c60ca333d.js' crossorigin='anonymous' defer></script>
+    <script type='module' src='./world-utils.mjs' defer></script>
+  </head>
+  <body>
+    <section id='search'>
+      <p>What country would you like to multisearch? Type below, then press enter please.</p>
+      <input type='text' id='country-box' autofocus>
+    </section>
+    <section id='results'>
+      <h1><span id='country'>{{COUNTRY}}</span></h1>
+      <p id='flag'>
+        <img src="/img/flags/4x3/{{COUNTRY-CODE}}.svg" alt='Flag of {{COUNTRY}}'>
+      </p>
+      <p id='capital'>
+        {{Capital}} 
+      </p>
+      <p id='wikipedia'>
+        <a href='#' target='Wikipedia'>Wikipedia</a>
+      </p>      
+    </section>
+  </body>
+</html>
