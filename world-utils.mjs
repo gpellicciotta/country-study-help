@@ -19,6 +19,9 @@ let randomCountryButton;
 let randomCapitalButton;
 let randomFlagButton;
 
+let resultsEl;
+let showAllButton;
+
 let flagImage;
 let englishCountryNameEl; 
 let englishCapitalNameEl; 
@@ -49,7 +52,11 @@ function fireDomReady() {
 
   randomFlagButton = document.getElementById("random-flag");
   randomFlagButton.addEventListener("click", pickRandomFlag);
+
+  showAllButton = document.getElementById("show-all");
+  showAllButton.addEventListener("click", showAllCountryInfo);
   //
+  resultsEl = document.getElementById("results");
   flagImage = document.getElementById("flag");
   englishCountryNameEl = document.getElementById("english_country_name");
   englishCapitalNameEl = document.getElementById("english_capital_name");
@@ -102,11 +109,20 @@ function loadCountryData() {
     });
 }
 
+function showAllCountryInfo() {
+  resultsEl.classList.remove('hide-flag');
+  resultsEl.classList.remove('hide-country-name');
+  resultsEl.classList.remove('hide-capital-name');
+}
+
 function pickRandomCapital() {
   let randomIndex = Math.floor(Math.random() * countryCodes.length);
   let countryCode = countryCodes[randomIndex];
   let country = countryByCode[countryCode];
   showCountryInfo(country, { name: false, flag: false, capital: true, link: true });
+  resultsEl.classList.remove('hide-flag');
+  resultsEl.classList.add('hide-country-name');
+  resultsEl.classList.remove('hide-capital-name');  
 }
 
 function pickRandomFlag() {
@@ -114,6 +130,9 @@ function pickRandomFlag() {
   let countryCode = countryCodes[randomIndex];
   let country = countryByCode[countryCode];
   showCountryInfo(country, { name: false, flag: true, capital: false, link: true });
+  resultsEl.classList.remove('hide-flag');
+  resultsEl.classList.add('hide-country-name');
+  resultsEl.classList.add('hide-capital-name');  
 }
 
 function pickRandomCountry() {
@@ -121,6 +140,9 @@ function pickRandomCountry() {
   let countryCode = countryCodes[randomIndex];
   let country = countryByCode[countryCode];
   showCountryInfo(country, { name: true, flag: false, capital: false, link: true });
+  resultsEl.classList.remove('hide-flag');
+  resultsEl.classList.remove('hide-country-name');
+  resultsEl.classList.add('hide-capital-name');  
 }
 
 function showCountryInfo(country, options) {

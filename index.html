@@ -28,9 +28,11 @@
       <button id='random-flag'><i class="fa-regular fa-dice"></i> Flag</button>
     </section>
 
-    <section id='results'>
+    <section id='results' class="hide-flag">
       <div class="country-panel">
-        <img id='flag' src="/img/flags/4x3/{{COUNTRY-CODE}}.svg" alt='Flag of {{COUNTRY}}'>
+        <button id='show-all'><i class="fa-regular fa-eye"></i> Show</button>
+
+        <img id='flag' class="flag" src="/img/flags/4x3/{{COUNTRY-CODE}}.svg" alt='Flag of {{COUNTRY}}'>
 
         <h1 class="country-info" id="english_country_info">
           <img class="language" src="/img/flags/1x1/gb-eng.svg"> 
