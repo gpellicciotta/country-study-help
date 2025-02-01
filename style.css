@@ -1,4 +1,4 @@
-/* General CSS Reset */
+/* CSS Reset */
 * {
   margin: 0;
   padding: 0;
@@ -11,61 +11,184 @@ html, body {
 
 body {
   font-family: 'Roboto', sans-serif;
+  font-size: 1.5rem;
   background-color: #f4f4f4;
   color: #333;
+
+  display: grid;
+  grid-template-rows: min-content min-content 1fr;
 }
 
 /* Styles for the search section */
 #search {
-  background-color: #007BFF;
+  background-color: #00aeff;
+  color: white;
+  padding: 1rem;
+  text-align: center;
+
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: min-content min-content;
+  justify-content: center;
+  justify-items: center;
+  align-items: stretch;
+  row-gap: 0.5rem;
+}
+
+#buttons {
+  background-color: #ababab;
   color: white;
   padding: 20px;
   text-align: center;
+
+  display: grid;
+  grid-template-columns: repeat(3, minmax(10%, min-content));	
+  column-gap: 0.5rem;
+  justify-content: center;
 }
 
-#search p {
-  margin: 0 0 10px;
+#search input, #buttons button {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #333;
+  outline: none;
 }
 
 #search input[type='text'] {
+  background-color: #ccc;
   width: 80%;
-  padding: 10px;
-  font-size: 16px;
-  border: none;
-  border-radius: 5px;
+  height: 2em;
+}
+
+/* Styles for larger screens */
+@media (min-width: 600px) {
+  
+}
+
+#search input:focus {
+  background-color: #fff;
+  border-color: #000;
+}
+
+img.language {
+  width: 1em;
+  height: 1em;
+}
+
+#buttons button {
+  color: #fff;
+  background-color: #333;
+}
+
+#buttons button:hover {
+  color: #000;
+  background-color: #00aeff62;
+}
+
+#buttons button:active {
+  color: #000;
+  background-color: #00aeff;
 }
 
 /* Styles for the results section */
 #results {
   padding: 20px;
+  max-width: 100vw;
+
   display: grid;
   grid-auto-columns: max-content;
   justify-items: stretch;
+  justify-content: center;
+  align-content: start;
   align-items: stretch;
   gap: 0.25rem;
 }
  
-#results h1 {
-  font-size: 24px;
-  font-family: 'Roboto Mono', monospace;
-  margin-bottom: 20px;
+#results .country-panel {
+  display: grid;
+  grid-template-areas: "flag"
+                       "english_country_info"
+                       "dutch_country_info"
+                       "italian_country_info";   
+  grid-auto-columns: 1fr;    
+  grid-auto-rows: min-content;
+  gap: 0.5rem;              
+}
+
+/* Styles for larger screens */
+@media (min-width: 600px) {
+  #results {
+    padding: 20px;
+    gap: 0.25rem;
+  }
+
+  #results .country-panel {
+    grid-template-areas: 
+      "flag english_country_info"
+      "flag dutch_country_info"
+      "flag italian_country_info";   
+    grid-auto-columns: 1fr 2fr;    
+    grid-auto-rows: min-content min-content min-content;
+    gap: 1rem;              
+  }
+
+  #results h1 {
+    grid-template-columns: min-content 2fr 2fr;
+    column-gap: 0.5rem;
+  }
+}
+
+#flag {
+  grid-area: flag;
   width: 100%;
 }
 
-#results p {
-  display: grid;
-  justify-items: stretch;
-  align-items: stretch;  
+#english_country_info {
+  grid-area: english_country_info;
+}
+
+#dutch_country_info {
+  grid-area: dutch_country_info;
+}
+
+#italian_country_info {
+  grid-area: italian_country_info;
+}
+
+#results .country-info {
+  font-size: 80%;
+  font-family: 'Roboto Mono', monospace;
+  white-space: wrap;
+
+  padding: 0.25rem 1rem;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: start;
+  align-items: center;
+  column-gap: 0.5rem;
 }
 
 #results a {
-  width: 100%;
-  color: white;
-  padding: 0.25rem 0.5rem;
   text-decoration: none;
-  background-color: #007BFF;
-}
+  white-space: wrap;}
 
 #results a:hover {
   text-decoration: underline;
+}
+
+#results .country-info {
+
+}
+
+#results .country {
+
+}
+
+#results .capital {
+  font-size: 80%;
+  font-style: italic;
+  color: #333;
+  text-align: end;
 }
