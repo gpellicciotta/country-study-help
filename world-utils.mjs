@@ -16,6 +16,8 @@ const DEFAULT_COUNTRY_DATA = {
 let bodyEl;
 
 let searchBoxInput;
+let searchCountryButton;
+let randomCountryButton;
 
 let quizCountryButton;
 let quizCapitalButton;
@@ -24,10 +26,6 @@ let quizTypeEl;
 let showAnswerButton;
 let goodAnswerButton;
 let badAnswerButton;
-
-let randomCountryButton;
-
-let resultsEl;
 
 let flagImage;
 let englishCountryNameEl;
@@ -49,26 +47,27 @@ function fireDomReady() {
   bodyEl = document.getElementsByTagName("body")[0];
 
   // UI elements + handlers:
+  // Search portion:
   searchBoxInput = document.getElementById("country-box");
-  searchBoxInput.addEventListener("keydown", searchCountry);
+  searchBoxInput.addEventListener("keydown", (e) => {
+    if (e.which !== 13) { return ; }
+    searchCountry();
+  });
   searchBoxInput.value = "Belgium";
   searchBoxInput.focus();
   searchBoxInput.select(); // Select all
-  //
-  quizCountryButton = document.getElementById("quiz-country");
-  quizCountryButton.addEventListener("click", quizRandomCountry);
-
-  quizCapitalButton = document.getElementById("quiz-capital");
-  quizCapitalButton.addEventListener("click", quizRandomCapital);
-
-  quizFlagButton = document.getElementById("quiz-flag");
-  quizFlagButton.addEventListener("click", quizRandomFlag);
-
-  quizTypeEl = document.getElementById("quiz-type");
-
+  searchCountryButton = document.getElementById("search-country");
+  searchCountryButton.addEventListener("click", searchCountry);
   randomCountryButton = document.getElementById("random-country");
   randomCountryButton.addEventListener("click", showRandomCountry);
-
+  // Quiz portion:
+  quizCountryButton = document.getElementById("quiz-country");
+  quizCountryButton.addEventListener("click", quizRandomCountry);
+  quizCapitalButton = document.getElementById("quiz-capital");
+  quizCapitalButton.addEventListener("click", quizRandomCapital);
+  quizFlagButton = document.getElementById("quiz-flag");
+  quizFlagButton.addEventListener("click", quizRandomFlag);
+  quizTypeEl = document.getElementById("quiz-type");
   showAnswerButton = document.getElementById("show-answer");
   showAnswerButton.addEventListener("click", showAllCountryInfo);
   goodAnswerButton = document.getElementById("good-answer");
@@ -76,7 +75,6 @@ function fireDomReady() {
   badAnswerButton = document.getElementById("bad-answer");
   badAnswerButton.addEventListener("click", badAnswer);
   //
-  resultsEl = document.getElementById("results");
   flagImage = document.getElementById("flag");
   englishCountryNameEl = document.getElementById("english_country_name");
   englishCapitalNameEl = document.getElementById("english_capital_name");
@@ -228,7 +226,6 @@ function showCountryInfo(country) {
 }
 
 function searchCountry(e) {
-  if (e.which !== 13) { return ; }
   let countryToSearch = normalizeName(searchBoxInput.value);
   let countryCode = countryCodeByCountryName[countryToSearch] || countryCodeByCapitalName[countryToSearch] || 'no-country';
   let country = countryByCode[countryCode];
