@@ -283,7 +283,7 @@ function capitalize(str) {
 }
 
 function parseCountryCsv(csvText) {
-  const lines = csvText.split('\r\n');
+  const lines = csvText.split(/\r?\n/);
   const headers = lines[0].split(',');
   const headerNames = {
     'Country Code': 'code',
