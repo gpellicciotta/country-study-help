@@ -226,19 +226,18 @@ function showCountryInfo(country) {
 
 function searchCountry(e) {
   if (e.which !== 13) { return ; }
-
   let countryToSearch = normalizeName(searchBoxInput.value); 
-  // TODO: search in list of countries
-  let country = countryCodeByCountryName[countryToSearch] || countryCodeByCapitalName[countryToSearch] || DEFAULT_COUNTRY_DATA;
-  // Fill results:
+  let countryCode = countryCodeByCountryName[countryToSearch] || countryCodeByCapitalName[countryToSearch] || '__';
+  let country = countryByCode[countryCode];
+  // Fill results:  
   showCountryInfo(country);
+  changeToInitialMode();
   bodyEl.classList.remove('hide-flag');
   bodyEl.classList.remove('hide-country-name');
   bodyEl.classList.remove('hide-capital-name');    
-  changeToInitialMode();
   // Reset search:
   searchBoxInput.value = "";
-  wikipediaLink.focus();
+  wikipediaLink.focus();  
 }
 
 // Utilities:
