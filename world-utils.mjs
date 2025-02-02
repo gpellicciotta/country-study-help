@@ -1,4 +1,4 @@
-const COUNTRIES_DATA_FILE = "world-countries.csv";
+const COUNTRIES_DATA_FILE = "data/world-countries.csv";
 
 const DEFAULT_COUNTRY_DATA = {
   'code': '__',
@@ -13,14 +13,21 @@ const DEFAULT_COUNTRY_DATA = {
   'italian_wikipedia': 'https://it.wikipedia.org/wiki/Utopia'
 }
 
+let bodyEl;
+
 let searchBoxInput;
 
+let quizCountryButton;
+let quizCapitalButton;
+let quizFlagButton;
+let quizTypeEl;
+let showAnswerButton;
+let goodAnswerButton;
+let badAnswerButton;
+
 let randomCountryButton;
-let randomCapitalButton;
-let randomFlagButton;
 
 let resultsEl;
-let showAllButton;
 
 let flagImage;
 let englishCountryNameEl; 
@@ -33,10 +40,14 @@ let italianCountryNameEl;
 let italianCapitalNameEl; 
 let italianWikipediaLinkEl;
 
+let goodAnswers = 0;
+let badAnswers = 0;
 
 window.addEventListener("load", fireDomReady, false);  
 
 function fireDomReady() { 
+  bodyEl = document.getElementsByTagName("body")[0];
+
   // UI elements + handlers:
   searchBoxInput = document.getElementById("country-box");  
   searchBoxInput.addEventListener("keydown", searchCountry);
@@ -44,17 +55,26 @@ function fireDomReady() {
   searchBoxInput.focus();
   searchBoxInput.select(); // Select all
   //
+  quizCountryButton = document.getElementById("quiz-country");
+  quizCountryButton.addEventListener("click", quizRandomCountry);
+
+  quizCapitalButton = document.getElementById("quiz-capital");
+  quizCapitalButton.addEventListener("click", quizRandomCapital);
+
+  quizFlagButton = document.getElementById("quiz-flag");
+  quizFlagButton.addEventListener("click", quizRandomFlag);
+  
+  quizTypeEl = document.getElementById("quiz-type");
+
   randomCountryButton = document.getElementById("random-country");
-  randomCountryButton.addEventListener("click", pickRandomCountry);
+  randomCountryButton.addEventListener("click", showRandomCountry);
 
-  randomCapitalButton = document.getElementById("random-capital");
-  randomCapitalButton.addEventListener("click", pickRandomCapital);
-
-  randomFlagButton = document.getElementById("random-flag");
-  randomFlagButton.addEventListener("click", pickRandomFlag);
-
-  showAllButton = document.getElementById("show-all");
-  showAllButton.addEventListener("click", showAllCountryInfo);
+  showAnswerButton = document.getElementById("show-answer");
+  showAnswerButton.addEventListener("click", showAllCountryInfo);
+  goodAnswerButton = document.getElementById("good-answer");
+  goodAnswerButton.addEventListener("click", goodAnswer);
+  badAnswerButton = document.getElementById("bad-answer");
+  badAnswerButton.addEventListener("click", badAnswer);    
   //
   resultsEl = document.getElementById("results");
   flagImage = document.getElementById("flag");
@@ -81,11 +101,10 @@ function loadCountryData() {
     .then(response => response.text())
     .then(csvText => {
       const countries = parseCountryCsv(csvText);
-      console.log(countries);
       countries.forEach(country => {
         countryCodes.push(country.code);
         countryByCode[country.code] = country;
-        console.log("Keeping track of: ", country);
+        //console.log("Keeping track of: ", country);
         countryCodeByCountryName[normalizeName(country.english_country_name)] = country.code;
         countryCodeByCapitalName[normalizeName(country.english_capital_name)] = country.code;
         countryCodeByCountryName[normalizeName(country.dutch_country_name)] = country.code;
@@ -109,45 +128,89 @@ function loadCountryData() {
     });
 }
 
+function changeToInitialMode() {
+  bodyEl.classList.remove('quiz-mode');
+  bodyEl.classList.remove('evaluation-mode');
+  bodyEl.classList.add('initial-mode');
+}
+
+function changeToQuizMode() {
+  bodyEl.classList.remove('evaluation-mode');
+  bodyEl.classList.remove('initial-mode');
+  bodyEl.classList.add('quiz-mode');
+}
+
+function changeToEvaluationMode() {
+  bodyEl.classList.remove('initial-mode');
+  bodyEl.classList.remove('quiz-mode');
+  bodyEl.classList.add('evaluation-mode');
+}
+
 function showAllCountryInfo() {
-  resultsEl.classList.remove('hide-flag');
-  resultsEl.classList.remove('hide-country-name');
-  resultsEl.classList.remove('hide-capital-name');
+  bodyEl.classList.remove('hide-flag');
+  bodyEl.classList.remove('hide-country-name');
+  bodyEl.classList.remove('hide-capital-name');
+  changeToEvaluationMode();
 }
 
-function pickRandomCapital() {
+function goodAnswer() {
+  goodAnswers++;
+  changeToInitialMode();
+}
+
+function badAnswer() {
+  goodAnswers++;
+  changeToInitialMode();
+}
+
+function quizRandomCapital() {
   let randomIndex = Math.floor(Math.random() * countryCodes.length);
   let countryCode = countryCodes[randomIndex];
   let country = countryByCode[countryCode];
-  showCountryInfo(country, { name: false, flag: false, capital: true, link: true });
-  resultsEl.classList.remove('hide-flag');
-  resultsEl.classList.add('hide-country-name');
-  resultsEl.classList.remove('hide-capital-name');  
+  showCountryInfo(country);
+  quizTypeEl.textContent = "Guess the country with this capital";
+  changeToQuizMode();
+  bodyEl.classList.remove('hide-flag');
+  bodyEl.classList.add('hide-country-name');
+  bodyEl.classList.remove('hide-capital-name');  
 }
 
-function pickRandomFlag() {
+function quizRandomFlag() {
   let randomIndex = Math.floor(Math.random() * countryCodes.length);
   let countryCode = countryCodes[randomIndex];
   let country = countryByCode[countryCode];
-  showCountryInfo(country, { name: false, flag: true, capital: false, link: true });
-  resultsEl.classList.remove('hide-flag');
-  resultsEl.classList.add('hide-country-name');
-  resultsEl.classList.add('hide-capital-name');  
+  showCountryInfo(country);
+  quizTypeEl.textContent = "Guess the country with this flag";
+  changeToQuizMode();
+  bodyEl.classList.remove('hide-flag');
+  bodyEl.classList.add('hide-country-name');
+  bodyEl.classList.add('hide-capital-name');  
 }
 
-function pickRandomCountry() {
+function quizRandomCountry() {
   let randomIndex = Math.floor(Math.random() * countryCodes.length);
   let countryCode = countryCodes[randomIndex];
   let country = countryByCode[countryCode];
-  showCountryInfo(country, { name: true, flag: false, capital: false, link: true });
-  resultsEl.classList.remove('hide-flag');
-  resultsEl.classList.remove('hide-country-name');
-  resultsEl.classList.add('hide-capital-name');  
+  showCountryInfo(country);
+  quizTypeEl.textContent = "Guess the capital of this country";
+  changeToQuizMode();
+  bodyEl.classList.remove('hide-flag');
+  bodyEl.classList.remove('hide-country-name');
+  bodyEl.classList.add('hide-capital-name');  
 }
 
-function showCountryInfo(country, options) {
-  options = options || { name: true, flag: true, capital: true, link: true };
-  // Fill results:
+function showRandomCountry() {
+  let randomIndex = Math.floor(Math.random() * countryCodes.length);
+  let countryCode = countryCodes[randomIndex];
+  let country = countryByCode[countryCode];
+  showCountryInfo(country);
+  changeToInitialMode();
+  bodyEl.classList.remove('hide-flag');
+  bodyEl.classList.remove('hide-country-name');
+  bodyEl.classList.remove('hide-capital-name');  
+}
+
+function showCountryInfo(country) {
   flagImage.src = `img/flags/4x3/${country.code}.svg`;
   flagImage.alt = `Flag of ${country.english_country_name}`;
   englishCountryNameEl.textContent = country.english_country_name;
@@ -169,6 +232,10 @@ function searchCountry(e) {
   let country = countryCodeByCountryName[countryToSearch] || countryCodeByCapitalName[countryToSearch] || DEFAULT_COUNTRY_DATA;
   // Fill results:
   showCountryInfo(country);
+  bodyEl.classList.remove('hide-flag');
+  bodyEl.classList.remove('hide-country-name');
+  bodyEl.classList.remove('hide-capital-name');    
+  changeToInitialMode();
   // Reset search:
   searchBoxInput.value = "";
   wikipediaLink.focus();

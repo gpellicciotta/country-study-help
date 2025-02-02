@@ -9,6 +9,9 @@ html, body {
   height: 100%;
 }
 
+/* Three state classes: 'initial-mode' (showing quiz and random buttons), 
+                        'quiz-mode' (only showing show answer button) and 
+                        'evaluation-mode' (showing good and bad answer buttons) */
 body {
   font-family: 'Roboto', sans-serif;
   font-size: 1.5rem;
@@ -42,9 +45,10 @@ body {
   text-align: center;
 
   display: grid;
-  grid-template-columns: repeat(3, minmax(10%, min-content));	
+  grid-template-columns: repeat(5, max-content);
   column-gap: 0.5rem;
   justify-content: center;
+  align-items: center;
 }
 
 #search input, #buttons button {
@@ -79,6 +83,11 @@ img.language {
 button {
   color: #fff;
   background-color: #333;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.25em;
 }
 
 button:hover {
@@ -89,6 +98,68 @@ button:hover {
 button:active {
   color: #000;
   background-color: #00aeff;
+}
+
+/* Button visibility based on mode: */
+
+#quiz-country, 
+#quiz-flag,
+#quiz-capital, 
+#random-country,
+#buttons > .separator {
+  display: flex;
+}
+
+#show-answer, 
+#good-answer,
+#bad-answer,
+#quiz-type {
+  display: none;
+}
+
+.initial-mode #quiz-country, 
+.initial-mode #quiz-flag,
+.initial-mode #quiz-capital, 
+.initial-mode #random-country,
+.initial-mode #buttons > .separator {
+  display: flex;
+}
+
+.initial-mode #show-answer, 
+.initial-mode #good-answer,
+.initial-mode #bad-answer,
+.initial-mode #quiz-type {
+  display: none;
+}
+
+.quiz-mode #show-answer,
+.quiz-mode #quiz-type {
+  display: flex;
+}
+
+.quiz-mode #quiz-country, 
+.quiz-mode #quiz-flag,
+.quiz-mode #quiz-capital, 
+.quiz-mode #random-country,
+.quiz-mode #good-answer,
+.quiz-mode #bad-answer,
+.quiz-mode #buttons > .separator {
+  display: none;
+}
+
+.evaluation-mode #quiz-type,
+.evaluation-mode #good-answer,
+.evaluation-mode #bad-answer {
+  display: flex;
+}
+
+.evaluation-mode #show-answer, 
+.evaluation-mode #quiz-country, 
+.evaluation-mode #quiz-flag,
+.evaluation-mode #quiz-capital, 
+.evaluation-mode #random-country,
+.evaluation-mode #buttons > .separator {
+  display: none;
 }
 
 /* Styles for the results section */
@@ -110,8 +181,7 @@ button:active {
   grid-template-areas: "flag"
                        "english_country_info"
                        "dutch_country_info"
-                       "italian_country_info"
-                       "show-all";   
+                       "italian_country_info";   
   grid-auto-columns: 1fr;    
   grid-auto-rows: min-content;
   gap: 0.5rem;              
@@ -126,10 +196,9 @@ button:active {
 
   #results .country-panel {
     grid-template-areas: 
-      "show-all show-all"
-      "flag     english_country_info"
-      "flag     dutch_country_info"
-      "flag     italian_country_info";   
+      "flag english_country_info"
+      "flag dutch_country_info"
+      "flag italian_country_info";   
     grid-auto-columns: 1fr 2fr;    
     grid-auto-rows: min-content min-content min-content;
     gap: 1rem;              
@@ -158,19 +227,6 @@ button:active {
   grid-area: italian_country_info;
 }
 
-#show-all {
-  grid-area: show-all;
-  
-  justify-self: center;
-  align-self: center;
-
-  padding: 10px;
-  font-size: 16px;
-  border-radius: 5px;
-  border: 1px solid #333;
-  outline: none;  
-}
-
 #results .country-info {
   font-size: 80%;
   font-family: 'Roboto Mono', monospace;
@@ -193,23 +249,23 @@ button:active {
   text-decoration: underline;
 }
 
-#results .country-info {
-
-}
-
 #results #flag {
   visibility: visible;
 }
 
-#results.hide-flag #flag {
+.hide-flag #flag {
   visibility: hidden;
 }
 
 #results .capital {
   visibility: visible;
+  font-size: 80%;
+  font-style: italic;
+  color: #333;
+  text-align: end;
 }
 
-#results.hide-capital-name .capital {
+.hide-capital-name #results .capital {
   visibility: hidden;
 }
 
@@ -217,13 +273,6 @@ button:active {
   visibility: visible;
 }
 
-#results.hide-country-name .country {
+.hide-country-name #results .country {
   visibility: hidden;
-}
-
-#results .capital {
-  font-size: 80%;
-  font-style: italic;
-  color: #333;
-  text-align: end;
 }

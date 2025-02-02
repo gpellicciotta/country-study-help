@@ -23,16 +23,22 @@
     </section>  
     
     <section id="buttons">
-      <button id='random-country'><i class="fa-regular fa-dice"></i> Country</button>
-      <button id='random-capital'><i class="fa-regular fa-dice"></i> Capital</button>
-      <button id='random-flag'><i class="fa-regular fa-dice"></i> Flag</button>
+      <!-- Initial mode: -->
+      <button id='quiz-country'><i class="fa-regular fa-circle-question"></i> Country Name</button>
+      <button id='quiz-capital'><i class="fa-regular fa-circle-question"></i> Capital Name</button>
+      <button id='quiz-flag'><i class="fa-regular fa-circle-question"></i> Country Flag</button>
+      <span class="separator">|</span>
+      <button id='random-country'><i class="fa-solid fa-dice"></i> Country</button>
+      <!-- Quiz mode: -->
+      <span id="quiz-type">Guess the ...</span>
+      <button id='show-answer'><i class="fa-regular fa-eye"></i> Show Answer</button>
+      <button id='good-answer'><i class="fa-regular fa-thumbs-up"></i> Good Answer</button>
+      <button id='bad-answer'><i class="fa-regular fa-thumbs-down"></i> Bad Answer</button>
     </section>
 
     <section id='results' class="hide-flag">
-      <div class="country-panel">
-        <button id='show-all'><i class="fa-regular fa-eye"></i> Show</button>
-
-        <img id='flag' class="flag" src="/img/flags/4x3/{{COUNTRY-CODE}}.svg" alt='Flag of {{COUNTRY}}'>
+      <div class="country-panel">        
+        <img id='flag' class="flag" src="/img/flags/4x3/__.svg" alt='Flag of {{COUNTRY}}'>
 
         <h1 class="country-info" id="english_country_info">
           <img class="language" src="/img/flags/1x1/gb-eng.svg"> 
