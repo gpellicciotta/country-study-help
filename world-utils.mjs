@@ -101,6 +101,7 @@ function loadCountryData() {
   fetch(COUNTRIES_DATA_FILE)
     .then(response => response.text())
     .then(csvText => {
+      console.log("CSV data: ", csvText)
       const countries = parseCountryCsv(csvText);
       countries.forEach(country => {
         countryCodes.push(country.code);
