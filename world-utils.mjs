@@ -159,7 +159,7 @@ function goodAnswer() {
 }
 
 function badAnswer() {
-  goodAnswers++;
+  badAnswers++;
   changeToInitialMode();
 }
 
