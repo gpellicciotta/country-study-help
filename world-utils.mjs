@@ -1,7 +1,7 @@
 const COUNTRIES_DATA_FILE = "data/world-countries.csv";
 
 const DEFAULT_COUNTRY_DATA = {
-  'code': '__',
+  'code': 'no-country',
   'english_country_name': 'Not Found',
   'english_capital_name': 'Not Found',
   'english_wikipedia': 'https://en.wikipedia.org/wiki/Utopia',
@@ -229,7 +229,7 @@ function showCountryInfo(country) {
 function searchCountry(e) {
   if (e.which !== 13) { return ; }
   let countryToSearch = normalizeName(searchBoxInput.value);
-  let countryCode = countryCodeByCountryName[countryToSearch] || countryCodeByCapitalName[countryToSearch] || '__';
+  let countryCode = countryCodeByCountryName[countryToSearch] || countryCodeByCapitalName[countryToSearch] || 'no-country';
   let country = countryByCode[countryCode];
   // Fill results:
   showCountryInfo(country);
