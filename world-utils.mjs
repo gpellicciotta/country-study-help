@@ -219,10 +219,10 @@ function showCountryInfo(country) {
   englishWikipediaLinkEl.href = `https://en.wikipedia.org/wiki/${country.english_country_name}`;
   dutchCountryNameEl.textContent = country.dutch_country_name;
   dutchCapitalNameEl.textContent = country.dutch_capital_name;
-  dutchWikipediaLinkEl.href = `https://en.wikipedia.org/wiki/${country.dutch_country_name}`;
+  dutchWikipediaLinkEl.href = `https://nl.wikipedia.org/wiki/${country.dutch_country_name}`;
   italianCountryNameEl.textContent = country.italian_country_name;
   italianCapitalNameEl.textContent = country.italian_capital_name;
-  italianWikipediaLinkEl.href = `https://en.wikipedia.org/wiki/${country.italian_country_name}`;
+  italianWikipediaLinkEl.href = `https://it.wikipedia.org/wiki/${country.italian_country_name}`;
 }
 
 function searchCountry(e) {
