@@ -30,26 +30,26 @@ let randomCountryButton;
 let resultsEl;
 
 let flagImage;
-let englishCountryNameEl; 
-let englishCapitalNameEl; 
-let englishWikipediaLinkEl; 
-let dutchCountryNameEl;   
-let dutchCapitalNameEl;   
-let dutchWikipediaLinkEl; 
-let italianCountryNameEl; 
-let italianCapitalNameEl; 
+let englishCountryNameEl;
+let englishCapitalNameEl;
+let englishWikipediaLinkEl;
+let dutchCountryNameEl;
+let dutchCapitalNameEl;
+let dutchWikipediaLinkEl;
+let italianCountryNameEl;
+let italianCapitalNameEl;
 let italianWikipediaLinkEl;
 
 let goodAnswers = 0;
 let badAnswers = 0;
 
-window.addEventListener("load", fireDomReady, false);  
+window.addEventListener("load", fireDomReady, false);
 
-function fireDomReady() { 
+function fireDomReady() {
   bodyEl = document.getElementsByTagName("body")[0];
 
   // UI elements + handlers:
-  searchBoxInput = document.getElementById("country-box");  
+  searchBoxInput = document.getElementById("country-box");
   searchBoxInput.addEventListener("keydown", searchCountry);
   searchBoxInput.value = "Belgium";
   searchBoxInput.focus();
@@ -63,7 +63,7 @@ function fireDomReady() {
 
   quizFlagButton = document.getElementById("quiz-flag");
   quizFlagButton.addEventListener("click", quizRandomFlag);
-  
+
   quizTypeEl = document.getElementById("quiz-type");
 
   randomCountryButton = document.getElementById("random-country");
@@ -74,7 +74,7 @@ function fireDomReady() {
   goodAnswerButton = document.getElementById("good-answer");
   goodAnswerButton.addEventListener("click", goodAnswer);
   badAnswerButton = document.getElementById("bad-answer");
-  badAnswerButton.addEventListener("click", badAnswer);    
+  badAnswerButton.addEventListener("click", badAnswer);
   //
   resultsEl = document.getElementById("results");
   flagImage = document.getElementById("flag");
@@ -97,7 +97,7 @@ let countryCodeByCountryName = {};
 let countryCodeByCapitalName = {};
 
 function loadCountryData() {
-  console.log("Loading country data...");	
+  console.log("Loading country data...");
   fetch(COUNTRIES_DATA_FILE)
     .then(response => response.text())
     .then(csvText => {
@@ -105,14 +105,15 @@ function loadCountryData() {
       countries.forEach(country => {
         countryCodes.push(country.code);
         countryByCode[country.code] = country;
-        //console.log("Keeping track of: ", country);
+        console.log("Keeping track of: ", country);
         countryCodeByCountryName[normalizeName(country.english_country_name)] = country.code;
         countryCodeByCapitalName[normalizeName(country.english_capital_name)] = country.code;
         countryCodeByCountryName[normalizeName(country.dutch_country_name)] = country.code;
         countryCodeByCapitalName[normalizeName(country.dutch_capital_name)] = country.code;
         countryCodeByCountryName[normalizeName(country.italian_country_name)] = country.code;
-        countryCodeByCapitalName[normalizeName(country.italian_capital_name)] = country.code;        
+        countryCodeByCapitalName[normalizeName(country.italian_capital_name)] = country.code;
       });
+      console.log("Country data loaded completely.");
     })
     .catch(error => {
       console.error('Error loading country data:', error);
@@ -173,7 +174,7 @@ function quizRandomCapital() {
   changeToQuizMode();
   bodyEl.classList.remove('hide-flag');
   bodyEl.classList.add('hide-country-name');
-  bodyEl.classList.remove('hide-capital-name');  
+  bodyEl.classList.remove('hide-capital-name');
 }
 
 function quizRandomFlag() {
@@ -185,7 +186,7 @@ function quizRandomFlag() {
   changeToQuizMode();
   bodyEl.classList.remove('hide-flag');
   bodyEl.classList.add('hide-country-name');
-  bodyEl.classList.add('hide-capital-name');  
+  bodyEl.classList.add('hide-capital-name');
 }
 
 function quizRandomCountry() {
@@ -197,7 +198,7 @@ function quizRandomCountry() {
   changeToQuizMode();
   bodyEl.classList.remove('hide-flag');
   bodyEl.classList.remove('hide-country-name');
-  bodyEl.classList.add('hide-capital-name');  
+  bodyEl.classList.add('hide-capital-name');
 }
 
 function showRandomCountry() {
@@ -208,7 +209,7 @@ function showRandomCountry() {
   changeToInitialMode();
   bodyEl.classList.remove('hide-flag');
   bodyEl.classList.remove('hide-country-name');
-  bodyEl.classList.remove('hide-capital-name');  
+  bodyEl.classList.remove('hide-capital-name');
 }
 
 function showCountryInfo(country) {
@@ -227,33 +228,33 @@ function showCountryInfo(country) {
 
 function searchCountry(e) {
   if (e.which !== 13) { return ; }
-  let countryToSearch = normalizeName(searchBoxInput.value); 
+  let countryToSearch = normalizeName(searchBoxInput.value);
   let countryCode = countryCodeByCountryName[countryToSearch] || countryCodeByCapitalName[countryToSearch] || '__';
   let country = countryByCode[countryCode];
-  // Fill results:  
+  // Fill results:
   showCountryInfo(country);
   changeToInitialMode();
   bodyEl.classList.remove('hide-flag');
   bodyEl.classList.remove('hide-country-name');
-  bodyEl.classList.remove('hide-capital-name');    
+  bodyEl.classList.remove('hide-capital-name');
   // Reset search:
   searchBoxInput.value = "";
-  wikipediaLink.focus();  
+  wikipediaLink.focus();
 }
 
 // Utilities:
 
 function createLink(href, text, target = null) {
-  let a = Object.assign(document.createElement("a"), { 
-    href: href, 
-    textContent: capitalize(text) 
+  let a = Object.assign(document.createElement("a"), {
+    href: href,
+    textContent: capitalize(text)
   });
   if (target) {
     a.target = target;
     a.onclick = function(event) {
       event.preventDefault();
       if (openTabs[target]) {
-        openTabs[target].close();      
+        openTabs[target].close();
       }
       let newWindow = window.open(href, target);
       if (newWindow) {
@@ -262,8 +263,8 @@ function createLink(href, text, target = null) {
           newWindow.document.title = windowTitle;
         });
         newWindow.focus();
-      } 
-    };        
+      }
+    };
   }
   return a;
 }
@@ -289,13 +290,13 @@ function parseCountryCsv(csvText) {
   const headerNames = {
     'Country Code': 'code',
     'Country (English)': 'english_country_name',
-    'Capital (English)': 'english_capital_name',	
-    'Wikipedia (English)': 'english_wikipedia',	
-    'Country (Dutch)': 'dutch_country_name',	
-    'Capital (Dutch)': 'dutch_capital_name',	
-    'Wikipedia (Dutch)': 'dutch_wikipedia',	
-    'Country (Italian)': 'italian_country_name',	
-    'Capital (Italian)': 'italian_capital_name',	
+    'Capital (English)': 'english_capital_name',
+    'Wikipedia (English)': 'english_wikipedia',
+    'Country (Dutch)': 'dutch_country_name',
+    'Capital (Dutch)': 'dutch_capital_name',
+    'Wikipedia (Dutch)': 'dutch_wikipedia',
+    'Country (Italian)': 'italian_country_name',
+    'Capital (Italian)': 'italian_capital_name',
     'Wikipedia (Italian)': 'italian_wikipedia'
   }
   const data = lines.slice(1)
