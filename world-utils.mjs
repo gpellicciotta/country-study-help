@@ -97,6 +97,7 @@ let countryCodeByCountryName = {};
 let countryCodeByCapitalName = {};
 
 function loadCountryData() {
+  console.log("Loading country data...");	
   fetch(COUNTRIES_DATA_FILE)
     .then(response => response.text())
     .then(csvText => {
