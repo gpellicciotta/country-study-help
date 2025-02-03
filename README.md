@@ -24,7 +24,8 @@ No logging in, but also no remembering of countries previously searched (beyond 
 Works:
 - Simple country selection works
 - The quiz buttons work
+- The UI is responsive
 
 Doesn't work:
 - Evaluation doesn't work yet: need to keep track of score/stats (and allow resetting score/stats)
-- Only 10 countries are available to select: need to extend to full list of world countries
+- Countries don't have correct translations yet (to Dutch and Italian)
