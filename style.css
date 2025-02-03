@@ -24,7 +24,7 @@ body {
 
 /* Styles for the search section */
 #search {
-  background-color: #ff009d;
+  background-color: #0e6eb8;
   color: white;
   padding: 1rem;
   text-align: center;
@@ -69,7 +69,7 @@ body {
   }
 }
 
-#buttons {
+#quiz {
   background-color: #ababab;
   color: white;
   padding: 1rem;
@@ -84,34 +84,31 @@ body {
   align-items: center;
 }
 
-/* Styles for larger screens */
-@media (min-width: 400px) {
-  .initial-mode #buttons {
-    display: grid;
-    grid-template-columns: repeat(3, min-content);
-    justify-content: center;
-    align-items: center;    
-  }
+#feedback {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100vw;
+  z-index: 100;
 
-  #buttons .separator {
-    visibility: hidden;
-  }
+  background-color: #ababab;
+  color: white;
+  padding: 1rem;
+  text-align: center;
+  max-width: 100vw;
+
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  align-items: center;
 }
 
-@media (min-width: 500px) {
-  .initial-mode #buttons {
-    grid-template-columns: repeat(5, max-content);
-  }
-
-  #buttons .separator {
-    visibility: visible;
-  }
-}
-
-@media (min-width: 600px) {
-  #buttons {
-    grid-template-columns: repeat(5, max-content);
-  }
+.quiz-mode #feedback,
+.evaluation-mode #feedback {
+  display: flex;
 }
 
 input, button {
@@ -164,7 +161,7 @@ button:active {
 #quiz-flag,
 #quiz-capital, 
 #random-country,
-#buttons > .separator {
+#quiz > .separator {
   display: flex;
 }
 
@@ -179,7 +176,7 @@ button:active {
 .initial-mode #quiz-flag,
 .initial-mode #quiz-capital, 
 .initial-mode #random-country,
-.initial-mode #buttons > .separator {
+.initial-mode #quiz > .separator {
   display: flex;
 }
 
@@ -201,7 +198,7 @@ button:active {
 .quiz-mode #random-country,
 .quiz-mode #good-answer,
 .quiz-mode #bad-answer,
-.quiz-mode #buttons > .separator {
+.quiz-mode #quiz > .separator {
   display: none;
 }
 
@@ -216,7 +213,7 @@ button:active {
 .evaluation-mode #quiz-flag,
 .evaluation-mode #quiz-capital, 
 .evaluation-mode #random-country,
-.evaluation-mode #buttons > .separator {
+.evaluation-mode #quiz > .separator {
   display: none;
 }
 

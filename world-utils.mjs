@@ -16,6 +16,7 @@ const DEFAULT_COUNTRY_DATA = {
 let bodyEl;
 
 let searchBoxInput;
+let searchBoxDataList;
 let searchCountryButton;
 let randomCountryButton;
 
@@ -56,6 +57,9 @@ function fireDomReady() {
   searchBoxInput.value = "Belgium";
   searchBoxInput.focus();
   searchBoxInput.select(); // Select all
+
+  searchBoxDataList = document.getElementById("name-list");
+
   searchCountryButton = document.getElementById("search-country");
   searchCountryButton.addEventListener("click", searchCountry);
   randomCountryButton = document.getElementById("random-country");
@@ -94,23 +98,61 @@ let countryByCode = {};
 let countryCodeByCountryName = {};
 let countryCodeByCapitalName = {};
 
+function createOptionElement(value) {
+  let option = document.createElement('option');
+  option.value = value;
+  return option;
+}
+
 function loadCountryData() {
   console.log("Loading country data...");
   fetch(COUNTRIES_DATA_FILE)
     .then(response => response.text())
     .then(csvText => {
-      console.log("CSV data: ", csvText)
+      //console.log("CSV data: ", csvText)
       const countries = parseCountryCsv(csvText);
+      const distinctNames = new Set();
+      searchBoxDataList.innerHTML = '';
       countries.forEach(country => {
+        //console.log("Keeping track of: ", country);
         countryCodes.push(country.code);
+        // For lookup:
         countryByCode[country.code] = country;
-        console.log("Keeping track of: ", country);
         countryCodeByCountryName[normalizeName(country.english_country_name)] = country.code;
         countryCodeByCapitalName[normalizeName(country.english_capital_name)] = country.code;
         countryCodeByCountryName[normalizeName(country.dutch_country_name)] = country.code;
         countryCodeByCapitalName[normalizeName(country.dutch_capital_name)] = country.code;
         countryCodeByCountryName[normalizeName(country.italian_country_name)] = country.code;
         countryCodeByCapitalName[normalizeName(country.italian_capital_name)] = country.code;
+        // For auto-complete:
+        if (!distinctNames.has(country.code)) {
+          searchBoxDataList.appendChild(createOptionElement(country.code));
+          distinctNames.add(country.code);
+        }
+        if (!distinctNames.has(country.english_country_name)) {
+          searchBoxDataList.appendChild(createOptionElement(country.english_country_name));
+          distinctNames.add(country.english_country_name);
+        }
+        if (!distinctNames.has(country.english_capital_name)) {
+          searchBoxDataList.appendChild(createOptionElement(country.english_capital_name));
+          distinctNames.add(country.english_capital_name);
+        }
+        if (!distinctNames.has(country.dutch_country_name)) {
+          searchBoxDataList.appendChild(createOptionElement(country.dutch_country_name));
+          distinctNames.add(country.dutch_country_name);
+        }
+        if (!distinctNames.has(country.dutch_capital_name)) {
+          searchBoxDataList.appendChild(createOptionElement(country.dutch_capital_name));
+          distinctNames.add(country.dutch_capital_name);
+        }
+        if (!distinctNames.has(country.italian_country_name)) {
+          searchBoxDataList.appendChild(createOptionElement(country.italian_country_name));
+          distinctNames.add(country.italian_country_name);
+        }
+        if (!distinctNames.has(country.italian_capital_name)) {
+          searchBoxDataList.appendChild(createOptionElement(country.italian_capital_name));
+          distinctNames.add(country.italian_capital_name);
+        }
       });
       console.log("Country data loaded completely.");
     })
