@@ -1,4 +1,5 @@
-const COUNTRIES_DATA_FILE = "data/world-countries.csv";
+const COUNTRIES_CSV_DATA_FILE = "data/world-countries.csv";
+const COUNTRIES_JSON_DATA_FILE = "data/world-countries.json";
 
 const DEFAULT_COUNTRY_DATA = {
   'code': 'no-country',
@@ -18,13 +19,17 @@ let bodyEl;
 let searchBoxInput;
 let searchBoxDataList;
 let searchCountryButton;
+
+
+let showCountryNameCheckbox;
+let showCapitalNameCheckbox;
+let showFlagCheckbox;
+let quizTypeEl;
+
 let randomCountryButton;
 
-let quizCountryButton;
-let quizCapitalButton;
-let quizFlagButton;
-let quizTypeEl;
 let showAnswerButton;
+
 let goodAnswerButton;
 let badAnswerButton;
 
@@ -65,12 +70,12 @@ function fireDomReady() {
   randomCountryButton = document.getElementById("random-country");
   randomCountryButton.addEventListener("click", showRandomCountry);
   // Quiz portion:
-  quizCountryButton = document.getElementById("quiz-country");
-  quizCountryButton.addEventListener("click", quizRandomCountry);
-  quizCapitalButton = document.getElementById("quiz-capital");
-  quizCapitalButton.addEventListener("click", quizRandomCapital);
-  quizFlagButton = document.getElementById("quiz-flag");
-  quizFlagButton.addEventListener("click", quizRandomFlag);
+  showCountryNameCheckbox = document.getElementById("show-country");
+  showCountryNameCheckbox.addEventListener("click", showCountryName);
+  showCapitalNameCheckbox = document.getElementById("show-capital");
+  showCapitalNameCheckbox.addEventListener("click", showCapitalName);
+  showFlagCheckbox = document.getElementById("show-flag");
+  showFlagCheckbox.addEventListener("click", showFlag);
   quizTypeEl = document.getElementById("quiz-type");
   showAnswerButton = document.getElementById("show-answer");
   showAnswerButton.addEventListener("click", showAllCountryInfo);
@@ -90,7 +95,7 @@ function fireDomReady() {
   italianCapitalNameEl = document.getElementById("italian_capital_name");
   italianWikipediaLinkEl = document.getElementById("italian_wikipedia");
   // Load country data
-  loadCountryData();
+  loadCountryDataFromJSON();
 }
 
 let countryCodes = [];
@@ -104,9 +109,89 @@ function createOptionElement(value) {
   return option;
 }
 
-function loadCountryData() {
-  console.log("Loading country data...");
-  fetch(COUNTRIES_DATA_FILE)
+function translateCountryOrCityName(name, lang) {
+  // TODO:
+  return name;
+}
+
+function loadCountryDataFromJSON() {
+  console.log("Loading JSON country data...");
+  fetch(COUNTRIES_JSON_DATA_FILE)
+    .then(response => response.json())
+    .then(countries => {
+      //console.log("JSON data: ", countries)
+      const distinctNames = new Set();
+      searchBoxDataList.innerHTML = '';
+      countries.forEach(country => {
+        //console.log("Keeping track of: ", country);
+        
+        country.code = country.cca2.toLowerCase();
+        country.english_country_name = country.name.common;
+        country.english_capital_name = (country.capital || []).join(', ');	
+        country.dutch_country_name = country.translations.nld.common || translateCountryOrCityName(country.english_country_name, 'nl'); 
+        country.dutch_capital_name = translateCountryOrCityName(country.english_capital_name, 'nl');	
+        country.italian_country_name = country.translations.ita.common || translateCountryOrCityName(country.english_country_name, 'it');
+        country.italian_capital_name = translateCountryOrCityName(country.english_capital_name, 'it');	
+
+        countryCodes.push(country.code);
+        // For lookup:
+        countryByCode[country.code] = country;
+        countryCodeByCountryName[normalizeName(country.english_country_name)] = country.code;
+        countryCodeByCapitalName[normalizeName(country.english_capital_name)] = country.code;
+        countryCodeByCountryName[normalizeName(country.dutch_country_name)] = country.code;
+        countryCodeByCapitalName[normalizeName(country.dutch_capital_name)] = country.code;
+        countryCodeByCountryName[normalizeName(country.italian_country_name)] = country.code;
+        countryCodeByCapitalName[normalizeName(country.italian_capital_name)] = country.code;
+        // For auto-complete:
+        if (!distinctNames.has(country.code)) {
+          searchBoxDataList.appendChild(createOptionElement(country.code));
+          distinctNames.add(country.code);
+        }
+        if (!distinctNames.has(country.english_country_name)) {
+          searchBoxDataList.appendChild(createOptionElement(country.english_country_name));
+          distinctNames.add(country.english_country_name);
+        }
+        if (!distinctNames.has(country.english_capital_name)) {
+          searchBoxDataList.appendChild(createOptionElement(country.english_capital_name));
+          distinctNames.add(country.english_capital_name);
+        }
+        if (!distinctNames.has(country.dutch_country_name)) {
+          searchBoxDataList.appendChild(createOptionElement(country.dutch_country_name));
+          distinctNames.add(country.dutch_country_name);
+        }
+        if (!distinctNames.has(country.dutch_capital_name)) {
+          searchBoxDataList.appendChild(createOptionElement(country.dutch_capital_name));
+          distinctNames.add(country.dutch_capital_name);
+        }
+        if (!distinctNames.has(country.italian_country_name)) {
+          searchBoxDataList.appendChild(createOptionElement(country.italian_country_name));
+          distinctNames.add(country.italian_country_name);
+        }
+        if (!distinctNames.has(country.italian_capital_name)) {
+          searchBoxDataList.appendChild(createOptionElement(country.italian_capital_name));
+          distinctNames.add(country.italian_capital_name);
+        }
+      });
+      console.log("Country data loaded completely.");
+    })
+    .catch(error => {
+      console.error('Error loading country data:', error);
+
+      countryCodeByCountryName = {};
+      countryCodeByCapitalName = {};
+      countryByCode = [DEFAULT_COUNTRY_DATA.code];
+      countryCodeByCountryName[DEFAULT_COUNTRY_DATA.english_country_name] = DEFAULT_COUNTRY_DATA.code;
+      countryCodeByCapitalName[DEFAULT_COUNTRY_DATA.english_capital_name] = DEFAULT_COUNTRY_DATA.code;
+      countryCodeByCountryName[DEFAULT_COUNTRY_DATA.dutch_country_name] = DEFAULT_COUNTRY_DATA.code;
+      countryCodeByCapitalName[DEFAULT_COUNTRY_DATA.dutch_capital_name] = DEFAULT_COUNTRY_DATA.code;
+      countryCodeByCountryName[DEFAULT_COUNTRY_DATA.italian_country_name] = DEFAULT_COUNTRY_DATA.code;
+      countryCodeByCapitalName[DEFAULT_COUNTRY_DATA.italian_capital_name] = DEFAULT_COUNTRY_DATA.code;
+    });
+}
+
+function loadCountryDataFromCsv() {
+  console.log("Loading CSV country data...");
+  fetch(COUNTRIES_CSV_DATA_FILE)
     .then(response => response.text())
     .then(csvText => {
       //console.log("CSV data: ", csvText)
@@ -181,6 +266,24 @@ function changeToQuizMode() {
   bodyEl.classList.remove('evaluation-mode');
   bodyEl.classList.remove('initial-mode');
   bodyEl.classList.add('quiz-mode');
+  if (showCountryNameCheckbox.checked) {
+    bodyEl.classList.remove('hide-country-name');
+  }
+  else {
+    bodyEl.classList.add('hide-country-name');
+  }
+  if (showCapitalNameCheckbox.checked) {
+    bodyEl.classList.remove('hide-capital-name');
+  }
+  else {
+    bodyEl.classList.add('hide-capital-name');
+  }
+  if (showFlagCheckbox.checked) {
+    bodyEl.classList.remove('hide-flag');
+  }
+  else {
+    bodyEl.classList.add('hide-flag');
+  }
 }
 
 function changeToEvaluationMode() {
@@ -206,51 +309,51 @@ function badAnswer() {
   changeToInitialMode();
 }
 
-function quizRandomCapital() {
-  let randomIndex = Math.floor(Math.random() * countryCodes.length);
-  let countryCode = countryCodes[randomIndex];
-  let country = countryByCode[countryCode];
-  showCountryInfo(country);
-  quizTypeEl.textContent = "Guess the country with this capital";
-  changeToQuizMode();
-  bodyEl.classList.remove('hide-flag');
-  bodyEl.classList.add('hide-country-name');
-  bodyEl.classList.remove('hide-capital-name');
+function showCapitalName() {
+  if (showCapitalNameCheckbox.checked) {
+    bodyEl.classList.remove('hide-capital-name');
+  }
+  else {
+    bodyEl.classList.add('hide-capital-name');
+    if (!showCountryNameCheckbox.checked && !showFlagCheckbox.checked) {
+      showFlagCheckbox.checked = true;
+      bodyEl.classList.remove('hide-flag');
+    }
+  } 
 }
 
-function quizRandomFlag() {
-  let randomIndex = Math.floor(Math.random() * countryCodes.length);
-  let countryCode = countryCodes[randomIndex];
-  let country = countryByCode[countryCode];
-  showCountryInfo(country);
-  quizTypeEl.textContent = "Guess the country with this flag";
-  changeToQuizMode();
-  bodyEl.classList.remove('hide-flag');
-  bodyEl.classList.add('hide-country-name');
-  bodyEl.classList.add('hide-capital-name');
+function showFlag() {
+  if (showFlagCheckbox.checked) {
+    bodyEl.classList.remove('hide-flag');
+  }
+  else {
+    bodyEl.classList.add('hide-flag');
+    if (!showCapitalNameCheckbox.checked && !showCountryNameCheckbox.checked) {
+      showCountryNameCheckbox.checked = true;
+      bodyEl.classList.remove('hide-country-name');
+    }
+  } 
 }
 
-function quizRandomCountry() {
-  let randomIndex = Math.floor(Math.random() * countryCodes.length);
-  let countryCode = countryCodes[randomIndex];
-  let country = countryByCode[countryCode];
-  showCountryInfo(country);
-  quizTypeEl.textContent = "Guess the capital of this country";
-  changeToQuizMode();
-  bodyEl.classList.remove('hide-flag');
-  bodyEl.classList.remove('hide-country-name');
-  bodyEl.classList.add('hide-capital-name');
+function showCountryName() {
+  if (showCountryNameCheckbox.checked) {
+    bodyEl.classList.remove('hide-country-name');
+  }
+  else {
+    bodyEl.classList.add('hide-country-name');
+    if (!showCapitalNameCheckbox.checked && !showFlagCheckbox.checked) {
+      showFlagCheckbox.checked = true;
+      bodyEl.classList.remove('hide-flag');
+    }
+  } 
 }
 
 function showRandomCountry() {
   let randomIndex = Math.floor(Math.random() * countryCodes.length);
   let countryCode = countryCodes[randomIndex];
   let country = countryByCode[countryCode];
+  changeToQuizMode();
   showCountryInfo(country);
-  changeToInitialMode();
-  bodyEl.classList.remove('hide-flag');
-  bodyEl.classList.remove('hide-country-name');
-  bodyEl.classList.remove('hide-capital-name');
 }
 
 function showCountryInfo(country) {
@@ -258,13 +361,13 @@ function showCountryInfo(country) {
   flagImage.alt = `Flag of ${country.english_country_name}`;
   englishCountryNameEl.textContent = country.english_country_name;
   englishCapitalNameEl.textContent = country.english_capital_name;
-  englishWikipediaLinkEl.href = `https://en.wikipedia.org/wiki/${country.english_country_name}`;
+  englishWikipediaLinkEl.href = `https://en.wikipedia.org/wiki/${encodeURIComponent(country.english_country_name)}`;
   dutchCountryNameEl.textContent = country.dutch_country_name;
   dutchCapitalNameEl.textContent = country.dutch_capital_name;
-  dutchWikipediaLinkEl.href = `https://nl.wikipedia.org/wiki/${country.dutch_country_name}`;
+  dutchWikipediaLinkEl.href = `https://nl.wikipedia.org/wiki/${encodeURIComponent(country.dutch_country_name)}`;
   italianCountryNameEl.textContent = country.italian_country_name;
   italianCapitalNameEl.textContent = country.italian_capital_name;
-  italianWikipediaLinkEl.href = `https://it.wikipedia.org/wiki/${country.italian_country_name}`;
+  italianWikipediaLinkEl.href = `https://it.wikipedia.org/wiki/${encodeURIComponent(country.italian_country_name)}`;
 }
 
 function searchCountry(e) {
@@ -274,12 +377,15 @@ function searchCountry(e) {
   // Fill results:
   showCountryInfo(country);
   changeToInitialMode();
-  bodyEl.classList.remove('hide-flag');
+  showCountryNameCheckbox.checked = true;
+  showCapitalNameCheckbox.checked = true;
+  showFlagCheckbox.checked = true;  
   bodyEl.classList.remove('hide-country-name');
   bodyEl.classList.remove('hide-capital-name');
+  bodyEl.classList.remove('hide-flag');
   // Reset search:
   searchBoxInput.value = "";
-  wikipediaLink.focus();
+  searchBoxInput.focus();
 }
 
 // Utilities:

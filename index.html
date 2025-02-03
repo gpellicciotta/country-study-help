@@ -17,22 +17,17 @@
   </head>
   <body>
     <section id='search'>
-      <p id="title">What country would you like to show? Type + enter.</p>
       <input type='text' id='country-box' autofocus list="name-list">
       <datalist id="name-list"></datalist>
-      <button id='search-country'><i class="fa-solid fa-magnifying-glass"></i> Search</button>
-      <span class="separator">|</span>
-      <button id='random-country'><i class="fa-solid fa-dice"></i> Country</button>
+      <button id='search-country'><i class="fa-solid fa-magnifying-glass"></i><label>Search</label></button>
     </section>  
     
     <section id="quiz">
       <!-- Initial mode: -->
-      <button id='quiz-country'><i class="fa-regular fa-circle-question"></i> Country Name</button>
-      <button id='quiz-capital'><i class="fa-regular fa-circle-question"></i> Capital Name</button>
-      <button id='quiz-flag'><i class="fa-regular fa-circle-question"></i> Country Flag</button>      
-      <!-- Quiz mode: -->
-      <span id="quiz-type">Guess the ...</span>    
-    </section>
+      <label for="show-country">Country</label><input type="checkbox" id='show-country' checked>
+      <label for="show-capital">Capital</label><input type="checkbox" id='show-capital' checked>
+      <label for="show-flag">Flag</label><input type="checkbox" id='show-flag' checked>     
+   </section>
 
     <section id='results' class="hide-flag">
       <div class="country-panel">        
@@ -62,7 +57,11 @@
     </section>
 
     <section id="feedback">
+      <!-- Initial mode: -->
+      <button id='random-country'><i class="fa-solid fa-dice"></i><label>Random Country</label></button>
+      <!-- Quiz mode: -->
       <button id='show-answer'><i class="fa-regular fa-eye"></i> Show Answer</button>
+      <!-- Evaluation mode: -->
       <button id='good-answer'><i class="fa-regular fa-thumbs-up"></i> Good Answer</button>
       <button id='bad-answer'><i class="fa-regular fa-thumbs-down"></i> Bad Answer</button>      
     </section>    

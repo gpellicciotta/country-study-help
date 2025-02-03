@@ -19,13 +19,17 @@ The interface will simply be a web-page with:
 The whole will be a single-page application with no back-end (except the internet as a whole acting as data).
 No logging in, but also no remembering of countries previously searched (beyond possibly on a specific device).
 
+## Data Sources
+The basic information about countries comes from: https://restcountries.com/v3.1/all
+
 ## What works, and what doesn't
 
 Works:
 - Simple country selection works
 - The quiz buttons work
 - The UI is responsive
+- Countries have correct translations yet (to Dutch and Italian)
 
 Doesn't work:
 - Evaluation doesn't work yet: need to keep track of score/stats (and allow resetting score/stats)
-- Countries don't have correct translations yet (to Dutch and Italian)
+- Capitals don't have correct translations yet (to Dutch and Italian)
