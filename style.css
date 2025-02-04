@@ -19,7 +19,7 @@ body {
   color: #333;
 
   display: grid;
-  grid-template-rows: min-content min-content 1fr;
+  grid-template-rows: min-content 1fr min-content min-content;
 }
 
 /* Styles for the search section */
@@ -67,6 +67,7 @@ body {
 }
 
 #quiz {
+  position: sticky;
   background-color: #ababab;
   color: white;
   padding: 1rem;
@@ -82,7 +83,7 @@ body {
 }
 
 #feedback {
-  position: fixed;
+  position: sticky;
   left: 0;
   bottom: 0;
   right: 0;
@@ -152,66 +153,11 @@ button:active {
   background-color: #00aeff;
 }
 
-/* Button visibility based on mode: */
-
-#quiz-country, 
-#quiz-flag,
-#quiz-capital, 
-#random-country,
-#quiz > .separator {
-  display: flex;
-}
-
-#show-answer, 
-#good-answer,
-#bad-answer,
-#quiz-type {
-  display: none;
-}
-
-.initial-mode #quiz-country, 
-.initial-mode #quiz-flag,
-.initial-mode #quiz-capital, 
-.initial-mode #random-country,
-.initial-mode #quiz > .separator {
-  display: flex;
-}
-
-.initial-mode #show-answer, 
-.initial-mode #good-answer,
-.initial-mode #bad-answer,
-.initial-mode #quiz-type {
-  display: none;
-}
-
-.quiz-mode #show-answer,
-.quiz-mode #quiz-type {
-  display: flex;
-}
-
-.quiz-mode #quiz-country, 
-.quiz-mode #quiz-flag,
-.quiz-mode #quiz-capital, 
-.quiz-mode #random-country,
-.quiz-mode #good-answer,
-.quiz-mode #bad-answer,
-.quiz-mode #quiz > .separator {
-  display: none;
-}
-
-.evaluation-mode #quiz-type,
-.evaluation-mode #good-answer,
-.evaluation-mode #bad-answer {
-  display: flex;
-}
-
-.evaluation-mode #show-answer, 
-.evaluation-mode #quiz-country, 
-.evaluation-mode #quiz-flag,
-.evaluation-mode #quiz-capital, 
-.evaluation-mode #random-country,
-.evaluation-mode #quiz > .separator {
-  display: none;
+button:disabled {
+  color: #333;
+  background-color: #ccc;
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 
 /* Styles for the results section */
@@ -277,7 +223,6 @@ button:active {
   font-family: 'Roboto Mono', monospace;
   white-space: wrap;
   max-width: 100%;
-  overflow: hidden;
 
   padding: 0.25rem 1rem;
   display: flex;
@@ -322,4 +267,34 @@ button:active {
 
 .hide-country-name #results .country {
   visibility: hidden;
+}
+
+#score {
+  display: grid;
+  grid-template-areas: "bad sep good"
+                       "per per per";
+  grid-template-columns: min-content min-content min-content;
+  gap: 0;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+  align-content: center;
+}
+
+#score > * {
+  font-size: 60%;
+  text-align: center;
+  color: #333;
+}
+
+#score #good-answers {
+  padding-right: 0.1em;
+}
+
+#score #bad-answers {
+  padding-left: 0.1em;
+}
+
+#score #score-percentage {
+  grid-area: per;
 }

@@ -21,13 +21,6 @@
       <datalist id="name-list"></datalist>
       <button id='search-country'><i class="fa-solid fa-magnifying-glass"></i><label>Search</label></button>
     </section>  
-    
-    <section id="quiz">
-      <!-- Initial mode: -->
-      <label for="show-country">Country</label><input type="checkbox" id='show-country' checked>
-      <label for="show-capital">Capital</label><input type="checkbox" id='show-capital' checked>
-      <label for="show-flag">Flag</label><input type="checkbox" id='show-flag' checked>     
-   </section>
 
     <section id='results' class="hide-flag">
       <div class="country-panel">        
@@ -55,15 +48,30 @@
         </h1>   
       </div>
     </section>
+    
+    <section id="quiz">
+      <!-- Initial mode: -->
+      <label for="show-country">Country</label><input type="checkbox" id='show-country' checked>
+      <label for="show-capital">Capital</label><input type="checkbox" id='show-capital' checked>
+      <label for="show-flag">Flag</label><input type="checkbox" id='show-flag' checked>     
+    </section>
 
     <section id="feedback">
       <!-- Initial mode: -->
       <button id='random-country'><i class="fa-solid fa-dice"></i><label>Random Country</label></button>
+      <span class="separator">|</span>
       <!-- Quiz mode: -->
-      <button id='show-answer'><i class="fa-regular fa-eye"></i> Show Answer</button>
+      <button id='show-answer' disabled><i class="fa-regular fa-eye"></i><label>Show Answer</label></button>
+      <span class="separator">|</span>
       <!-- Evaluation mode: -->
-      <button id='good-answer'><i class="fa-regular fa-thumbs-up"></i> Good Answer</button>
-      <button id='bad-answer'><i class="fa-regular fa-thumbs-down"></i> Bad Answer</button>      
+      <button id='good-answer' disabled><i class="fa-regular fa-thumbs-up"></i><label>Good Answer</label></button>
+      <div id="score">
+        <span id='good-answers'>0</span>
+        <span class='separator'>/</span>
+        <span id='bad-answers'>0</span>
+        <span id='score-percentage'>N/A</span>
+      </div>
+      <button id='bad-answer' disabled><i class="fa-regular fa-thumbs-down"></i><label>Bad Answer</label></button>      
     </section>    
   </body>
 </html>

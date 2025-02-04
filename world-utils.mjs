@@ -45,6 +45,9 @@ let italianCapitalNameEl;
 let italianWikipediaLinkEl;
 
 let goodAnswers = 0;
+let goodAnswersEl;
+let badAnswersEl;
+let scorePercentageEl;
 let badAnswers = 0;
 
 window.addEventListener("load", fireDomReady, false);
@@ -78,7 +81,7 @@ function fireDomReady() {
   showFlagCheckbox.addEventListener("click", showFlag);
   quizTypeEl = document.getElementById("quiz-type");
   showAnswerButton = document.getElementById("show-answer");
-  showAnswerButton.addEventListener("click", showAllCountryInfo);
+  showAnswerButton.addEventListener("click", showAnswer);
   goodAnswerButton = document.getElementById("good-answer");
   goodAnswerButton.addEventListener("click", goodAnswer);
   badAnswerButton = document.getElementById("bad-answer");
@@ -94,6 +97,10 @@ function fireDomReady() {
   italianCountryNameEl = document.getElementById("italian_country_name");
   italianCapitalNameEl = document.getElementById("italian_capital_name");
   italianWikipediaLinkEl = document.getElementById("italian_wikipedia");
+  //
+  goodAnswersEl = document.getElementById("good-answers");
+  badAnswersEl = document.getElementById("bad-answers");
+  scorePercentageEl = document.getElementById("score-percentage");
   // Load country data
   loadCountryDataFromJSON();
 }
@@ -260,6 +267,11 @@ function changeToInitialMode() {
   bodyEl.classList.remove('quiz-mode');
   bodyEl.classList.remove('evaluation-mode');
   bodyEl.classList.add('initial-mode');
+
+  randomCountryButton.disabled = false;
+  showAnswerButton.disabled = true;
+  goodAnswerButton.disabled = true;
+  badAnswerButton.disabled = true;
 }
 
 function changeToQuizMode() {
@@ -284,28 +296,39 @@ function changeToQuizMode() {
   else {
     bodyEl.classList.add('hide-flag');
   }
+
+  randomCountryButton.disabled = true;
+  showAnswerButton.disabled = false;
+  goodAnswerButton.disabled = true;
+  badAnswerButton.disabled = true;  
 }
 
 function changeToEvaluationMode() {
   bodyEl.classList.remove('initial-mode');
   bodyEl.classList.remove('quiz-mode');
   bodyEl.classList.add('evaluation-mode');
+
+  randomCountryButton.disabled = true;
+  showAnswerButton.disabled = true;
+  goodAnswerButton.disabled = false;
+  badAnswerButton.disabled = false;
 }
 
-function showAllCountryInfo() {
-  bodyEl.classList.remove('hide-flag');
-  bodyEl.classList.remove('hide-country-name');
-  bodyEl.classList.remove('hide-capital-name');
+function showAnswer() {
   changeToEvaluationMode();
 }
 
 function goodAnswer() {
   goodAnswers++;
+  goodAnswersEl.textContent = "" + goodAnswers;
+  scorePercentageEl.textContent = Math.round((goodAnswers / (goodAnswers + badAnswers)) * 100) + "%";
   changeToInitialMode();
 }
 
 function badAnswer() {
   badAnswers++;
+  badAnswersEl.textContent = "" + badAnswers;
+  scorePercentageEl.textContent = Math.round((goodAnswers / (goodAnswers + badAnswers)) * 100) + "%";
   changeToInitialMode();
 }
 
