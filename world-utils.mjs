@@ -431,7 +431,7 @@ function searchCountry(e) {
   changeToInitialMode();
   // Reset search:
   searchBoxInput.value = "";
-  searchBoxInput.focus();
+  searchCountryButton.focus();
 }
 
 // Utilities:
