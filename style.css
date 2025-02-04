@@ -245,7 +245,7 @@ button:disabled {
   visibility: visible;
 }
 
-.hide-flag #results #flag {
+.quiz-mode.hide-flag #results #flag {
   visibility: hidden;
 }
 
@@ -257,7 +257,7 @@ button:disabled {
   text-align: end;
 }
 
-.hide-capital-name #results .capital {
+.quiz-mode.hide-capital-name #results .capital {
   visibility: hidden;
 }
 
@@ -265,7 +265,7 @@ button:disabled {
   visibility: visible;
 }
 
-.hide-country-name #results .country {
+.quiz-mode.hide-country-name #results .country {
   visibility: hidden;
 }
 
@@ -297,4 +297,8 @@ button:disabled {
 
 #score #score-percentage {
   grid-area: per;
+}
+
+.mobile button > label {
+  display: none;
 }

@@ -2,7 +2,7 @@ const COUNTRIES_CSV_DATA_FILE = "data/world-countries.csv";
 const COUNTRIES_JSON_DATA_FILE = "data/world-countries.json";
 
 const DEFAULT_COUNTRY_DATA = {
-  'code': 'no-country',
+  'code': 'xx',
   'english_country_name': 'Not Found',
   'english_capital_name': 'Not Found',
   'english_wikipedia': 'https://en.wikipedia.org/wiki/Utopia',
@@ -53,9 +53,22 @@ let badAnswers = 0;
 window.addEventListener("load", fireDomReady, false);
 
 function fireDomReady() {
+  navigator.serviceWorker
+           .register('/service-worker.js')
+           .then(registration => {
+             console.log('ServiceWorker registration successful with scope: ', registration.scope);
+           }, err => {
+             console.log('ServiceWorker registration failed: ', err);
+           });
+          
+  // UI elements + handlers:
   bodyEl = document.getElementsByTagName("body")[0];
 
-  // UI elements + handlers:
+  // Initial check
+  updateBodyClass();  
+  // Listen for resize events
+  window.addEventListener('resize', updateBodyClass);
+
   // Search portion:
   searchBoxInput = document.getElementById("country-box");
   searchBoxInput.addEventListener("keydown", (e) => {
@@ -105,6 +118,15 @@ function fireDomReady() {
   loadCountryDataFromJSON();
 }
 
+function updateBodyClass() {
+  if (window.innerWidth < 800) {
+    document.body.classList.add('mobile');
+  } 
+  else {
+    document.body.classList.remove('mobile');
+  }
+}
+
 let countryCodes = [];
 let countryByCode = {};
 let countryCodeByCountryName = {};
@@ -131,14 +153,14 @@ function loadCountryDataFromJSON() {
       searchBoxDataList.innerHTML = '';
       countries.forEach(country => {
         //console.log("Keeping track of: ", country);
-        
+
         country.code = country.cca2.toLowerCase();
         country.english_country_name = country.name.common;
-        country.english_capital_name = (country.capital || []).join(', ');	
-        country.dutch_country_name = country.translations.nld.common || translateCountryOrCityName(country.english_country_name, 'nl'); 
-        country.dutch_capital_name = translateCountryOrCityName(country.english_capital_name, 'nl');	
+        country.english_capital_name = (country.capital || []).join(', ');
+        country.dutch_country_name = country.translations.nld.common || translateCountryOrCityName(country.english_country_name, 'nl');
+        country.dutch_capital_name = translateCountryOrCityName(country.english_capital_name, 'nl');
         country.italian_country_name = country.translations.ita.common || translateCountryOrCityName(country.english_country_name, 'it');
-        country.italian_capital_name = translateCountryOrCityName(country.english_capital_name, 'it');	
+        country.italian_capital_name = translateCountryOrCityName(country.english_capital_name, 'it');
 
         countryCodes.push(country.code);
         // For lookup:
@@ -300,7 +322,7 @@ function changeToQuizMode() {
   randomCountryButton.disabled = true;
   showAnswerButton.disabled = false;
   goodAnswerButton.disabled = true;
-  badAnswerButton.disabled = true;  
+  badAnswerButton.disabled = true;
 }
 
 function changeToEvaluationMode() {
@@ -342,7 +364,7 @@ function showCapitalName() {
       showFlagCheckbox.checked = true;
       bodyEl.classList.remove('hide-flag');
     }
-  } 
+  }
 }
 
 function showFlag() {
@@ -355,7 +377,7 @@ function showFlag() {
       showCountryNameCheckbox.checked = true;
       bodyEl.classList.remove('hide-country-name');
     }
-  } 
+  }
 }
 
 function showCountryName() {
@@ -368,7 +390,7 @@ function showCountryName() {
       showFlagCheckbox.checked = true;
       bodyEl.classList.remove('hide-flag');
     }
-  } 
+  }
 }
 
 function showRandomCountry() {
@@ -395,17 +417,18 @@ function showCountryInfo(country) {
 
 function searchCountry(e) {
   let countryToSearch = normalizeName(searchBoxInput.value);
-  let countryCode = countryCodeByCountryName[countryToSearch] || countryCodeByCapitalName[countryToSearch] || 'no-country';
+  let countryCode = 'xx';
+  if (!countryToSearch) {
+    let randomIndex = Math.floor(Math.random() * countryCodes.length);
+    countryCode = countryCodes[randomIndex];
+  }
+  else {
+    countryCode = countryCodeByCountryName[countryToSearch] || countryCodeByCapitalName[countryToSearch] || 'xx';
+  }
   let country = countryByCode[countryCode];
   // Fill results:
   showCountryInfo(country);
   changeToInitialMode();
-  showCountryNameCheckbox.checked = true;
-  showCapitalNameCheckbox.checked = true;
-  showFlagCheckbox.checked = true;  
-  bodyEl.classList.remove('hide-country-name');
-  bodyEl.classList.remove('hide-capital-name');
-  bodyEl.classList.remove('hide-flag');
   // Reset search:
   searchBoxInput.value = "";
   searchBoxInput.focus();
