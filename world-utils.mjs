@@ -20,7 +20,6 @@ let searchBoxInput;
 let searchBoxDataList;
 let searchCountryButton;
 
-
 let showCountryNameCheckbox;
 let showCapitalNameCheckbox;
 let showFlagCheckbox;
@@ -138,11 +137,6 @@ function createOptionElement(value) {
   return option;
 }
 
-function translateCountryOrCityName(name, lang) {
-  // TODO:
-  return name;
-}
-
 function loadCountryDataFromJSON() {
   console.log("Loading JSON country data...");
   fetch(COUNTRIES_JSON_DATA_FILE)
@@ -152,15 +146,15 @@ function loadCountryDataFromJSON() {
       const distinctNames = new Set();
       searchBoxDataList.innerHTML = '';
       countries.forEach(country => {
-        //console.log("Keeping track of: ", country);
+        console.log("Keeping track of: ", country);
 
         country.code = country.cca2.toLowerCase();
         country.english_country_name = country.name.common;
         country.english_capital_name = (country.capital || []).join(', ');
-        country.dutch_country_name = country.translations.nld.common || translateCountryOrCityName(country.english_country_name, 'nl');
-        country.dutch_capital_name = translateCountryOrCityName(country.english_capital_name, 'nl');
-        country.italian_country_name = country.translations.ita.common || translateCountryOrCityName(country.english_country_name, 'it');
-        country.italian_capital_name = translateCountryOrCityName(country.english_capital_name, 'it');
+        country.dutch_country_name = country.translations.nld.common;
+        country.dutch_capital_name = country.translations.nld.capital;
+        country.italian_country_name = country.translations.ita.common;
+        country.italian_capital_name = country.translations.ita.capital;
 
         countryCodes.push(country.code);
         // For lookup:
@@ -413,6 +407,8 @@ function showCountryInfo(country) {
   italianCountryNameEl.textContent = country.italian_country_name;
   italianCapitalNameEl.textContent = country.italian_capital_name;
   italianWikipediaLinkEl.href = `https://it.wikipedia.org/wiki/${encodeURIComponent(country.italian_country_name)}`;
+
+  // https://en.wikipedia.org/wiki/File:Belgium_(orthographic_projection).svg
 }
 
 function searchCountry(e) {

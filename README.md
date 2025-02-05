@@ -28,8 +28,8 @@ Works:
 - Simple country selection works
 - The quiz buttons work
 - The UI is responsive
-- Countries have correct translations yet (to Dutch and Italian)
+- Countries and capitals have correct translations now (in Italian and Dutch)
 
 Doesn't work:
 - Evaluation doesn't work yet: need to keep track of score/stats (and allow resetting score/stats)
-- Capitals don't have correct translations yet (to Dutch and Italian)
+- Add world/google map of all countries
