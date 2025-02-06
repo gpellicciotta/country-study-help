@@ -186,12 +186,15 @@ button:disabled {
 @media (min-width: 600px) {
 
   #results .country-panel {
+    display: grid;
     grid-template-areas: 
-      "flag english_country_info"
-      "flag dutch_country_info"
-      "flag italian_country_info";   
+      "flag                 map"
+      "english_country_info map"
+      "dutch_country_info   map"  
+      "italian_country_info map"
+      "_                    map";   
     grid-auto-columns: 1fr 2fr;    
-    grid-auto-rows: min-content min-content min-content;
+    grid-auto-rows: min-content min-content min-content min-content 1fr;
     gap: 1rem;              
   }
 
@@ -204,6 +207,12 @@ button:disabled {
 #flag {
   grid-area: flag;
   width: 100%;
+}
+
+#map {
+  grid-area: map;
+  width: 100%;
+  align-self: end;
 }
 
 #english_country_info {
@@ -243,6 +252,10 @@ button:disabled {
 
 #results #flag {
   visibility: visible;
+}
+
+#results #map {
+  max-width: 50vw;
 }
 
 .quiz-mode.hide-flag #results #flag {

@@ -29,7 +29,10 @@ Works:
 - The quiz buttons work
 - The UI is responsive
 - Countries and capitals have correct translations now (in Italian and Dutch)
+- Using wikipedia maps to show for countries
 
 Doesn't work:
 - Evaluation doesn't work yet: need to keep track of score/stats (and allow resetting score/stats)
 - Add world/google map of all countries
+- Allow saving/restoring stats/learning-progress locally
+- Allow switching more easily between 'search' and 'quiz' modes

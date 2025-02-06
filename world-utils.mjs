@@ -23,7 +23,6 @@ let searchCountryButton;
 let showCountryNameCheckbox;
 let showCapitalNameCheckbox;
 let showFlagCheckbox;
-let quizTypeEl;
 
 let randomCountryButton;
 
@@ -42,6 +41,7 @@ let dutchWikipediaLinkEl;
 let italianCountryNameEl;
 let italianCapitalNameEl;
 let italianWikipediaLinkEl;
+let mapEl;
 
 let goodAnswers = 0;
 let goodAnswersEl;
@@ -72,6 +72,7 @@ function fireDomReady() {
   searchBoxInput = document.getElementById("country-box");
   searchBoxInput.addEventListener("keydown", (e) => {
     if (e.which !== 13) { return ; }
+    e.preventDefault();
     searchCountry();
   });
   searchBoxInput.value = "Belgium";
@@ -91,7 +92,6 @@ function fireDomReady() {
   showCapitalNameCheckbox.addEventListener("click", showCapitalName);
   showFlagCheckbox = document.getElementById("show-flag");
   showFlagCheckbox.addEventListener("click", showFlag);
-  quizTypeEl = document.getElementById("quiz-type");
   showAnswerButton = document.getElementById("show-answer");
   showAnswerButton.addEventListener("click", showAnswer);
   goodAnswerButton = document.getElementById("good-answer");
@@ -109,12 +109,18 @@ function fireDomReady() {
   italianCountryNameEl = document.getElementById("italian_country_name");
   italianCapitalNameEl = document.getElementById("italian_capital_name");
   italianWikipediaLinkEl = document.getElementById("italian_wikipedia");
+  mapEl = document.getElementById("map");
   //
   goodAnswersEl = document.getElementById("good-answers");
   badAnswersEl = document.getElementById("bad-answers");
   scorePercentageEl = document.getElementById("score-percentage");
   // Load country data
   loadCountryDataFromJSON();
+}
+
+function showCountryMap(countryCode, countryName) {
+  map.src = `img/maps/${countryCode}.svg`;
+  map.alt = `Map of ${countryName}`;
 }
 
 function updateBodyClass() {
@@ -388,6 +394,7 @@ function showCountryName() {
 }
 
 function showRandomCountry() {
+  console.log("Showing random country");
   let randomIndex = Math.floor(Math.random() * countryCodes.length);
   let countryCode = countryCodes[randomIndex];
   let country = countryByCode[countryCode];
@@ -396,6 +403,7 @@ function showRandomCountry() {
 }
 
 function showCountryInfo(country) {
+  console.log("Showing info for '" + country.english_country_name + "'");
   flagImage.src = `img/flags/4x3/${country.code}.svg`;
   flagImage.alt = `Flag of ${country.english_country_name}`;
   englishCountryNameEl.textContent = country.english_country_name;
@@ -408,7 +416,7 @@ function showCountryInfo(country) {
   italianCapitalNameEl.textContent = country.italian_capital_name;
   italianWikipediaLinkEl.href = `https://it.wikipedia.org/wiki/${encodeURIComponent(country.italian_country_name)}`;
 
-  // https://en.wikipedia.org/wiki/File:Belgium_(orthographic_projection).svg
+  showCountryMap(country.code, country.english_country_name);
 }
 
 function searchCountry(e) {
@@ -422,6 +430,9 @@ function searchCountry(e) {
     countryCode = countryCodeByCountryName[countryToSearch] || countryCodeByCapitalName[countryToSearch] || 'xx';
   }
   let country = countryByCode[countryCode];
+  if (!country) {
+    country = DEFAULT_COUNTRY_DATA;
+  }
   // Fill results:
   showCountryInfo(country);
   changeToInitialMode();
