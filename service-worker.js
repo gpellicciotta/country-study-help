@@ -14,11 +14,45 @@ self.addEventListener('install', event => {
     caches.open(CACHE_NAME)
       .then(cache => {
         console.log('Opened cache');
-        languageCodes.forEach(code => {
-          urlsToCache.push(`/img/flags/4x3/${code}.svg`);
-          urlsToCache.push(`/img/flags/1x1/${code}.svg`);
+        const cachePromises = urlsToCache.map(url => {
+          return fetch(url)
+            .then(response => {
+              if (!response.ok) {
+                throw new TypeError('Bad response status');
+              }
+              return cache.put(url, response);
+            })
+            .catch(error => {
+              console.error(`Failed to cache ${url}`);
+            });
         });
-        return cache.addAll(urlsToCache);
+
+        languageCodes.forEach(code => {
+          const flagUrls = [
+            `/img/flags/4x3/${code}.svg`,
+            `/img/flags/1x1/${code}.svg`,
+            `/img/maps/${code}.svg`,
+            `/img/maps/${code}.png`,
+            `/img/maps/${code}.jpg`
+          ];
+
+          flagUrls.forEach(url => {
+            cachePromises.push(
+              fetch(url)
+                .then(response => {
+                  if (!response.ok) {
+                    throw new TypeError('Bad response status');
+                  }
+                  return cache.put(url, response);
+                })
+                .catch(error => {
+                  console.warn(`Failed to cache ${url}`);
+                })
+            );
+          });
+        });
+
+        return Promise.all(cachePromises);
       })
   );
 });
