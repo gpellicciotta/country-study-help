@@ -81,8 +81,8 @@ function fireDomReady() {
 
   searchBoxDataList = document.getElementById("name-list");
 
-  searchCountryButton = document.getElementById("search-country");
-  searchCountryButton.addEventListener("click", searchCountry);
+  //searchCountryButton = document.getElementById("search-country");
+  //searchCountryButton.addEventListener("click", searchCountry);
   randomCountryButton = document.getElementById("random-country");
   randomCountryButton.addEventListener("click", showRandomCountry);
   // Quiz portion:
@@ -119,7 +119,19 @@ function fireDomReady() {
 }
 
 function showCountryMap(countryCode, countryName) {
-  map.src = `img/maps/${countryCode}.svg`;
+  fetch(`img/maps/${countryCode}.svg`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`SVG map for ${countryName} not found at 'img/maps/${countryCode}.svg'`);
+      }
+      return response.blob();
+    })
+    .then(blob => {
+      map.src = URL.createObjectURL(blob);
+    })
+    .catch(() => {
+      map.src = `img/maps/${countryCode}.png`;
+    });
   map.alt = `Map of ${countryName}`;
 }
 
@@ -344,14 +356,15 @@ function goodAnswer() {
   goodAnswers++;
   goodAnswersEl.textContent = "" + goodAnswers;
   scorePercentageEl.textContent = Math.round((goodAnswers / (goodAnswers + badAnswers)) * 100) + "%";
-  changeToInitialMode();
+  showRandomCountry();
+
 }
 
 function badAnswer() {
   badAnswers++;
   badAnswersEl.textContent = "" + badAnswers;
   scorePercentageEl.textContent = Math.round((goodAnswers / (goodAnswers + badAnswers)) * 100) + "%";
-  changeToInitialMode();
+  showRandomCountry();
 }
 
 function showCapitalName() {
@@ -398,7 +411,7 @@ function showRandomCountry() {
   let randomIndex = Math.floor(Math.random() * countryCodes.length);
   let countryCode = countryCodes[randomIndex];
   let country = countryByCode[countryCode];
-  changeToQuizMode();
+  changeToInitialMode();
   showCountryInfo(country);
 }
 
@@ -426,6 +439,9 @@ function searchCountry(e) {
     let randomIndex = Math.floor(Math.random() * countryCodes.length);
     countryCode = countryCodes[randomIndex];
   }
+  else if (countryToSearch.length === 2) {
+    countryCode = countryToSearch;
+  }
   else {
     countryCode = countryCodeByCountryName[countryToSearch] || countryCodeByCapitalName[countryToSearch] || 'xx';
   }
@@ -438,7 +454,7 @@ function searchCountry(e) {
   changeToInitialMode();
   // Reset search:
   searchBoxInput.value = "";
-  searchCountryButton.focus();
+  //searchCountryButton.focus();
 }
 
 // Utilities:

@@ -80,6 +80,8 @@ body {
   gap: 0.5rem;
   justify-content: center;
   align-items: center;
+
+  display: none; /* Hidden until it works */
 }
 
 #feedback {
@@ -102,6 +104,8 @@ body {
   gap: 0.5rem;
   justify-content: center;
   align-items: center;
+
+  display: none; /* Hidden until it works */  
 }
 
 .quiz-mode #feedback,
@@ -120,7 +124,7 @@ input, button {
 input[type='text'] {
   background-color: #ccc;
   width: 100%;
-  height: 2em;
+  height: 100%;
 }
 
 input:focus {
@@ -129,6 +133,7 @@ input:focus {
 }
 
 img.language {
+  grid-area: lang;
   width: 1em;
   height: 1em;
 }
@@ -139,8 +144,13 @@ button {
 
   display: flex;
   flex-direction: row;
+  flex-wrap: nowrap;
   align-items: center;
   gap: 0.25em;
+}
+
+label {
+  white-space: nowrap;
 }
 
 button:hover {
@@ -188,13 +198,12 @@ button:disabled {
   #results .country-panel {
     display: grid;
     grid-template-areas: 
-      "flag                 map"
       "english_country_info map"
       "dutch_country_info   map"  
       "italian_country_info map"
-      "_                    map";   
+      "flag                 map";   
     grid-auto-columns: 1fr 2fr;    
-    grid-auto-rows: min-content min-content min-content min-content 1fr;
+    grid-auto-rows: min-content min-content min-content 1fr;
     gap: 1rem;              
   }
 
@@ -207,11 +216,14 @@ button:disabled {
 #flag {
   grid-area: flag;
   width: 100%;
+  max-width: 60vmin;
+  align-self: start;
 }
 
 #map {
   grid-area: map;
   width: 100%;
+  max-width: 60vmin;
   align-self: end;
 }
 
@@ -229,16 +241,23 @@ button:disabled {
 
 #results .country-info {
   font-size: 80%;
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Roboto', sans-serif;
   white-space: wrap;
+  width: 100%;
   max-width: 100%;
 
   padding: 0.25rem 1rem;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-areas: "lang country"
+                       "   _ capital";
+  grid-template-columns: min-content 1fr;
+  grid-template-rows: min-content min-content;
+
   justify-content: start;
-  align-items: center;
+  justify-items: stretch;
+  align-content: start;
+  align-items: start;
+
   column-gap: 0.5rem;
 }
 
@@ -263,11 +282,11 @@ button:disabled {
 }
 
 #results .capital {
+  grid-area: capital;
   visibility: visible;
   font-size: 80%;
   font-style: italic;
   color: #333;
-  text-align: end;
 }
 
 .quiz-mode.hide-capital-name #results .capital {
@@ -275,6 +294,7 @@ button:disabled {
 }
 
 #results .country {
+  grid-area: country;
   visibility: visible;
 }
 

@@ -19,10 +19,10 @@
     <section id='search'>
       <input type='text' id='country-box' autofocus list="name-list">
       <datalist id="name-list"></datalist>
-      <button id='search-country'><i class="fa-solid fa-magnifying-glass"></i><label>Search</label></button>
+      <button id='random-country'><i class="fa-solid fa-dice"></i><label>Pick Any</label></button>
     </section>  
 
-    <section id='results' class="hide-flag">
+    <section id='results'>
       <div class="country-panel">        
         <img id='flag' class="flag" src="/img/flags/4x3/xx.svg" alt='Flag of {{COUNTRY}}'>
 
@@ -30,21 +30,21 @@
           <img class="language" src="/img/flags/1x1/gb-eng.svg"> 
           <a id='english_wikipedia' href='#' target='Wikipedia'>
             <span class="country" id='english_country_name'>{{Country}}</span></a>
-            <p class="capital" id='english_capital_name'>{{Capital}}</p>
+          <p class="capital" id='english_capital_name'>{{Capital}}</p>
         </h1>
         
         <h1 class="country-info" id="dutch_country_info">
           <img class="language" src="/img/flags/1x1/nl.svg"> 
           <a id='dutch_wikipedia' href='#' target='Wikipedia'>
             <span class="country" id='dutch_country_name'>{{Land}}</span></a>
-            <p class="capital" id='dutch_capital_name'>{{Hoofdstad}}</p>
+          <p class="capital" id='dutch_capital_name'>{{Hoofdstad}}</p>
         </h1>
 
         <h1 class="country-info" id="italian_country_info">
           <img class="language" src="/img/flags/1x1/it.svg"> 
           <a id='italian_wikipedia' href='#' target='Wikipedia'>
             <span class="country" id='italian_country_name'>{{Paese}}</span></a>
-            <p class="capital" id='italian_capital_name'>{{Capitale}}</p>
+          <p class="capital" id='italian_capital_name'>{{Capitale}}</p>
         </h1>   
 
         <img id="map" class="map" src="/img/maps/xx.svg" alt='Map of {{COUNTRY}}'>
@@ -60,7 +60,6 @@
 
     <section id="feedback">
       <!-- Initial mode: -->
-      <button id='random-country'><i class="fa-solid fa-dice"></i><label>Random Country</label></button>
       <span class="separator">|</span>
       <!-- Quiz mode: -->
       <button id='show-answer' disabled><i class="fa-regular fa-eye"></i><label>Show Answer</label></button>
@@ -74,6 +73,8 @@
         <span id='score-percentage'>N/A</span>
       </div>
       <button id='bad-answer' disabled><i class="fa-regular fa-thumbs-down"></i><label>Bad Answer</label></button>      
+      <span class="separator">|</span>
+      <button id='stop-quiz'><i class="fa-solid fa-stop"></i><label>Stop Quiz</label></button>
     </section>    
   </body>
 </html>
