@@ -75,9 +75,7 @@ function fireDomReady() {
     e.preventDefault();
     searchCountry();
   });
-  searchBoxInput.value = "Belgium";
-  searchBoxInput.focus();
-  searchBoxInput.select(); // Select all
+  searchBoxInput.value = "";
 
   searchBoxDataList = document.getElementById("name-list");
 
@@ -114,8 +112,25 @@ function fireDomReady() {
   goodAnswersEl = document.getElementById("good-answers");
   badAnswersEl = document.getElementById("bad-answers");
   scorePercentageEl = document.getElementById("score-percentage");
+
   // Load country data
   loadCountryDataFromJSON();
+
+  // Check the URL for a country name
+  checkUrlForCountry();
+
+  // Listen for popstate events
+  window.addEventListener('popstate', checkUrlForCountry);
+}
+
+function checkUrlForCountry(e) {
+  const searchString = window.location.hash.substring(1); // Remove leading '#'
+  if (searchString) {
+    const countryName = decodeURIComponent(searchString.replace(/\+/g, ' '));
+    searchBoxInput.value = countryName;
+    console.log("Searching for country in URL: ", countryName);	
+    searchCountry();
+  }
 }
 
 function showCountryMap(countryCode, countryName) {
@@ -412,6 +427,7 @@ function showRandomCountry() {
   let countryCode = countryCodes[randomIndex];
   let country = countryByCode[countryCode];
   changeToInitialMode();
+  searchBoxInput.value = "";
   showCountryInfo(country);
 }
 
@@ -430,6 +446,13 @@ function showCountryInfo(country) {
   italianWikipediaLinkEl.href = `https://it.wikipedia.org/wiki/${encodeURIComponent(country.italian_country_name)}`;
 
   showCountryMap(country.code, country.english_country_name);
+
+  // Update the URL
+  const urlHash = encodeURIComponent(country.english_country_name.replace(/ /g, '+'));
+  const newUrl = `${window.location.origin}${window.location.pathname}#${urlHash}`;
+  if (window.location.hash !== `#${urlHash}`) {
+    history.pushState({ country: country.english_country_name }, '', newUrl);
+  }
 }
 
 function searchCountry(e) {
