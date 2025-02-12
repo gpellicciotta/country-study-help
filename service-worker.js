@@ -41,12 +41,12 @@ self.addEventListener('install', event => {
               fetch(url)
                 .then(response => {
                   if (!response.ok) {
-                    throw new TypeError('Bad response status');
+                    throw new TypeError('Bad response status: ' + response.status);
                   }
                   return cache.put(url, response);
                 })
                 .catch(error => {
-                  console.warn(`Failed to cache ${url}`);
+                  console.warn(`Failed to cache ${url}`, error);
                 })
             );
           });

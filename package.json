@@ -1,0 +1,20 @@
+{
+  "name": "country-study-help",
+  "version": "1.0.0",
+  "description": "A project to help study countries of the world.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "mocha \"**/*.test.mjs\"",
+    "test:watch": "nodemon --watch \"./**/*.mjs\" --exec \"npm test\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^5.1.2",
+    "mocha": "^11.1.0",
+    "nodemon": "^3.1.9",
+    "sinon": "^19.0.2"
+  }
+}
