@@ -182,6 +182,7 @@ button:disabled {
   gap: 0.25rem;
 
   padding-bottom: 5em;
+  font-size: 1rem;
 }
  
 #results .country-panel {
@@ -216,14 +217,15 @@ button:disabled {
 #flag {
   grid-area: flag;
   width: 100%;
-  max-width: 60vmin;
+  max-width: 50vmin;
   align-self: start;
 }
 
 #map {
   grid-area: map;
   width: 100%;
-  max-width: 60vmin;
+  max-width: 50vmin;
+  justify-self: end;
   align-self: end;
 }
 
