@@ -9,9 +9,10 @@ html, body {
   height: 100%;
 }
 
-/* Three state classes: 'initial-mode' (showing quiz and random buttons), 
-                        'quiz-mode' (only showing show answer button) and 
-                        'evaluation-mode' (showing good and bad answer buttons) */
+/* 
+   Data attributes:
+     mode: 'search-mode', 'quiz-mode' or 'evaluation-mode' 
+ */
 body {
   font-family: 'Roboto', sans-serif;
   font-size: 1.5rem;
@@ -20,50 +21,105 @@ body {
 
   display: grid;
   grid-template-rows: min-content 1fr min-content min-content;
+  justify-content: stretch;
+  justify-items: center;
+  align-content: start;
 }
 
-/* Styles for the search section */
-#search {
+body > * {
+  max-width: 100vw;
+  width: 100%;
+}
+
+#action-bar {
   background-color: #0e6eb8;
   color: white;
   padding: 1rem;
   text-align: center;
-  max-width: 100vw;
+  
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: min-content 1fr;
+}
 
+/* Styles for the about section */
+#about-controls {
   display: flex;
   flex-direction: row;
   justify-content: center;
   justify-items: center;
   align-items: center;
+  align-content: center;
   gap: 0.5rem;
 }
 
-#search #title {
-  grid-area: intro;
+#about-controls * {
+  font-size: 1.5rem;
 }
 
-#search #input {
-  grid-area: input;
+#about {
+  padding: 3em;
+  font-size: 1rem;
+  width: 50em;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  justify-items: center;
+  align-items: start;
+  align-content: center;
+  text-align: start;
+  gap: 0.5rem;
 }
 
-#search #search-country {
-  grid-area: go;
+#about ul {
+  list-style-position: outside;
+  padding-left: 1em;
 }
 
-#search .separator {
-  grid-area: sep;
+#about p {
+  padding-top: 1em;
 }
 
-#search #random-country {
-  grid-area: random;
+body:not([data-mode="about-mode"]) #about-controls,
+body:not([data-mode="about-mode"]) #about {
+  display: none;
 }
 
+/* Styles for the search section */
+#search-controls {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  justify-items: center;
+  align-items: stretch;
+  gap: 0.5rem;
+}
 
 @media (min-width: 500px) {
-  #search {
+  #search-controls {
     padding-left: 5em;
     padding-right: 5em;
   }
+}
+
+body:not([data-mode="search-mode"]) #search-controls {
+  display: none;
+}
+
+/* Styles for the quiz section */
+#quiz-controls, #quiz-settings {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  justify-items: center;
+  align-items: stretch;
+  gap: 0.5rem;
+}
+
+body:not([data-mode="quiz-mode"]) #quiz-controls,
+body:not([data-mode="quiz-mode"]) #quiz-settings {
+  display: none;
 }
 
 #quiz {
@@ -113,65 +169,6 @@ body {
   display: flex;
 }
 
-input, button {
-  padding: 0.25em;
-  font-size: 1.25rem;
-  border-radius: 5px;
-  border: 1px solid #333;
-  outline: none;
-}
-
-input[type='text'] {
-  background-color: #ccc;
-  width: 100%;
-  height: 100%;
-}
-
-input:focus {
-  background-color: #fff;
-  border-color: #000;
-}
-
-img.language {
-  grid-area: lang;
-  width: 1em;
-  height: 1em;
-}
-
-button {
-  color: #fff;
-  background-color: #333;
-
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  align-items: center;
-  gap: 0.25em;
-}
-
-label {
-  white-space: nowrap;
-}
-
-@media (hover: hover) { /* Otherwise hover state "sticks" on mobile. */
-  button:hover {
-    color: #333;
-    background-color: #fff;
-  }
-}
-
-button:active, button:focus, button:focus-within {
-  color: #000;
-  background-color: #00aeff;
-}
-
-button:disabled {
-  color: #333;
-  background-color: #ccc;
-  cursor: not-allowed;
-  opacity: 0.6;
-}
-
 /* Styles for the results section */
 #results {
   padding: 20px;
@@ -187,6 +184,10 @@ button:disabled {
   font-size: 1rem;
 }
  
+body[data-mode="about-mode"] #results {
+  display: none;
+}
+
 #results .country-panel {
   display: flex;
   flex-direction: column;
@@ -267,7 +268,8 @@ button:disabled {
 
 #results a {
   text-decoration: none;
-  white-space: wrap;}
+  white-space: wrap;
+}
 
 #results a:hover {
   text-decoration: underline;
@@ -336,6 +338,144 @@ button:disabled {
   grid-area: per;
 }
 
+/* Elementary form element styles */
+
+input, button {
+  padding: 0. 5em;
+  font-size: 1.25rem;
+  border-radius: 5px;
+  border: 1px solid #333;
+  outline: none;
+}
+
+input[type='text'] {
+  background-color: #ccc;
+  width: 100%;
+  height: 100%;
+}
+
+input:focus {
+  background-color: #fff;
+  border-color: #000;
+}
+
+img.language {
+  grid-area: lang;
+  width: 1em;
+  height: 1em;
+}
+
+button {
+  color: #fff;
+  background-color: #333;
+  padding: 0.5em;
+  border: 1px solid #333;
+  border-radius: 5px;
+  font-size: 1.25rem;
+  cursor: pointer;  
+
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 0.25em;
+}
+
+button > i, button > svg {
+  width: 1em;
+  max-width: 1em;
+}
+
+label {
+  white-space: nowrap;
+  padding-left: 0.25em;
+}
+
 .mobile button > label {
   display: none;
+}
+
+.mobile button.option-button > label {
+  display: initial;
+}
+
+@media (hover: hover) { /* Otherwise hover state "sticks" on mobile. */
+  button:hover {
+    color: #333;
+    background-color: #fff;
+  }
+}
+
+button:active, button:focus, button:focus-within {
+  color: #000;
+  background-color: #00aeff;
+}
+
+button:disabled {
+  color: #333;
+  background-color: #ccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown .dropdown-button {
+  color: #fff;
+  background-color: #333;
+  padding: 0.5em;
+  border: 1px solid #333;
+  border-radius: 5px;
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+
+body[data-mode="search-mode"] .dropdown-button > .about-mode,
+body[data-mode="search-mode"] .dropdown-button > .quiz-mode {
+  display: none;
+}
+
+body[data-mode="quiz-mode"] .dropdown-button > .about-mode,
+body[data-mode="quiz-mode"] .dropdown-button > .search-mode {
+  display: none;
+}
+
+body[data-mode="about-mode"] .dropdown-button > .quiz-mode,
+body[data-mode="about-mode"] .dropdown-button > .search-mode {
+  display: none;
+}
+
+.dropdown .dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  z-index: 1;
+}
+
+.dropdown.open .dropdown-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.dropdown .dropdown-content button {
+  width: 100%;
+  text-align: left;
+  border-radius: 0;
+  cursor: pointer;
+}
+
+.dropdown .dropdown-content button:hover {
+  background-color: #f1f1f1;
+}
+
+.dropdown .dropdown:hover .dropdown-button {
+  background-color: #00aeff;
+}
+
+.dropdown .dropdown:hover .dropdown-button:active {
+  background-color: #00aeff;
 }

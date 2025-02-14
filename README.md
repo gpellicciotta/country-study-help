@@ -227,6 +227,7 @@ The interface will simply be a web-page with following pages:
 
 ## Data Sources
 The basic information about countries comes from: https://restcountries.com/v3.1/all  
+Flags from: https://flagicons.lipis.dev/
 Other country information from: https://en.wikipedia.org
 
 ## What works, and what doesn't

@@ -20,12 +20,18 @@ export class AppView extends EventTargetMixin(Object) {
     this.countryCodes = countries.getCountrySet('all').codes;
     this.quiz = new Quiz(this.countryCodes);
     // Find all elements:
+    this.modeSwitch = this.parent.querySelector('#mode-switch');
+    this.modeSwitchButton = this.parent.querySelector('#mode-switch > .dropdown-button');
+    this.modeSwitchContent = this.parent.querySelector('#mode-switch > .dropdown-content');
     this.searchBoxInput = this.parent.querySelector('#country-box');
     this.searchList = this.parent.querySelector('#search-list');
     this.randomCountryButton = this.parent.querySelector('#random-country');
     this.countryPanel = this.parent.querySelector('#results');
     this.countryView = new CountryView(this.countryPanel);
     // Attach event handlers:
+    this.modeSwitch.addEventListener('mouseleave', this.onModeSwitchChange.bind(this));
+    this.modeSwitchButton.addEventListener('click', this.onModeSwitchChange.bind(this));
+    this.modeSwitchContent.addEventListener('click', this.onModeSwitchChange.bind(this));    
     this.searchBoxInput.addEventListener('input', this.onSearchBoxInput.bind(this));
     this.randomCountryButton.addEventListener('click', this.onSelectRandomCountry.bind(this));
     // Attach auto-complete data:
@@ -89,6 +95,28 @@ export class AppView extends EventTargetMixin(Object) {
   }
 
   // Event handlers:
+ 
+  onModeSwitchChange(event) {
+    // Focus outside switch area
+    if (event.type === 'mouseleave') {
+      this.modeSwitch.classList.remove('open'); // Close the drop-down
+      return;
+    }
+
+    // Check drop-down button clicked
+    const switchButton = event.target.closest('button.dropdown-button');
+    if (switchButton) {
+      this.modeSwitch.classList.toggle('open'); // Open or close the drop-down
+      return ;
+    }
+    // Check mode button clicked
+    const modeButton = event.target.closest('button.option-button');
+    if (modeButton) {
+      this.parent.setAttribute("data-mode", modeButton.dataset.mode);
+      this.modeSwitch.classList.remove('open'); // Close the drop-down again
+      return ;
+    }
+  }
 
   onSelectRandomCountry(event) {
     log.debug('Random country button clicked.');
