@@ -2645,9 +2645,9 @@
             ]
         },
         "capital": [
-            "Pretoria",
-            "Bloemfontein",
-            "Cape Town"
+            "Pretoria (executive)",            
+            "Cape Town (legislative)",
+            "Bloemfontein (judicial)"
         ],
         "altSpellings": [
             "ZA",
@@ -2674,12 +2674,12 @@
             "nld": {
                 "common": "Zuid-Afrika",
                 "official": "Republiek Zuid-Afrika",
-                "capital": "Pretoria"
+                "capital": "Pretoria (uitvoerende macht), Kaapstad (wetgevende macht), Bloemfontein (rechterlijke macht)"
             },
             "ita": {
-                "common": "Sud Africa",
-                "official": "Repubblica del Sud Africa",
-                "capital": "Pretoria"
+                "common": "Sudafrica",
+                "official": "Repubblica del Sudafrica",
+                "capital": "Pretoria (amministrativa), Città del Capo (legislativa), Bloemfontein (giudiziaria)"
             }
         },
         "latlng": [
@@ -27298,7 +27298,7 @@
                 "capital": "Nassau"
             },
             "ita": {
-                "common": "Bahamas",
+                "common": "Le Bahamas",
                 "official": "Commonwealth delle Bahamas",
                 "capital": "Nassau"
             }
