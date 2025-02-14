@@ -7,55 +7,12 @@ import fs from 'fs';
 import dotenv from 'dotenv';
 import { join } from 'path';
 import { load } from 'cheerio';
+import log from './logging.mjs';
 
 dotenv.config();
 
 const COUNTRY_DATA_URL = 'https://restcountries.com/v3.1/all';
 const GOOGLE_TRANSLATE_URL = 'https://translation.googleapis.com/language/translate/v2?key=' + process.env.GOOGLE_TRANSLATE_API_KEY;
-
-// Logging:
-
-const logLevels = {
-  'off'  :    0,	
-  'debug':  100,
-  'info' :  400,
-  'warn' :  800,
-  'error': 1000,
-  'all'  : 9999
-};
-
-const logger = {
-  setLogLevel: (level) => {
-    if (logLevels[level] !== undefined) {
-      console.currentLogLevel = logLevels[level];
-    } else {
-      console.warn(`Unknown log level: ${level}`);
-    }
-  },
-  debug: (...args) => {
-    if (logLevels.debug >= console.currentLogLevel) {
-      console.debug('[debug] ' + args[0], ...args.slice(1));
-    }
-  },
-  info: (...args) => {
-    if (logLevels.info >= console.currentLogLevel) {
-      console.info(...args);
-    }
-  },
-  warn: (...args) => {
-    if (logLevels.warn >= console.currentLogLevel) {
-      console.warn('[warning] ' + args[0], ...args.slice(1));
-    }
-  },
-  error: (...args) => {
-    if (logLevels.error >= console.currentLogLevel) {
-      console.error('[error] ' + args[0], ...args.slice(1));
-    }
-  },
-  log: (...args) => {
-    console.log(...args);
-  }
-};
 
 // Utilities:
 
@@ -96,7 +53,7 @@ async function translateText(text, targetLanguage) {
   });
   const data = await response.json();
   const translation = data?.data?.translations[0]?.translatedText;
-  //logger.log("Translation of " + text + " to " + targetLanguage + ":", translation);  
+  //log.log("Translation of " + text + " to " + targetLanguage + ":", translation);  
   return translation;
 }
 
@@ -104,7 +61,7 @@ async function enrichCountryData() {
   const countries = await fetchCountryData();
 
   const enrichedCountries = await Promise.all(countries.map(async country => {
-    logger.debug(`Adding information for '${country.name.common}'...`);
+    log.debug(`Adding information for '${country.name.common}'...`);
     const englishName = country.name.common;
     const dutchName = country.translations?.nld?.common || await translateCountry(englishName, 'nl');
     const italianName = country.translations?.ita?.common || await translateCountry(englishName, 'it');
@@ -169,7 +126,7 @@ async function generateCsvData(countries) {
   ];
 
   const rows = await Promise.all(countries.map(async country => {
-    logger.debug(`Getting information for '${country.name.common}'...`);
+    log.debug(`Getting information for '${country.name.common}'...`);
     return [
       `${country.cca2.toLowerCase()}`,
       country.name.common,
@@ -202,10 +159,10 @@ async function fetchWebPage(url) {
   const response = await fetch(url);
   const html = await response.text();
   if (html) {
-    logger.debug(`Downloaded HTML page '${url}'`);
+    log.debug(`Downloaded HTML page '${url}'`);
   }
   else {
-    logger.error(`Failed to fetch HTML page '${url}`);
+    log.error(`Failed to fetch HTML page '${url}`);
   }
   return html;
 }
@@ -239,10 +196,10 @@ async function findCountryImagePageLink(html, countryName) {
   }
 
   if (imageUrl) {
-    logger.debug(`Found image for country '${countryName}': 'https://en.wikipedia.org${imageUrl}'`);
+    log.debug(`Found image for country '${countryName}': 'https://en.wikipedia.org${imageUrl}'`);
   }
   else {
-    logger.error(`Failed to determine image for country '${countryName}'`);
+    log.error(`Failed to determine image for country '${countryName}'`);
   }
   return imageUrl ? `https://en.wikipedia.org${imageUrl}` : null;
 }
@@ -264,10 +221,10 @@ async function findCountryImage(html, countryName) {
         if (imageUrl.startsWith("//")) {
             imageUrl = `https:${imageUrl}`;
         }
-        logger.debug(`Found image for country '${countryName}': '${imageUrl}'`);
+        log.debug(`Found image for country '${countryName}': '${imageUrl}'`);
     }
     else {
-        logger.error(`Failed to find image for country '${countryName}'`);
+        log.error(`Failed to find image for country '${countryName}'`);
     }
     return imageUrl ? `${imageUrl}` : null;
 }
@@ -277,30 +234,30 @@ async function downloadImage(url, filename) {
   const arrayBuffer = await response.arrayBuffer();
   const buffer = Buffer.from(arrayBuffer);
   fs.writeFileSync(filename, buffer);
-  logger.debug(`Image saved to '${filename}'`);
+  log.debug(`Image saved to '${filename}'`);
 }
 
 async function downloadCountryMap(countryCode, countryName, outputDir) {
   try {
-    logger.info(`Searching country map for '${countryCode}' - '${countryName}'...`);
+    log.info(`Searching country map for '${countryCode}' - '${countryName}'...`);
     const html = await fetchWebPage(`https://en.wikipedia.org/wiki/${encodeURIComponent(countryName)}`);
     const imagePageUrl = await findCountryImagePageLink(html, countryName);
     const imagePageHtml = await fetchWebPage(imagePageUrl);
     const imageUrl = await findCountryImage(imagePageHtml, countryName);
     if (imageUrl) {
-      logger.debug(`Image URL for ${countryName}: ${imageUrl}`);
+      log.debug(`Image URL for ${countryName}: ${imageUrl}`);
       const extension = imageUrl.split('.').pop();
       const filename = `${outputDir}/${countryCode.toLowerCase()}.${extension}`;
       await downloadImage(imageUrl, filename);
-      logger.info(`Country map for '${countryCode}' - '${countryName}' downloaded and saved to '${filename}'`);
+      log.info(`Country map for '${countryCode}' - '${countryName}' downloaded and saved to '${filename}'`);
       return true;
     } 
     else {
-      logger.warn(`No image found for '${countryCode}' - '${countryName}'`);
+      log.warn(`No image found for '${countryCode}' - '${countryName}'`);
     }
   } 
   catch (error) {
-    logger.error('Error fetching country image:', error);
+    log.error('Error fetching country image:', error);
   }  
   return false;
 }
@@ -313,7 +270,7 @@ const DEFAULT_BASE_NAME = 'countries';
 const DEFAULT_LOG_LEVEL = 'info';
 
 function showHelp() {
-  logger.log(`
+  log.log(`
 Usage: node geo-tools.js <command> [--output-dir <dir-name>] [--base-name <file-name>] [--log-level <level>]
 
 Defaults:
@@ -348,6 +305,12 @@ Commands:
 async function main() {
   const args = process.argv.slice(2);
   const command = args[0];
+  if (command === "--") {
+    command = args[1];
+  }
+  if (command.startsWith('--')) {
+    command = command.slice(2);
+  }
   
   const outputDirIndex = args.indexOf('--output-dir');
   const outputDirName = outputDirIndex !== -1 ? args[outputDirIndex + 1] : DEFAULT_OUTPUT_DIR;  
@@ -355,10 +318,11 @@ async function main() {
   const baseNameIndex = args.indexOf('--base-name');
   const baseFileName = baseNameIndex !== -1 ? args[baseNameIndex + 1] : DEFAULT_BASE_NAME;
 
+  log.setLogMessagePrefixFormat('geo-tools: ${log-level}');
   const logLevelArgIndex = args.indexOf('--log-level');
   let currentLogLevel = logLevelArgIndex !== -1 ? args[logLevelArgIndex + 1] : DEFAULT_LOG_LEVEL;
-  logger.setLogLevel(currentLogLevel);
-
+  log.setLogLevel(currentLogLevel);
+  
   switch (command) {
     case 'help':
       showHelp();
@@ -367,7 +331,7 @@ async function main() {
     case 'get-country-data':
       const countries = await fetchCountryData();
       fs.writeFileSync(`${outputDirName}/${baseFileName}.json`, JSON.stringify(countries, null, 2));
-      logger.info(`Country data downloaded and saved to '${outputDirName}/${baseFileName}.json'`);
+      log.info(`Country data downloaded and saved to '${outputDirName}/${baseFileName}.json'`);
       break;
 
     case 'enrich-country-data':
@@ -378,7 +342,7 @@ async function main() {
       fs.writeFileSync(`${outputDirName}/${baseFileName}.csv`, csvData);
       const countryCodes = await getCountryCodes(enrichedCountries);
       fs.writeFileSync(`${outputDirName}/${baseFileName}-codes.json`, JSON.stringify(countryCodes, null, 2));
-      logger.info(`Country data enriched and saved to '${outputDirName}/${baseFileName}-enriched.json', '${outputDirName}/${baseFileName}-codes.json' and '${outputDirName}/${baseFileName}.csv'`);
+      log.info(`Country data enriched and saved to '${outputDirName}/${baseFileName}-enriched.json', '${outputDirName}/${baseFileName}-codes.json' and '${outputDirName}/${baseFileName}.csv'`);
       break;
 
     case 'get-country-maps':
@@ -391,11 +355,11 @@ async function main() {
           if (result) { succeeded++; } else { failed++; }
         } 
         catch (error) {
-          logger.error(`Error downloading map for country code '${cc}':`, error);
+          log.error(`Error downloading map for country code '${cc}':`, error);
           failed++;
         }
       }
-      logger.info(`${succeeded} (out of ${succeeded+failed}: ${failed} failed to download) country maps downloaded and saved to '${outputDirName}'`);
+      log.info(`${succeeded} (out of ${succeeded+failed}: ${failed} failed to download) country maps downloaded and saved to '${outputDirName}'`);
       break;
 
     case 'get-country-map':
@@ -406,7 +370,7 @@ async function main() {
       break;      
 
     default:
-      logger.error('Unknown command:', command);
+      log.error('Unknown command:', command);
       showHelp();
       process.exit(1);
   }
