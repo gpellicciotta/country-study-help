@@ -6,11 +6,17 @@
   "type": "module",
   "scripts": {
     "test": "mocha \"**/*.test.mjs\"",
-    "test:watch": "nodemon --watch \"./**/*.mjs\" --exec \"npm test\""
+    "test:watch": "nodemon --watch \"./**/*.mjs\" --exec \"npm test\"",
+    "tools": "node \"js/geo-tools.mjs\""
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "dependencies": {
+    "cheerio": "^1.0.0",
+    "dotenv": "^16.4.7",
+    "node-fetch": "^3.3.2"
+  },
   "devDependencies": {
     "chai": "^5.1.2",
     "mocha": "^11.1.0",

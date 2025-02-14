@@ -206,13 +206,14 @@ The interface will simply be a web-page with following pages:
     "quiz-time-in-seconds": 12565,
     "quiz-settings": {
       "country-count": 100,
-      "country-set": "world",          // alternatives: "all", 
-                                       //               "europe", 
-                                       //               "asia", 
-                                       //               "america", 
-                                       //               "oceania",
-                                       //               "caribean", 
-                                       //               "contested"
+      "country-set": "world",          // alternatives: "All", 
+                                       //               "Europe", 
+                                       //               "Asia", 
+                                       //               "Americas", 
+                                       //               "Oceania",
+                                       //               "Caribbean", 
+                                       //               "UN", 
+                                       //               "Contested"
       "quiz-mode": "capital"           // alternatives: "country", 
                                        //               "country (from capital only)", 
                                        //               "country (from map only)", 

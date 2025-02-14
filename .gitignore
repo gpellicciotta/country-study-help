@@ -1,8 +1,10 @@
 # Ignore node_modules directory
 node_modules/
 
+# Ignore environment variables file
+.env
+
 # Ignore other files and directories
 .DS_Store
-.env
 dist/
 coverage/

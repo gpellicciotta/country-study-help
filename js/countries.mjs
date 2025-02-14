@@ -60,12 +60,12 @@ export async function loadCountryData(fileToLoadFrom) {
       countryCodes.push(country.code);
       // For lookup:
       countryByCode[country.code] = country;      
-      countryCodeByName[normalizeName(country.dutch_country_name)] = country.code;
-      countryCodeByName[normalizeName(country.dutch_capital_name)] = country.code;
-      countryCodeByName[normalizeName(country.italian_capital_name)] = country.code;    
-      countryCodeByName[normalizeName(country.italian_country_name)] = country.code;
-      countryCodeByName[normalizeName(country.english_capital_name)] = country.code;
-      countryCodeByName[normalizeName(country.english_country_name)] = country.code;      
+      countryCodeByName[country.dutch_country_name] = country.code;
+      countryCodeByName[country.dutch_capital_name] = country.code;
+      countryCodeByName[country.italian_capital_name] = country.code;    
+      countryCodeByName[country.italian_country_name] = country.code;
+      countryCodeByName[country.english_capital_name] = country.code;
+      countryCodeByName[country.english_country_name] = country.code;      
       countryCodeByName[country.code] = country.code;
     });
     // Create sets:
@@ -136,8 +136,13 @@ async function loadCountryDataFromCSV(csvResource) {
     });
 }    
 
-export function getCountryCode(countryNameOrCode) {
-  return countryCodeByName[normalizeName(countryNameOrCode)] || 'xx';
+export function getCountryCode(countryNameOrCode, notFoundCode) {
+  for (const name of Object.keys(countryCodeByName)) {
+    if (normalizeName(name) === normalizeName(countryNameOrCode)) {
+      return countryCodeByName[name];
+    }
+  }
+  return notFoundCode;
 }
 
 export function getCountryByCode(countryCode) {

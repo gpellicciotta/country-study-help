@@ -242,7 +242,7 @@ button:disabled {
 }
 
 #results .country-info {
-  font-size: 80%;
+  font-size: 100%;
   font-family: 'Roboto', sans-serif;
   white-space: wrap;
   width: 100%;
@@ -276,7 +276,7 @@ button:disabled {
 }
 
 #results #map {
-  max-width: 50vw;
+  max-width: 60vmin;
 }
 
 .quiz-mode.hide-flag #results #flag {
