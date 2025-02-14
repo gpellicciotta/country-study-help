@@ -153,12 +153,14 @@ label {
   white-space: nowrap;
 }
 
-button:hover {
-  color: #333;
-  background-color: #fff;
+@media (hover: hover) { /* Otherwise hover state "sticks" on mobile. */
+  button:hover {
+    color: #333;
+    background-color: #fff;
+  }
 }
 
-button:active {
+button:active, button:focus, button:focus-within {
   color: #000;
   background-color: #00aeff;
 }

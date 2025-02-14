@@ -99,6 +99,7 @@ export class AppView extends EventTargetMixin(Object) {
     }
     log.debug('Random country selected:', cc); 
     this.showCountry(cc);
+    this.randomCountryButton.blur(); // Remove hover state on mobile
   }
 
   onSearchBoxInput(event) {
