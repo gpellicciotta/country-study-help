@@ -19,9 +19,9 @@ _logLevelIndicator[LogLevels.warn] = '[warn] ';
 _logLevelIndicator[LogLevels.error] = '[error] ';
 
 let _logDestination = (level, ...args) => {
-  if (level > LogLevels.all) {
-    console.log(...args);
-  }
+  if (level === LogLevels.all) {
+    console.log(getLogMessagePrefix(LogLevels.all), ...args);
+  }  
   else if (level >= LogLevels.error) {
     console.error(getLogMessagePrefix(LogLevels.error), ...args);
   }
@@ -33,6 +33,9 @@ let _logDestination = (level, ...args) => {
   }
   else if (level >= LogLevels.debug) {
     console.debug(getLogMessagePrefix(LogLevels.debug), ...args);
+  }
+  else {
+    console.log(getLogMessagePrefix(LogLevels.none), ...args);
   }
 };
 
@@ -112,7 +115,7 @@ export function setLogLevel(level) {
  *  Log a message, irrespective of the configured minimum log level.
  */
 export function log(...args) {
-  console.log(...args);
+  _logDestination(LogLevels.all, ...args);  
 }
 
 /**
