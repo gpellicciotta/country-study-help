@@ -17,7 +17,7 @@ export class AppView extends EventTargetMixin(Object) {
 
   attach(parentElement) {
     this.parent = parentElement;
-    this.countryCodes = countries.getCountrySet('europe').codes;
+    this.countryCodes = countries.getCountrySet('all').codes;
     this.quiz = new Quiz(this.countryCodes);
     // Find all elements:
     this.searchBoxInput = this.parent.querySelector('#country-box');
@@ -32,18 +32,27 @@ export class AppView extends EventTargetMixin(Object) {
     this.searchList.innerHTML = '';
     for (let cc of this.countryCodes) {
       let country = countries.getCountryByCode(cc);
+      log.debug(`Adding search items for country with code '${cc}'`, country);	
       this.searchList.appendChild(this._createOptionElement(country.dutch_country_name));
       this.searchList.appendChild(this._createOptionElement(country.dutch_capital_name));
       this.searchList.appendChild(this._createOptionElement(country.italian_country_name));
       this.searchList.appendChild(this._createOptionElement(country.italian_capital_name));    
       this.searchList.appendChild(this._createOptionElement(country.name.common));
       this.searchList.appendChild(this._createOptionElement(country.name.official));
-      for (let capital of country.capital) {
-        this.searchList.appendChild(this._createOptionElement(capital));
+      if (country.capital) {
+        for (let capital of country.capital) {
+          this.searchList.appendChild(this._createOptionElement(capital));
+        }
       }
-      this.searchList.appendChild(this._createOptionElement(country.cca2));
-      this.searchList.appendChild(this._createOptionElement(country.cca3));
-      this.searchList.appendChild(this._createOptionElement(country.ccn3));
+      if (country.cca2) {
+        this.searchList.appendChild(this._createOptionElement(country.cca2));
+      }
+      if (country.cca3) {      
+        this.searchList.appendChild(this._createOptionElement(country.cca3));
+      }
+      if (country.ccn3) {      
+        this.searchList.appendChild(this._createOptionElement(country.ccn3));
+      }      
     }
   }
 

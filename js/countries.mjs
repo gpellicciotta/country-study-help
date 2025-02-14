@@ -5,6 +5,15 @@ const COUNTRIES_CSV_DATA_FILE = "../data/world-countries.csv";
 const COUNTRIES_JSON_DATA_FILE = "../data/world-countries.json";
 
 const DEFAULT_COUNTRY_DATA = {
+  'name': { 
+    'common': 'Not Found',
+    'official': 'Not Found' 
+  },
+  'tld': ['.xx'],	
+  'capital': ['Not Found'],
+  'cca2': 'XX',
+  'ccn3': '000',
+  'cca3': 'XXX',	
   'code': 'xx',
   'english_country_name': 'Not Found',
   'english_capital_name': 'Not Found',
