@@ -57,5 +57,25 @@ export class CountryView {
     this.mapEl.src = `img/maps/${country.code}.svg`;
   }
 
+  hideAll() {
+   this.hide(['name', 'capital', 'flag', 'map']);
+  }
+  
+  showAll() {
+    this.show(['name', 'capital', 'flag', 'map']);
+  }
+
+  hide(options) {
+    options.forEach((option) => {
+      this.parent.classList.add(`hide-${option}`);
+    }); 
+  }
+
+  show(options) {
+    options.forEach((option) => {
+      this.parent.classList.remove(`hide-${option}`);
+    });
+  }
+
   // Event Handlers:
 }

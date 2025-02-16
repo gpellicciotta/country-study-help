@@ -18,6 +18,7 @@ export class QuizResultsView {
     this.quizResults = null;
 
     // Get UI elements:
+    this.quizResultsRemarks = this.parent.querySelector("#results-quiz-remarks");
     this.quizQuestionsAnsweredNumber = this.parent.querySelector("#results-quiz-questions-answered");
     this.quizGoodAnswersNumber = this.parent.querySelector("#results-quiz-good-answers");
     this.quizBadAnswersNumber = this.parent.querySelector("#results-quiz-bad-answers");

@@ -66,9 +66,17 @@ export class QuizSetupView {
 
   onStartQuiz(event) {
     let quizType = this.quizTypeSelect.value;
-    let quizCountrySet = this.quizCountrySetSelect.value;
+    let quizCountrySetId = this.quizCountrySetSelect.value;
+    let quizCountrySetDescription = this.quizCountrySetSelect.options[this.quizCountrySetSelect.selectedIndex].textContent;
     let quizLength = this.quizLengthSelect.value;
-    log.info(`Starting quiz with type '${quizType}', set '${quizCountrySet}' and length '${quizLength}'`);
-    this.app._startQuiz(quizType, quizCountrySet, quizLength);
+    log.info(`Starting quiz with type '${quizType}', set '${quizCountrySetId}' and length '${quizLength}'`);
+    this.app._startQuiz({
+      'type': quizType,
+      'limit': quizLength,
+      'set': {
+        'id': quizCountrySetId,
+        'description': quizCountrySetDescription
+       }
+    });
   }
 }

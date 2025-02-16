@@ -60,12 +60,12 @@ export class AppView extends EventTargetMixin(Object) {
 
   // Actions:
 
-  _startQuiz(type, set, limit) {
-    log.info('Starting quiz with type:', type, 'set:', set, 'and length:', limit);
+  _startQuiz(quizOptions) {
+    log.info('Starting quiz', quizOptions);
     this.activeViewMode = 'quiz-play';
     this.parent.setAttribute("data-mode", 'quiz-play');
     this.activeView = this.quizView;
-    this.activeView.activate({ type, set, limit });
+    this.activeView.activate(quizOptions);
   }
 
   _stopQuiz(quizResults) {

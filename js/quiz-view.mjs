@@ -49,7 +49,7 @@ export class QuizView extends EventTargetMixin(Object) {
   activate(quizOptions) {
     this._updateUrl('quiz', quizOptions);
 
-    const countrySet = countries.getCountrySet(quizOptions.set);
+    const countrySet = countries.getCountrySet(quizOptions.set.id);
     this.quizOptions = quizOptions;
     this.selectedCountries = countrySet.codes.sort(() => 0.5 - Math.random());
     if (this.isNumber(quizOptions.limit)) {
@@ -91,6 +91,23 @@ export class QuizView extends EventTargetMixin(Object) {
     this.goodAnswerButton.disabled = true;
     this.badAnswerButton.disabled = true;
     this.activeCountry = countries.getCountryByCode(countryCode);
+    switch (this.quizOptions.type) {
+      case 'guess-capital':
+        this.countryView.hide(['capital']);	
+        break;
+      case 'guess-country-by-capital':
+        this.countryView.hide(['name', 'flag', 'map']);
+        break;
+      case 'guess-country-by-flag':
+        this.countryView.hide(['name', 'capital', 'flag']);
+        break;
+      case 'guess-country-by-map':
+        this.countryView.hide(['name', 'capital', 'map']);
+        break;
+      default:
+        this.countryView.hide(['name']);
+        break;
+    }
     this.countryView.render(this.activeCountry); 
   }
 
@@ -100,7 +117,7 @@ export class QuizView extends EventTargetMixin(Object) {
     this.showAnswerButton.disabled = true;
     this.goodAnswerButton.disabled = false;
     this.badAnswerButton.disabled = false;
-    this.countryView.render(this.activeCountry, true);
+    this.countryView.showAll();
   }
 
   evaluateAnswer(isCorrect) {
@@ -116,8 +133,7 @@ export class QuizView extends EventTargetMixin(Object) {
     this.parent.setAttribute("data-quiz-state", this.stage);
     this.dispatchEvent(new CustomEvent('quiz-done', { detail: { goodAnswers: this.quiz.getGoodAnswers(), badAnswers: this.quiz.getBadAnswers() } }));
     let results = this.quiz.getProgress();
-    results.type = this.quizOptions.type;
-    results.countrySet = this.quizOptions.set;
+    results.options = this.quizOptions;
     this.app._stopQuiz(results);
   }
 
@@ -125,7 +141,7 @@ export class QuizView extends EventTargetMixin(Object) {
     let newUrl = `${window.location.origin}/${view}`
     if (quizOptions) {
        newUrl += `?type=${encodeURIComponent(quizOptions.type)}`;
-       newUrl += `&set=${encodeURIComponent(quizOptions.set)}`;
+       newUrl += `&set=${encodeURIComponent(quizOptions.set.id)}`;
        newUrl += `&limit=${encodeURIComponent(quizOptions.limit)}`;
     }
     if (newUrl !== window.location.href) {

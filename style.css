@@ -191,7 +191,7 @@ body:not([data-mode="search"]) #search-controls {
 
 @media (min-width: 500px) {
   #quiz-setup-controls {
-    justify-content: start;
+    justify-content: space-between;
   }
 }
 
@@ -422,11 +422,16 @@ body[data-mode="quiz-results"] #results {
   visibility: visible;
 }
 
+#results.hide-flag #flag {
+  visibility: hidden;
+}
+
 #results #map {
+  visibility: visible;
   max-width: 60vmin;
 }
 
-.quiz-mode.hide-flag #results #flag {
+#results.hide-map {
   visibility: hidden;
 }
 
@@ -438,7 +443,7 @@ body[data-mode="quiz-results"] #results {
   color: #333;
 }
 
-.quiz-mode.hide-capital-name #results .capital {
+#results.hide-capital .capital {
   visibility: hidden;
 }
 
@@ -447,7 +452,7 @@ body[data-mode="quiz-results"] #results {
   visibility: visible;
 }
 
-.quiz-mode.hide-country-name #results .country {
+#results.hide-name .country {
   visibility: hidden;
 }
 
@@ -621,6 +626,12 @@ body[data-mode="about"] .dropdown-button > .search-mode {
   background-color: #f9f9f9;
   min-width: 160px;
   z-index: 1;
+}
+
+@media (min-width: 500px) {
+  .dropdown .dropdown-content {
+    top: 0;
+  }  
 }
 
 .dropdown.open .dropdown-content {
