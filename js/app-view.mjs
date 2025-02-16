@@ -4,9 +4,12 @@ import countries from './countries.mjs';
 import { EventTargetMixin } from './event-target-mixin.mjs';
 import { SearchView } from './search-view.mjs';
 import { AboutView } from './about-view.mjs';
+import { SettingsView } from './settings-view.mjs';
 import { QuizView } from './quiz-view.mjs';
 import { QuizSetupView } from './quiz-setup-view.mjs';
 import { QuizResultsView } from './quiz-results-view.mjs';
+
+const STORAGE_KEY = 'com.pellicciotta.countries';	
 
 /**
  *  The main application view.
@@ -28,6 +31,7 @@ export class AppView extends EventTargetMixin(Object) {
     // View elements:
     this.aboutView = new AboutView(this.parent, this);
     this.searchView = new SearchView(this.parent, this);
+    this.settingsView = new SettingsView(this.parent, this);
     this.quizView = new QuizView(this.parent, this);
     this.quizSetupView = new QuizSetupView(this.parent, this);
     this.quizResultsView = new QuizResultsView(this.parent, this);
@@ -76,6 +80,20 @@ export class AppView extends EventTargetMixin(Object) {
     this.activeView.activate(quizResults);
   }
 
+  _saveQuizResults(quizResults) {
+    log.info('Saving quiz results:', quizResults);
+    const savedResults = JSON.parse(localStorage.getItem(STORAGE_KEY)) || { };
+    savedResults[quizResults.startTime] = quizResults;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(savedResults));
+  }
+
+  _importQuizStats() {
+  }
+
+  _exportQuizStats() {
+
+  }
+
   switchToView(view, data) {
     let event = null
     if (view !== this.activeViewMode) {
@@ -94,6 +112,9 @@ export class AppView extends EventTargetMixin(Object) {
     }
     else if (this.activeViewMode === 'quiz-results') {
       this.activeView = this.quizResultsView;
+    }
+    else if (this.activeViewMode === 'settings') {
+      this.activeView = this.settingsView;
     }
     else if (this.activeViewMode === 'about') {
       this.activeView = this.aboutView;

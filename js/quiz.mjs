@@ -8,6 +8,7 @@ export class Quiz
    *  @param {*} questions The array of questions to ask, in random order.
    */
   constructor(questions) {
+    this.startTime = null;
     this.questions = questions;
     this.currentQuestionIndex = 0;
     this.askedQuestions = new Set();
@@ -20,6 +21,9 @@ export class Quiz
    *  @returns The next question to ask, or null if all questions have been asked.
    */
   getNextQuestion() {
+    if (!this.startTime) {
+      this.startTime = new Date();
+    }
     let totalQuestions = this.questions.length;
     if (this.askedQuestions.size >= totalQuestions) {
       return null; // All questions have been asked
@@ -67,6 +71,8 @@ export class Quiz
    */
   getProgress() {
     return {
+      startTime: this.startTime,
+      elapsedTime: (new Date() - this.startTime),
       totalQuestions: this.questions.length,
       questionsAsked: this.askedQuestions.size,
       goodAnswers: this.goodAnswers.length,

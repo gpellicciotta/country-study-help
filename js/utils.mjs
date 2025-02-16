@@ -39,9 +39,23 @@ export function createLink(href, text, target = null) {
   return a;
 }
 
+export function formatDuration(milliseconds) {
+  const totalSeconds = Math.floor(milliseconds / 1000);
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+
+  const formattedHours = hours > 0 ? `${hours}h ` : '';
+  const formattedMinutes = minutes > 0 ? `${minutes}m ` : '';
+  const formattedSeconds = `${seconds}s`;
+
+  return `${formattedHours}${formattedMinutes}${formattedSeconds}`;
+}
+
 export default {
   /* Utility functions */
   normalizeName,
   capitalize,
-  createLink
+  createLink,
+  formatDuration
 }

@@ -22,11 +22,13 @@
         <button class="dropdown-button">
           <i class="search-mode fa-solid fa-search"></i>
           <i class="quiz-mode fa-solid fa-question"></i>
+          <i class="settings-mode fa-solid fa-gear"></i>
           <i class="about-mode fa-solid fa-info"></i>
         </button>
         <div class="dropdown-content">
           <button class="option-button" data-mode="search"><i class="fa-solid fa-search"></i><label>Search</label></button>
           <button class="option-button" data-mode="quiz-setup"><i class="fa-solid fa-question"></i><label>Quiz</label></button>
+          <button class="option-button" data-mode="settings"><i class="fa-solid fa-gear"></i><label>Settings</label></button>
           <button class="option-button" data-mode="about"><i class="fa-solid fa-info"></i><label>About</label></button>
         </div>
       </section>
@@ -36,6 +38,14 @@
         <h1>About</h1>
         <h1 class="ls">Countries of the World</h1>
       </section>
+
+      <!-- Settings View: actions --> 
+      <section id="settings-controls">
+        <h1>Settings</h1>
+        <button id='save-settings'><i class="fa-solid fa-floppy-disk"></i><label class="ls">Save</label></button>
+        <button id='import-settings'><i class="fa-solid fa-file-arrow-up"></i><label class="ls">Import Settings</label></button>
+        <button id='export-settings'><i class="fa-solid fa-file-arrow-down"></i><label class="ls">Export Settings</label></button>
+      </section>      
 
       <!-- Search View: actions --> 
       <section id="search-controls">
@@ -74,6 +84,7 @@
       <!-- Quiz Results View: actions -->
       <section id="quiz-results-controls">
         <h1 class="ls">Quiz Results</h1>
+        <button id='save-quiz-results'><i class="fa-solid fa-bookmark"></i><label>Save Result</label></button>        
       </section>
 
     </section>
@@ -131,6 +142,9 @@
       <label for="results-quiz-questions-answered">Questions answered</label>
       <input id='results-quiz-questions-answered' type="number" readonly>
 
+      <label for="results-quiz-elapsed-time">Duration</label>
+      <input id='results-quiz-elapsed-time' type="text" readonly>
+
       <label for="results-quiz-good-answers">Good answers</label>
       <input id='results-quiz-good-answers' type="number" readonly>
 
@@ -138,8 +152,17 @@
       <input id='results-quiz-bad-answers' type="number" readonly>      
 
       <label for="results-quiz-score">Result score</label>
-      <input id='results-quiz-score' type="text" readonly>
+      <span class="value">
+        <input id='results-quiz-score' type="text" readonly>
+        <i class="pr fa-solid fa-medal"></i>
+        <span class="pr ls"> (Personal Record)</span>
+      </span>  
     </section>
+
+    <!-- Settings View: -->
+    <section id="settings">
+      <input id='settings-import-file' type="file" accept=".json" title="Import settings from a file">
+    </section>    
 
     <!-- Quiz & Search Views: -->   
     <section id='results' class="not-found">
