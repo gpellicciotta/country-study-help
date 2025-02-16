@@ -83,6 +83,7 @@ export class SearchView extends EventTargetMixin(Object) {
     }
     if (!country || !this.tryToShowCountry(country)) {
       this._updateUrl('search', null);
+      this.searchBoxInput.classList.remove('not-found');
     }
   }
 

@@ -99,10 +99,10 @@ export class QuizView extends EventTargetMixin(Object) {
         this.countryView.hide(['name', 'flag', 'map']);
         break;
       case 'guess-country-by-flag':
-        this.countryView.hide(['name', 'capital', 'flag']);
+        this.countryView.hide(['name', 'capital', 'map']);
         break;
       case 'guess-country-by-map':
-        this.countryView.hide(['name', 'capital', 'map']);
+        this.countryView.hide(['name', 'capital', 'flag']);
         break;
       default:
         this.countryView.hide(['name']);
