@@ -3,7 +3,8 @@ export function normalizeName(name) {
     .toLowerCase()
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
-    .replace(/ /g, '_');
+    .replace('%20', '_')
+    .replace(/[+ ]/g, '_');
 }
 
 export function capitalize(str) {

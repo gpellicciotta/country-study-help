@@ -5,7 +5,20 @@
     "version": "0.2.0",
     "configurations": [
       {
-        "name": "Launch via NPM",
+        "name": "Run Live Server",
+        "request": "launch",
+        "runtimeArgs": [
+          "run",
+          "live-server"
+        ],
+        "runtimeExecutable": "npm",
+        "skipFiles": [
+          "<node_internals>/**"
+        ],
+        "type": "node"
+      },
+      {
+        "name": "Run Tools",
         "request": "launch",
         "runtimeArgs": [
           "run-script",
@@ -19,7 +32,7 @@
         "type": "node"
       },
       {
-        "name": "Launch Chrome",
+        "name": "Debug Client",
         "request": "launch",
         "type": "chrome",
         "url": "http://localhost:5500",
@@ -34,5 +47,11 @@
         "url": "https://countries.pellicciotta.com",
         "webRoot": "${workspaceFolder}"
       }
+    ],
+    "compounds": [
+        {
+          "name": "Debug Client while running Live-Server",
+          "configurations": ["Run Live Server", "Debug Client"]
+        }
     ]
 }

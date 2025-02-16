@@ -11,7 +11,7 @@ html, body {
 
 /* 
    Data attributes:
-     mode: 'search-mode', 'quiz-mode' or 'evaluation-mode' 
+     mode: 'about', 'search', 'quiz-setup', 'quiz-play' or 'quiz-stat
  */
 body {
   font-family: 'Roboto', sans-serif;
@@ -20,10 +20,20 @@ body {
   color: #333;
 
   display: grid;
-  grid-template-rows: min-content 1fr min-content min-content;
+  grid-template-areas: "content"
+                       "action-bar";
+  grid-template-rows: 1fr max-content;
   justify-content: stretch;
   justify-items: center;
   align-content: start;
+}
+
+@media (min-width: 500px) {
+  body {
+    grid-template-areas: "action-bar"
+                         "content";
+    grid-template-rows: max-content 1fr;
+  }  
 }
 
 body > * {
@@ -32,24 +42,37 @@ body > * {
 }
 
 #action-bar {
+  grid-area: action-bar;
+
   background-color: #0e6eb8;
   color: white;
   padding: 1rem;
   text-align: center;
   
+  position: sticky;
+  z-index: 1000;
+  bottom: 0;
+
   display: grid;
   gap: 0.5rem;
   grid-template-columns: min-content 1fr;
+}
+
+@media (min-width: 500px) {
+  #action-bar {
+    top: 0;
+  }
 }
 
 /* Styles for the about section */
 #about-controls {
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-between;
   justify-items: center;
   align-items: center;
   align-content: center;
+  padding-left: 0.5rem;
   gap: 0.5rem;
 }
 
@@ -57,7 +80,24 @@ body > * {
   font-size: 1.5rem;
 }
 
+#about-controls > h1 {
+  font-size: 2rem;
+}
+
+@media (min-width: 500px) {
+  #about-controls {
+    padding-right: 5em;
+  }
+
+  #about-controls > h1 {
+    font-size: 2rem;
+    padding-right: 3em;
+  }  
+}
+
 #about {
+  grid-area: content;
+
   padding: 3em;
   font-size: 1rem;
   width: 50em;
@@ -81,8 +121,8 @@ body > * {
   padding-top: 1em;
 }
 
-body:not([data-mode="about-mode"]) #about-controls,
-body:not([data-mode="about-mode"]) #about {
+body:not([data-mode="about"]) #about-controls,
+body:not([data-mode="about"]) #about {
   display: none;
 }
 
@@ -90,87 +130,178 @@ body:not([data-mode="about-mode"]) #about {
 #search-controls {
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-between;
   justify-items: center;
-  align-items: stretch;
+  align-items: center;
   gap: 0.5rem;
+  padding-left: 0.5rem;
+}
+
+#search-controls * {
+  font-size: 1.5rem; 
+}
+
+#search-controls > h1 {
+  font-size: 2rem;
 }
 
 @media (min-width: 500px) {
   #search-controls {
-    padding-left: 5em;
     padding-right: 5em;
+  }
+
+  #search-controls > h1 {
+    font-size: 2rem;
+    padding-right: 3rem;
+  }  
+}
+
+body:not([data-mode="search"]) #search-controls {
+  display: none;
+}
+
+#search-controls input {
+  border-color: green;
+  padding: 0.5rem;
+}
+
+#search-controls input.not-found {
+  border-color: red;
+}
+
+@media (min-width: 500px) {
+  #search-controls input {
+    min-width: 10em;
+  }  
+}
+
+/* Styles for the quiz setup section */
+#quiz-setup-controls,
+#quiz-play-controls,
+#quiz-results-controls {
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  justify-items: center;
+  align-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  padding-left: 0.5rem;  
+}
+
+@media (min-width: 500px) {
+  #quiz-setup-controls {
+    justify-content: start;
   }
 }
 
-body:not([data-mode="search-mode"]) #search-controls {
+body:not([data-mode="quiz-setup"]) #quiz-setup-controls {
   display: none;
 }
 
-/* Styles for the quiz section */
-#quiz-controls, #quiz-settings {
+body:not([data-mode="quiz-play"]) #quiz-play-controls {
+  display: none;
+}
+
+body:not([data-mode="quiz-results"]) #quiz-results-controls {
+  display: none;
+}
+
+/* Styles for the quiz setup section */
+#quiz-setup {
+  grid-area: content;
+
+  font-size: 1rem;
+
+  padding: 20px;
+  max-width: 100vw;
+
   display: flex;
-  flex-direction: row;
-  justify-content: center;
-  justify-items: center;
+  flex-direction: column;  
+  
+  justify-content: start;
   align-items: stretch;
-  gap: 0.5rem;
+  gap: 0.25rem;
 }
 
-body:not([data-mode="quiz-mode"]) #quiz-controls,
-body:not([data-mode="quiz-mode"]) #quiz-settings {
+#quiz-setup label {
+  padding-top: 1em;
+}
+
+@media (min-width: 700px) {
+  #quiz-setup {
+    display: grid;
+    grid-template-columns: max-content max-content;
+    
+    justify-content: center;
+    justify-items: stretch;
+    align-content: start;
+    align-items: baseline;
+
+    gap: 1em;
+  }
+
+  #quiz-setup label {
+    text-wrap: wrap;
+    text-align: right;
+  }
+}
+ 
+body:not([data-mode="quiz-setup"]) #quiz-setup {
   display: none;
 }
 
-#quiz {
-  position: sticky;
-  background-color: #ababab;
-  color: white;
-  padding: 1rem;
-  text-align: center;
+/* Styles for the quiz results section */
+#quiz-results {
+  grid-area: content;
+
+  padding: 20px;
   max-width: 100vw;
 
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+  gap: 0.25rem;
 
-  display: none; /* Hidden until it works */
+  padding-bottom: 5em;
+  font-size: 1rem;
 }
 
-#feedback {
-  position: sticky;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  width: 100vw;
-  z-index: 100;
-
-  background-color: #ababab;
-  color: white;
-  padding: 1rem;
-  text-align: center;
-  max-width: 100vw;
-
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  justify-content: center;
-  align-items: center;
-
-  display: none; /* Hidden until it works */  
+body[data-mode="search"] #quiz-results,
+body[data-mode="about"] #quiz-results,
+body[data-mode="quiz-play"] #quiz-results,
+body[data-mode="quiz-setup"] #quiz-results {
+  display: none;
 }
 
-.quiz-mode #feedback,
-.evaluation-mode #feedback {
-  display: flex;
+#quiz-results label {
+  padding-top: 1em;
+}
+
+@media (min-width: 700px) {
+  #quiz-results {
+    display: grid;
+    grid-template-columns: max-content max-content;
+    
+    justify-content: center;
+    justify-items: stretch;
+    align-content: start;
+    align-items: baseline;
+
+    gap: 1em;
+  }
+
+  #quiz-results label {
+    text-wrap: wrap;
+    text-align: right;
+  }
 }
 
 /* Styles for the results section */
 #results {
+  grid-area: content;
+
   padding: 20px;
   max-width: 100vw;
 
@@ -184,10 +315,14 @@ body:not([data-mode="quiz-mode"]) #quiz-settings {
   font-size: 1rem;
 }
  
-body[data-mode="about-mode"] #results {
+body[data-mode="about"] #results,
+body[data-mode="quiz-setup"] #results,
+body[data-mode="quiz-results"] #results {
   display: none;
 }
 
+
+#results .no-country-panel,
 #results .country-panel {
   display: flex;
   flex-direction: column;
@@ -215,6 +350,14 @@ body[data-mode="about-mode"] #results {
     grid-template-columns: min-content 2fr 2fr;
     column-gap: 0.5rem;
   }
+}
+
+#results:not(.not-found) .no-country-panel {
+  display: none;
+}
+
+#results.not-found .country-panel {
+  display: none;
 }
 
 #flag {
@@ -309,8 +452,8 @@ body[data-mode="about-mode"] #results {
 }
 
 #score {
-  display: grid;
-  grid-template-areas: "bad sep good"
+  display: none;
+  grid-template-areas: "good sep bad"
                        "per per per";
   grid-template-columns: min-content min-content min-content;
   gap: 0;
@@ -320,6 +463,12 @@ body[data-mode="about-mode"] #results {
   align-content: center;
 }
 
+@media (min-width: 300px) {
+  #score {
+    display: grid;
+  }  
+}
+
 #score > * {
   font-size: 60%;
   text-align: center;
@@ -327,31 +476,41 @@ body[data-mode="about-mode"] #results {
 }
 
 #score #good-answers {
-  padding-right: 0.1em;
+  grid-area: good;
+  padding-left: 0.1em;
+}
+
+#score .separator {
+  grid-area: sep;
 }
 
 #score #bad-answers {
-  padding-left: 0.1em;
+  grid-area: bad;
+  padding-right: 0.1em;
 }
 
 #score #score-percentage {
   grid-area: per;
 }
 
+#score #score-percentage::after {
+  content: '%';
+}
+
 /* Elementary form element styles */
 
-input, button {
-  padding: 0. 5em;
-  font-size: 1.25rem;
+input, button, select, option {
+  padding: 0.25rem;
+  font-size: 1rem;
   border-radius: 5px;
   border: 1px solid #333;
   outline: none;
 }
 
-input[type='text'] {
+input[type='text'],
+input[type='number'] {
   background-color: #ccc;
   width: 100%;
-  height: 100%;
 }
 
 input:focus {
@@ -368,7 +527,7 @@ img.language {
 button {
   color: #fff;
   background-color: #333;
-  padding: 0.5em;
+  padding: 0.5rem;
   border: 1px solid #333;
   border-radius: 5px;
   font-size: 1.25rem;
@@ -378,7 +537,7 @@ button {
   flex-direction: row;
   flex-wrap: nowrap;
   align-items: center;
-  gap: 0.25em;
+  gap: 0.25rem;
 }
 
 button > i, button > svg {
@@ -388,15 +547,17 @@ button > i, button > svg {
 
 label {
   white-space: nowrap;
-  padding-left: 0.25em;
+  padding-left: 0.25rem;
 }
 
-.mobile button > label {
+.ls {
   display: none;
 }
 
-.mobile button.option-button > label {
-  display: initial;
+@media (min-width: 500px) {
+  .ls {
+    display: initial;
+  }
 }
 
 @media (hover: hover) { /* Otherwise hover state "sticks" on mobile. */
@@ -420,37 +581,43 @@ button:disabled {
 
 .dropdown {
   position: relative;
-  display: inline-block;
+  display: inline-grid;
+  align-items: stretch;
 }
 
 .dropdown .dropdown-button {
   color: #fff;
   background-color: #333;
-  padding: 0.5em;
+  padding: 0.25rem 0.5rem;
   border: 1px solid #333;
   border-radius: 5px;
   font-size: 1.25rem;
   cursor: pointer;
 }
 
-body[data-mode="search-mode"] .dropdown-button > .about-mode,
-body[data-mode="search-mode"] .dropdown-button > .quiz-mode {
+body[data-mode="search"] .dropdown-button > .about-mode,
+body[data-mode="search"] .dropdown-button > .quiz-mode {
   display: none;
 }
 
-body[data-mode="quiz-mode"] .dropdown-button > .about-mode,
-body[data-mode="quiz-mode"] .dropdown-button > .search-mode {
+body[data-mode="quiz-setup"] .dropdown-button > .about-mode,
+body[data-mode="quiz-setup"] .dropdown-button > .search-mode,
+body[data-mode="quiz-results"] .dropdown-button > .about-mode,
+body[data-mode="quiz-results"] .dropdown-button > .search-mode,
+body[data-mode="quiz-play"] .dropdown-button > .about-mode,
+body[data-mode="quiz-play"] .dropdown-button > .search-mode {
   display: none;
 }
 
-body[data-mode="about-mode"] .dropdown-button > .quiz-mode,
-body[data-mode="about-mode"] .dropdown-button > .search-mode {
+body[data-mode="about"] .dropdown-button > .quiz-mode,
+body[data-mode="about"] .dropdown-button > .search-mode {
   display: none;
 }
 
 .dropdown .dropdown-content {
   display: none;
   position: absolute;
+  bottom: 0;
   background-color: #f9f9f9;
   min-width: 160px;
   z-index: 1;

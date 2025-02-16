@@ -19,17 +19,17 @@ export class CountryView {
   attach(parentElement) {
     this.parent = parentElement; 
 
-    this.flagImage = parentElement.querySelector("#flag");
-    this.englishCountryNameEl = parentElement.querySelector("#english_country_name");
-    this.englishCapitalNameEl = parentElement.querySelector("#english_capital_name");
-    this.englishWikipediaLinkEl = parentElement.querySelector("#english_wikipedia");
-    this.dutchCountryNameEl = parentElement.querySelector("#dutch_country_name");
-    this.dutchCapitalNameEl = parentElement.querySelector("#dutch_capital_name");
-    this.dutchWikipediaLinkEl = parentElement.querySelector("#dutch_wikipedia");
-    this.italianCountryNameEl = parentElement.querySelector("#italian_country_name");
-    this.italianCapitalNameEl = parentElement.querySelector("#italian_capital_name");
-    this.italianWikipediaLinkEl = parentElement.querySelector("#italian_wikipedia");
-    this.mapEl = parentElement.querySelector("#map");
+    this.flagImage = this.parent.querySelector("#flag");
+    this.englishCountryNameEl = this.parent.querySelector("#english_country_name");
+    this.englishCapitalNameEl = this.parent.querySelector("#english_capital_name");
+    this.englishWikipediaLinkEl = this.parent.querySelector("#english_wikipedia");
+    this.dutchCountryNameEl = this.parent.querySelector("#dutch_country_name");
+    this.dutchCapitalNameEl = this.parent.querySelector("#dutch_capital_name");
+    this.dutchWikipediaLinkEl = this.parent.querySelector("#dutch_wikipedia");
+    this.italianCountryNameEl = this.parent.querySelector("#italian_country_name");
+    this.italianCapitalNameEl = this.parent.querySelector("#italian_capital_name");
+    this.italianWikipediaLinkEl = this.parent.querySelector("#italian_wikipedia");
+    this.mapEl = this.parent.querySelector("#map");
   }
 
   detach() {
@@ -40,7 +40,7 @@ export class CountryView {
   // Actions: 
 
   render(country) {
-    log.info(`Showing country ${country.cca2}:`, this.country);
+    log.info(`Showing country ${country.cca2}:`, country);
     this.country = country;
 
     this.flagImage.src = `img/flags/4x3/${country.code}.svg`;

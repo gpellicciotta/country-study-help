@@ -17,6 +17,7 @@
   </head>
   <body data-mode="search-mode">
     <section id="action-bar">
+      <!-- Activity-switcher -->
       <section id="mode-switch" class="dropdown">
         <button class="dropdown-button">
           <i class="search-mode fa-solid fa-search"></i>
@@ -24,47 +25,60 @@
           <i class="about-mode fa-solid fa-info"></i>
         </button>
         <div class="dropdown-content">
-          <button class="option-button" data-mode="search-mode"><i class="fa-solid fa-search"></i><label>Search</label></button>
-          <button class="option-button" data-mode="quiz-mode"><i class="fa-solid fa-question"></i><label>Quiz</label></button>
-          <button class="option-button" data-mode="about-mode"><i class="fa-solid fa-info"></i><label>About</label></button>
+          <button class="option-button" data-mode="search"><i class="fa-solid fa-search"></i><label>Search</label></button>
+          <button class="option-button" data-mode="quiz-setup"><i class="fa-solid fa-question"></i><label>Quiz</label></button>
+          <button class="option-button" data-mode="about"><i class="fa-solid fa-info"></i><label>About</label></button>
         </div>
       </section>
 
+      <!-- About View: actions --> 
       <section id="about-controls">
-        <h1>About Countries of the World</h1>
+        <h1>About</h1>
+        <h1 class="ls">Countries of the World</h1>
       </section>
 
+      <!-- Search View: actions --> 
       <section id="search-controls">
-        <input type='text' id='country-box' autofocus list="search-list">
+        <h1 class="ls">Search</h1>
+        <input type='text' id='country-box' autofocus list="search-list" class="not-found">
         <datalist id="search-list"></datalist>
-        <button id='random-country'><i class="fa-solid fa-dice"></i><label>Pick Any</label></button>
+        <button id='search-country'><i class="fa-solid fa-magnifying-glass"></i><label class="ls">Search</label></button>
+        <button id='random-country'><i class="fa-solid fa-dice"></i><label class="ls">Pick Any</label></button>
       </section>  
 
-      <section id="quiz-controls">
+      <!-- Quiz Setup View: actions -->
+      <section id="quiz-setup-controls">
+        <h1 class="ls">Quiz Setup</h1>
+        <button id='start-quiz'><i class="fa-solid fa-play"></i><label>Start Quiz</label></button>
+      </section>
+
+      <!-- Quiz View: actions -->
+      <section id="quiz-play-controls">
+        <h1 class="ls">Quiz</h1>
         <!-- Quiz mode: -->
-        <button id='show-answer' disabled><i class="fa-regular fa-eye"></i><label>Show Answer</label></button>
+        <button id='show-answer' disabled><i class="fa-regular fa-eye"></i><label class="ls">Show Answer</label></button>
         <span class="separator">|</span>
         <!-- Evaluation mode: -->
-        <button id='good-answer' disabled><i class="fa-regular fa-thumbs-up"></i><label>Good Answer</label></button>
+        <button id='good-answer' disabled><i class="fa-regular fa-thumbs-up"></i><label class="ls">Good Answer</label></button>
         <div id="score">
           <span id='good-answers'>0</span>
-          <span class='separator'>/</span>
+          <span class="separator">/</span>
           <span id='bad-answers'>0</span>
-          <span id='score-percentage'>N/A</span>
+          <span id='score-percentage'>?</span>
         </div>
-        <button id='bad-answer' disabled><i class="fa-regular fa-thumbs-down"></i><label>Bad Answer</label></button>      
+        <button id='bad-answer' disabled><i class="fa-regular fa-thumbs-down"></i><label class="ls">Bad Answer</label></button>      
         <span class="separator">|</span>
-        <button id='stop-quiz'><i class="fa-solid fa-stop"></i><label>Stop Quiz</label></button>
-      </section>   
-
-      <section id="quiz-settings">
-        <!-- Initial mode: -->
-        <label for="show-country">Country</label><input type="checkbox" id='show-country' checked>
-        <label for="show-capital">Capital</label><input type="checkbox" id='show-capital' checked>
-        <label for="show-flag">Flag</label><input type="checkbox" id='show-flag' checked>     
+        <button id='stop-quiz'><i class="fa-solid fa-stop"></i><label class="ls">Stop Quiz</label></button>
       </section>
+
+      <!-- Quiz Results View: actions -->
+      <section id="quiz-results-controls">
+        <h1 class="ls">Quiz Results</h1>
+      </section>
+
     </section>
 
+    <!-- About View: -->
     <section id="about">
       <p>This is a simple web app to help you study the countries of the world. You can search for information about a country, or do a quiz to test your memory of flags, countries and capitals.</p>
       <p>Data about the countries has been assembled from following sources:</p>
@@ -79,9 +93,60 @@
         <li><a href="https://www.oecd.org/en/data/indicators/nominal-gross-domestic-product-gdp.html" target="_blank">Country GDP data</a></li>
       </ul>
       <p>Created by Giovanni Pellicciotta, 2025.</p>
+    </section>    
+
+    <!-- Quiz Setup View: -->
+    <section id="quiz-setup">
+      <label for="quiz-type">What should be guessed/shown ?</label>
+      <select id='quiz-type'>
+        <option value='guess-capital'>Guess Capital / Provide Name, Flag and Map</option>
+        <option value='guess-country-by-capital'>Guess Country / Provide Capital</option>
+        <option value='guess-country-by-flag'>Guess Country and Capital / Provide Flag</option>
+        <option value='guess-country-by-map'>Guess Country and Capital / Provide Map</option>
+      </select>  
+
+      <label for="quiz-country-set">Which countries to use?</label>
+      <select id='quiz-country-set'>
+        <option value='none'>** No sets available yet **</option>
+      </select>  
+
+      <label for="quiz-length">How many questions to ask?</label>
+      <select id='quiz-length'>
+        <option value='all'>All</option>
+        <option value='10'>10</option>
+        <option value='20'>20</option>
+        <option value='30'>30</option>
+        <option value='40'>40</option>
+        <option value='50'>50</option>                        
+        <option value='100'>100</option>
+      </select>
     </section>
-    
-    <section id='results'>
+
+    <!-- Quiz Results View: -->
+    <section id="quiz-results">
+      <h1>Quiz Results</h1>
+      <p></p>
+
+      <label for="results-quiz-questions-answered">Questions answered</label>
+      <input id='results-quiz-questions-answered' type="number" readonly>
+
+      <label for="results-quiz-good-answers">Good answers</label>
+      <input id='results-quiz-good-answers' type="number" readonly>
+
+      <label for="results-quiz-bad-answers">Bad answers</label>
+      <input id='results-quiz-bad-answers' type="number" readonly>      
+
+      <label for="results-quiz-score">Result score</label>
+      <input id='results-quiz-score' type="text" readonly>
+    </section>
+
+    <!-- Quiz & Search Views: -->   
+    <section id='results' class="not-found">
+      <div class="no-country-panel">
+        <h1 class="no-country">No country found</h1>
+        <p class="no-country">Please try another search term</p>
+      </div>
+
       <div class="country-panel">        
         <img id='flag' class="flag" src="/img/flags/4x3/xx.svg" alt='Flag of {{COUNTRY}}'>
 

@@ -1,8 +1,12 @@
 import log from './logging.mjs';
 import countries from './countries.mjs';
-import { Quiz } from './quiz.mjs';
-import { CountryView } from './country-view.mjs';
+
 import { EventTargetMixin } from './event-target-mixin.mjs';
+import { SearchView } from './search-view.mjs';
+import { AboutView } from './about-view.mjs';
+import { QuizView } from './quiz-view.mjs';
+import { QuizSetupView } from './quiz-setup-view.mjs';
+import { QuizResultsView } from './quiz-results-view.mjs';
 
 /**
  *  The main application view.
@@ -12,90 +16,112 @@ export class AppView extends EventTargetMixin(Object) {
     super();
     if (parentElement) {
       this.attach(parentElement);
-    } 
+    }
   }
 
   attach(parentElement) {
     this.parent = parentElement;
-    this.countryCodes = countries.getCountrySet('all').codes;
-    this.quiz = new Quiz(this.countryCodes);
+
+    // Model/data elements:
+    this.activeViewMode = 'initial';
+
+    // View elements:
+    this.aboutView = new AboutView(this.parent, this);
+    this.searchView = new SearchView(this.parent, this);
+    this.quizView = new QuizView(this.parent, this);
+    this.quizSetupView = new QuizSetupView(this.parent, this);
+    this.quizResultsView = new QuizResultsView(this.parent, this);
+
+    this.activeView = this.searchView;
+
     // Find all elements:
     this.modeSwitch = this.parent.querySelector('#mode-switch');
     this.modeSwitchButton = this.parent.querySelector('#mode-switch > .dropdown-button');
     this.modeSwitchContent = this.parent.querySelector('#mode-switch > .dropdown-content');
-    this.searchBoxInput = this.parent.querySelector('#country-box');
-    this.searchList = this.parent.querySelector('#search-list');
-    this.randomCountryButton = this.parent.querySelector('#random-country');
-    this.countryPanel = this.parent.querySelector('#results');
-    this.countryView = new CountryView(this.countryPanel);
+
     // Attach event handlers:
     this.modeSwitch.addEventListener('mouseleave', this.onModeSwitchChange.bind(this));
     this.modeSwitchButton.addEventListener('click', this.onModeSwitchChange.bind(this));
-    this.modeSwitchContent.addEventListener('click', this.onModeSwitchChange.bind(this));    
-    this.searchBoxInput.addEventListener('input', this.onSearchBoxInput.bind(this));
-    this.randomCountryButton.addEventListener('click', this.onSelectRandomCountry.bind(this));
-    // Attach auto-complete data:
-    this.searchList.innerHTML = '';
-    for (let cc of this.countryCodes) {
-      let country = countries.getCountryByCode(cc);
-      log.debug(`Adding search items for country with code '${cc}'`, country);	
-      this.searchList.appendChild(this._createOptionElement(country.dutch_country_name));
-      this.searchList.appendChild(this._createOptionElement(country.dutch_capital_name));
-      this.searchList.appendChild(this._createOptionElement(country.italian_country_name));
-      this.searchList.appendChild(this._createOptionElement(country.italian_capital_name));    
-      this.searchList.appendChild(this._createOptionElement(country.name.common));
-      this.searchList.appendChild(this._createOptionElement(country.name.official));
-      if (country.capital) {
-        for (let capital of country.capital) {
-          this.searchList.appendChild(this._createOptionElement(capital));
-        }
-      }
-      if (country.cca2) {
-        this.searchList.appendChild(this._createOptionElement(country.cca2));
-      }
-      if (country.cca3) {      
-        this.searchList.appendChild(this._createOptionElement(country.cca3));
-      }
-      if (country.ccn3) {      
-        this.searchList.appendChild(this._createOptionElement(country.ccn3));
-      }      
-    }
-  }
+    this.modeSwitchContent.addEventListener('click', this.onModeSwitchChange.bind(this));
 
-  _createOptionElement(value) {
-    let option = document.createElement('option');
-    option.value = value;
-    return option;
-  }  
+    window.addEventListener('popstate', this.onSwitchView.bind(this));
+    window.addEventListener('resize', this.onWindowResize.bind(this));
+
+    // Activate correct, initial view
+    history.replaceState({ view: 'search', country: null }, '', `${window.location.origin}/search`);    
+    this.switchToView(window.location.pathname?.replaceAll('/', '') || 'search', window.location.hash?.substring(1));
+  }
 
   detach() {
     this.parent = null;
     this.country = null;
+    this.activeViewMode = 'initial';
   }
 
   // Actions:
 
-  showCountry(countryCode) {
-    this.country = countries.getCountryByCode(countryCode);
-    this.countryView.render(this.country);
-    
-    const event = new CustomEvent('countryChange', { detail: this.country });
-    this.dispatchEvent(event);
+  _startQuiz(type, set, limit) {
+    log.info('Starting quiz with type:', type, 'set:', set, 'and length:', limit);
+    this.activeViewMode = 'quiz-play';
+    this.parent.setAttribute("data-mode", 'quiz-play');
+    this.activeView = this.quizView;
+    this.activeView.activate({ type, set, limit });
   }
 
-  tryToShowCountry(countryQuery) {
-    let cc = countries.getCountryCode(countryQuery);
-    if (cc) {
-      this.showCountry(cc);
-      return true;
+  _stopQuiz(quizResults) {
+    log.info('Stopping quiz with results:', quizResults);
+    this.activeViewMode = 'quiz-results';
+    this.parent.setAttribute("data-mode", 'quiz-results');
+    this.activeView = this.quizResultsView;
+    this.activeView.activate(quizResults);
+  }
+
+  switchToView(view, data) {
+    let event = null
+    if (view !== this.activeViewMode) {
+      this.activeViewMode = view;
+      this.parent.setAttribute("data-mode", view);
+      event = new CustomEvent('viewChange', { detail: view });
     }
-    else {
-      return false;
+    if (this.activeViewMode === 'search') {
+      this.activeView = this.searchView;
+    }
+    else if (this.activeViewMode === 'quiz-setup') {
+      this.activeView = this.quizSetupView;
+    }
+    else if (this.activeViewMode === 'quiz-play') {
+      this.activeView = this.quizView;
+    }
+    else if (this.activeViewMode === 'quiz-results') {
+      this.activeView = this.quizResultsView;
+    }
+    else if (this.activeViewMode === 'about') {
+      this.activeView = this.aboutView;
+    }
+    this.activeView.activate(data);
+    if (event) {
+      this.dispatchEvent(event);
     }
   }
 
   // Event handlers:
- 
+
+  onWindowResize(event) {
+    if (window.innerWidth < 800) {
+      this.parent.classList.add('mobile');
+    }
+    else {
+      this.parent.classList.remove('mobile');
+    }
+  }
+
+  onSwitchView(event) {
+    const view = window.location.pathname?.replaceAll('/', '');
+    const country = window.location.hash?.substring(1); // Remove leading '#'
+    log.info('Switching to view:', view, 'for country:', country);
+    this.switchToView(view, country);
+  }
+
   onModeSwitchChange(event) {
     // Focus outside switch area
     if (event.type === 'mouseleave') {
@@ -112,36 +138,9 @@ export class AppView extends EventTargetMixin(Object) {
     // Check mode button clicked
     const modeButton = event.target.closest('button.option-button');
     if (modeButton) {
-      this.parent.setAttribute("data-mode", modeButton.dataset.mode);
+      this.switchToView(modeButton.dataset.mode);
       this.modeSwitch.classList.remove('open'); // Close the drop-down again
       return ;
-    }
-  }
-
-  onSelectRandomCountry(event) {
-    log.debug('Random country button clicked.');
-    let cc = this.quiz.getNextQuestion();
-    if (!cc) {
-      this.quiz.resetQuiz();
-      cc = this.quiz.getNextQuestion();  
-    }
-    log.debug('Random country selected:', cc); 
-    this.showCountry(cc);
-    this.randomCountryButton.blur(); // Remove hover state on mobile
-  }
-
-  onSearchBoxInput(event) {
-    log.debug('Input event fired:', event.target.value);
-    // Handle input value changes
-    let cc = countries.getCountryCode(event.target.value);
-    if (cc) {
-      this.searchBoxInput.classList.remove('not-found');
-      log.debug("Country code found:", cc);
-      this.showCountry(cc);
-    }
-    else {
-      this.searchBoxInput.classList.add('not-found');
-      log.debug("No country found for:", event.target.value);
     }
   }
 }
