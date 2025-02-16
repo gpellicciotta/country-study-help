@@ -85,9 +85,6 @@ body > * {
 }
 
 @media (min-width: 500px) {
-  #about-controls {
-    padding-right: 5em;
-  }
 
   #about-controls > h1 {
     font-size: 2rem;
@@ -431,7 +428,7 @@ body[data-mode="quiz-results"] #results {
   max-width: 60vmin;
 }
 
-#results.hide-map {
+#results.hide-map #map {
   visibility: hidden;
 }
 

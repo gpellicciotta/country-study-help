@@ -12,7 +12,7 @@ async function fireDomReady() {
   log.info("DOM is ready.");
 
   // Register service worker
-  //registerServiceWorker();
+  registerServiceWorker();
 
   // Load country data
   let cnt = await countries.loadCountryData();

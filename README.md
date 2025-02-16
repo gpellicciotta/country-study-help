@@ -238,17 +238,12 @@ Works:
 - The UI is mobile friendly and responsive
 - Countries and capitals have correct translations now (in Italian and Dutch)
 - Using wikipedia maps to show for countries
+- Quiz works
 
 Still todo:
-- Make a real quiz mode
-- Create `Browse` page
-- Create `Quiz Setup` page
-- Create `Quiz Results` page
-- Create `Quiz Stats` page
-- Create hamburger menu
-- Create `About` page
 - Keep track of quiz results
 - Keep track of quiz stats in browser storage
+- Create `Quiz Stats` page
 - Allow importing/exporting quiz stats
 - Add world/google map of all countries
 
