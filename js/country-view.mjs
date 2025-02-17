@@ -1,6 +1,4 @@
 import log from './logging.mjs';
-import countries from './countries.mjs';
-import { Quiz } from './quiz.mjs';
 
 /**
  *  The view of a single country.

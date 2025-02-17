@@ -42,9 +42,7 @@
       <!-- Settings View: actions --> 
       <section id="settings-controls">
         <h1>Settings</h1>
-        <button id='save-settings'><i class="fa-solid fa-floppy-disk"></i><label class="ls">Save</label></button>
-        <button id='import-settings'><i class="fa-solid fa-file-arrow-up"></i><label class="ls">Import Settings</label></button>
-        <button id='export-settings'><i class="fa-solid fa-file-arrow-down"></i><label class="ls">Export Settings</label></button>
+        <button id='save-settings'><i class="fa-solid fa-floppy-disk"></i><label class="ls">Save Settings</label></button>        
       </section>      
 
       <!-- Search View: actions --> 
@@ -54,6 +52,8 @@
         <datalist id="search-list"></datalist>
         <button id='search-country'><i class="fa-solid fa-magnifying-glass"></i><label class="ls">Search</label></button>
         <button id='random-country'><i class="fa-solid fa-dice"></i><label class="ls">Pick Any</label></button>
+        <button id='start-carousel'><i class="fa-solid fa-play"></i><label class="ls">Play</label></button>
+        <button id='stop-carousel' disabled><i class="fa-solid fa-stop"></i><label class="ls">Stop</label></button>
       </section>  
 
       <!-- Quiz Setup View: actions -->
@@ -161,7 +161,72 @@
 
     <!-- Settings View: -->
     <section id="settings">
+      <h1>Global App Settings</h1>
+      <label for="setting-display-language">Display language</label>
+      <select id='setting-display-language'>
+        <option value='en'><img class="language" src="/img/flags/1x1/gb-eng.svg"> English</option>
+        <option value='nl'><img class="language" src="/img/flags/1x1/nl.svg"> Nederlands</option>
+        <option value='it'><img class="language" src="/img/flags/1x1/it.svg"> Italiano</option>
+      </select>  
+      
+      <h1>Search Settings</h1>
+      <label for="setting-search-country-set">Default search country set</label>
+      <select id='setting-search-country-set'>
+        <option value='none'>** No sets available yet **</option>
+      </select>  
+
+      <h1>Carrousel Settings</h1>
+      <label for="setting-carrousel-country-set">Carrousel country set</label>
+      <select id='setting-carrousel-country-set'>
+        <option value='none'>** No sets available yet **</option>
+      </select>    
+
+      <label for="setting-carrousel-show-time">Time before switching to next country</label>
+      <input id="setting-carrousel-show-time" type="time">
+
+      <label for="setting-carrousel-reveal-time">Time before revealing missing country info</label>
+      <input id="setting-carrousel-reveal-time" type="time">
+      
+      <label for="setting-carrousel-show-type">Carrousel country info shown</label>
+      <select id='setting-carrousel-show-type'>
+        <option value='all'>Show everything</option>
+        <option value='name'>Show country name</option>
+        <option value='capital'>Show capital name</option>
+        <option value='flag'>Show flag</option>
+        <option value='map'>Show map</option>
+        <option value='flag-map'>Show flag and map</option>
+        <option value='name-flag-map'>Show country name, flag and map</option>
+        <option value='capital-flag-map'>Show capital name, flag and map</option>
+      </select>  
+
+      <h1>Quiz Settings</h1>
+      <label for="setting-quiz-type">Default quiz type</label>
+      <select id='setting-quiz-type'>
+        <option value='guess-capital'>Guess Capital / Provide Name, Flag and Map</option>
+        <option value='guess-country-by-capital'>Guess Country / Provide Capital</option>
+        <option value='guess-country-by-flag'>Guess Country and Capital / Provide Flag</option>
+        <option value='guess-country-by-map'>Guess Country and Capital / Provide Map</option>
+      </select>  
+      <label for="setting-quiz-country-set">Default quiz country set</label>
+      <select id='setting-quiz-country-set'>
+        <option value='none'>** No sets available yet **</option>
+      </select>  
+      <label for="setting-quiz-length">Default quiz length</label>
+      <select id='setting-quiz-length'>
+        <option value='all'>All</option>
+        <option value='5'>5</option>
+        <option value='10'>10</option>
+        <option value='20'>20</option>
+        <option value='30'>30</option>
+        <option value='40'>40</option>
+        <option value='50'>50</option>                        
+        <option value='100'>100</option>
+      </select>
+
+      <h1>Import &amp; Export</h1>
       <input id='settings-import-file' type="file" accept=".json" title="Import settings from a file">
+      <button id='import-settings'><i class="fa-solid fa-file-arrow-up"></i><label class="ls">Import Settings</label></button>
+      <button id='export-settings'><i class="fa-solid fa-file-arrow-down"></i><label class="ls">Export Settings</label></button>
     </section>    
 
     <!-- Quiz & Search Views: -->   

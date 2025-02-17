@@ -27,12 +27,15 @@ export class SearchView extends EventTargetMixin(Object) {
     this.countrySets = countries.getCountrySets();
     this.countriesInRandomOrder = new Quiz(this.countryCodes);
     this.activeCountry = null;
+    this.carouselIntervalId = null;
 
     // Get UI control elements:
     this.searchBoxInput = this.parent.querySelector('#country-box');
     this.searchList = this.parent.querySelector('#search-list');
     this.searchCountryButton = this.parent.querySelector('#search-country');
     this.randomCountryButton = this.parent.querySelector('#random-country');
+    this.startCarouselButton = this.parent.querySelector('#start-carousel');
+    this.stopCarouselButton = this.parent.querySelector('#stop-carousel');
     this.countryPanel = this.parent.querySelector('#results');
     
     // Get UI display elements:
@@ -43,6 +46,8 @@ export class SearchView extends EventTargetMixin(Object) {
     this.searchBoxInput.addEventListener('keydown', this.onSearchBoxKeyDown.bind(this)); // Add keydown event listener
     this.searchCountryButton.addEventListener('click', this.onSearchCountry.bind(this));
     this.randomCountryButton.addEventListener('click', this.onSelectRandomCountry.bind(this));
+    this.startCarouselButton.addEventListener('click', this.onStartCarousel.bind(this));
+    this.stopCarouselButton.addEventListener('click', this.onStopCarousel.bind(this));
 
     // Attach auto-complete data:
     this.searchList.innerHTML = '';
@@ -142,10 +147,7 @@ export class SearchView extends EventTargetMixin(Object) {
     }
   }
 
-  // Event Handlers:
-
-  onSelectRandomCountry(event) {
-    log.debug('Random country button clicked.');
+  showRandomCountry() {
     let cc = this.countriesInRandomOrder.getNextQuestion();
     if (!cc) {
       this.countriesInRandomOrder.resetQuiz();
@@ -153,10 +155,39 @@ export class SearchView extends EventTargetMixin(Object) {
     }
     log.debug('Random country selected:', cc);
     this.showCountry(cc);
+  }
+
+  // Event Handlers:
+
+  onStartCarousel(event) {
+    log.debug('Start carousel button clicked.');
+    this.stopCarouselButton.removeAttribute('disabled');
+    this.startCarouselButton.setAttribute('disabled', 'disabled');
+    // Start carousel
+    this.carouselIntervalId = setInterval(() => { this.showRandomCountry(); }, 5000);
+  }
+
+  onStopCarousel(event) {
+    log.debug('Stop carousel button clicked.');
+    this.startCarouselButton.removeAttribute('disabled');
+    this.stopCarouselButton.setAttribute('disabled', 'disabled');
+    // Stop carousel
+    if (this.carouselIntervalId) {
+      clearInterval(this.carouselIntervalId);
+      this.carouselIntervalId = null;
+    }
+  }
+
+  onSelectRandomCountry(event) {
+    log.debug('Random country button clicked.');
+    this.onStopCarousel();
+    this.showRandomCountry();
     this.randomCountryButton.blur(); // Remove hover state on mobile
   }
 
   onSearchCountry(event) {
+    this.onStopCarousel();
+
     let searchValue = this.searchBoxInput.value;
     log.debug(`Search country for search term '${searchValue}'`);
     // Handle input value changes

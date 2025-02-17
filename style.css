@@ -15,7 +15,6 @@ html, body {
  */
 body {
   font-family: 'Roboto', sans-serif;
-  font-size: 1.5rem;
   background-color: #f4f4f4;
   color: #333;
 
@@ -76,27 +75,21 @@ body > * {
   gap: 0.5rem;
 }
 
-#settings-controls * {
-  font-size: 1.5rem;
-}
-
 #settings-controls > h1 {
-  font-size: 2rem;
+  font-size: 1.5rem;
 }
 
 @media (min-width: 500px) {
 
   #settings-controls > h1 {
-    font-size: 2rem;
-    padding-right: 3em;
+    padding-right: 3rem;
   }  
 }
 
 #settings {
   grid-area: content;
 
-  padding: 3em;
-  font-size: 1rem;
+  padding: 1rem 3rem;
   width: 50em;
 
   display: flex;
@@ -109,13 +102,41 @@ body > * {
   gap: 0.5rem;
 }
 
+#settings h1 {
+  padding-top: 2rem;
+}
+
 #settings ul {
   list-style-position: outside;
-  padding-left: 1em;
+  padding-left: 1rem;
 }
 
 #settings p {
-  padding-top: 1em;
+  padding-top: 1rem;
+}
+
+#settings button label {
+  display: initial;
+}
+
+@media (min-width: 600px) {
+
+  #settings {
+    display: grid;
+    grid-template-columns: min-content 1fr;
+    justify-content: center;
+    justify-items: start;
+    align-content: start;
+    align-items: start;
+  }  
+
+  #settings h1 {
+    grid-column: 1 / span 2;
+  }
+
+  #settings button {
+    grid-column: 2;
+  }
 }
 
 body:not([data-mode="settings"]) #settings-controls,
@@ -135,27 +156,21 @@ body:not([data-mode="settings"]) #settings {
   gap: 0.5rem;
 }
 
-#about-controls * {
-  font-size: 1.5rem;
-}
-
 #about-controls > h1 {
-  font-size: 2rem;
+  font-size: 1.5rem;
 }
 
 @media (min-width: 500px) {
 
   #about-controls > h1 {
-    font-size: 2rem;
-    padding-right: 3em;
+    padding-right: 3rem;
   }  
 }
 
 #about {
   grid-area: content;
 
-  padding: 3em;
-  font-size: 1rem;
+  padding: 3rem;
   width: 50em;
 
   display: flex;
@@ -193,21 +208,13 @@ body:not([data-mode="about"]) #about {
   padding-left: 0.5rem;
 }
 
-#search-controls * {
-  font-size: 1.5rem; 
-}
-
 #search-controls > h1 {
-  font-size: 2rem;
+  font-size: 1.5rem;
 }
 
 @media (min-width: 500px) {
-  #search-controls {
-    padding-right: 5em;
-  }
 
   #search-controls > h1 {
-    font-size: 2rem;
     padding-right: 3rem;
   }  
 }
@@ -267,8 +274,6 @@ body:not([data-mode="quiz-results"]) #quiz-results-controls {
 #quiz-setup {
   grid-area: content;
 
-  font-size: 1rem;
-
   padding: 20px;
   max-width: 100vw;
 
@@ -321,7 +326,6 @@ body:not([data-mode="quiz-setup"]) #quiz-setup {
   gap: 0.25rem;
 
   padding-bottom: 5em;
-  font-size: 1rem;
 }
 
 body[data-mode="search"] #quiz-results,
@@ -382,7 +386,6 @@ body[data-mode="quiz-setup"] #quiz-results {
   gap: 0.25rem;
 
   padding-bottom: 5em;
-  font-size: 1rem;
 }
  
 body[data-mode="about"] #results,
@@ -458,7 +461,6 @@ body[data-mode="quiz-results"] #results {
 }
 
 #results .country-info {
-  font-size: 100%;
   font-family: 'Roboto', sans-serif;
   white-space: wrap;
   width: 100%;
@@ -576,7 +578,6 @@ body[data-mode="quiz-results"] #results {
 
 input, button, select, option {
   padding: 0.25rem;
-  font-size: 1rem;
   border-radius: 5px;
   border: 1px solid #333;
   outline: none;
@@ -605,7 +606,6 @@ button {
   padding: 0.5rem;
   border: 1px solid #333;
   border-radius: 5px;
-  font-size: 1.25rem;
   cursor: pointer;  
 
   display: flex;
@@ -654,6 +654,11 @@ button:disabled {
   opacity: 0.6;
 }
 
+#search-controls button:disabled,
+#search-controls button:disabled {
+  display: none;
+}
+
 .dropdown {
   position: relative;
   display: inline-grid;
@@ -666,7 +671,6 @@ button:disabled {
   padding: 0.25rem 0.5rem;
   border: 1px solid #333;
   border-radius: 5px;
-  font-size: 1.25rem;
   cursor: pointer;
 }
 
@@ -684,10 +688,13 @@ body[data-mode="settings"] .dropdown-button > .search-mode {
 
 body[data-mode="quiz-setup"] .dropdown-button > .about-mode,
 body[data-mode="quiz-setup"] .dropdown-button > .search-mode,
+body[data-mode="quiz-setup"] .dropdown-button > .settings-mode,
 body[data-mode="quiz-results"] .dropdown-button > .about-mode,
 body[data-mode="quiz-results"] .dropdown-button > .search-mode,
+body[data-mode="quiz-results"] .dropdown-button > .settings-mode,
 body[data-mode="quiz-play"] .dropdown-button > .about-mode,
-body[data-mode="quiz-play"] .dropdown-button > .search-mode {
+body[data-mode="quiz-play"] .dropdown-button > .search-mode,
+body[data-mode="quiz-play"] .dropdown-button > .settings-mode {
   display: none;
 }
 
