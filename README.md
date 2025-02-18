@@ -199,29 +199,70 @@ The interface will simply be a web-page with following pages:
    This data set comes originally from https://restcountries.com/v3.1/all but is enriched with additional "wikipedia" links,
    map and flag links and also "capital" translations in Dutch and Italian. All these come from https://en.wikipedia.org. 
 
-- `quiz-stats.json`: Quiz statistics, kept locally on device, can be exported/imported as JSON array of following objects:
+- `settings.json`: App settings, kept locally on device, can be exported/imported as following JSON object:
   ```json
   {
-    "start-time": "2025-01-22T13:55:66Z",
-    "quiz-time-in-seconds": 12565,
-    "quiz-settings": {
-      "country-count": 100,
-      "country-set": "world",          // alternatives: "All", 
-                                       //               "Europe", 
-                                       //               "Asia", 
-                                       //               "Americas", 
-                                       //               "Oceania",
-                                       //               "Caribbean", 
-                                       //               "UN", 
-                                       //               "Contested"
-      "quiz-mode": "capital"           // alternatives: "country", 
-                                       //               "country (from capital only)", 
-                                       //               "country (from map only)", 
-                                       //               "country (from flag only)" 
-    },
-    "correct-answers": [ "be", "it", ... ],
-    "incorrect-answers": [ "tj", "gm", ... ]
+    "display-language": "en",           // en, it, nl
+    "default-search-country-set": "all",
+    "default-quiz-country-set": "all",
+    "default-quiz-country-count": "all",
+    "default-quiz-type": "capital"
   }
+  ```
+
+- `app-data.json`: App data, kept locally on device, can be exported/imported as following object JSON object:
+  ```json
+  {
+    "last-use-time": "2025-01-22T13:55:66Z",
+    "active-version": "1.2.0",
+    "settings": { },   // See above: settings.json
+    "quiz-stats": { }, // See below: quiz-stats.json    
+  }
+  ```
+
+- `quiz-stats.json`: Quiz statistics, kept locally on device, can be exported/imported as following JSON object, with as keys the start times:
+  ```json
+  { 
+    "last-play-time": "2025-01-22T13:55:66Z",
+    "times-played": 201,
+    "max-scores": {
+      "[1,   20] answers": 0.9548,                      // 95.84%
+      "[21,  50] answers": 0.9124,
+      "[51, 100] answers": 0.9012,
+      "> 101 answers": 0.8014
+    },
+    "plays": [ "2025-01-22T13:55:66Z", ... ],      // Array of keys: most recent first
+    "play-data": {                                 // Play info, with as key the start-time
+      "2025-01-22T13:55:66Z": {
+        "start-time": "2025-01-22T13:55:66Z",
+        "time-in-millis": 12565254,
+        "answers": 88,
+        "score": 0.7254,
+        "quiz-settings": {
+          "country-count": 100,
+          "country-set": "all",            // alternatives: "UN", 
+                                           //               "Europe", 
+                                           //               "Asia", 
+                                           //               "Americas", 
+                                           //               "Oceania",
+                                           //               "Caribbean", 
+                                           //               "Contested",
+                                           //               "Difficult" - those with most errors 
+          "quiz-type": "capital"           // alternatives: "country", 
+                                           //               "country (from capital only)", 
+                                           //               "country (from map only)", 
+                                           //               "country (from flag only)" 
+        },
+        "correct-answers": [ "be", "it", ... ],
+        "incorrect-answers": [ "tj", "gm", ... ]
+      },
+      // ...
+    },
+    "country-data": {
+      "be": { "correct-answers": 200, "incorrect-answers": 1 },
+      // ...
+    }
+  }  
   ```
   When importing quiz-stats, existing stats will completely be replaced by the incoming data.
 
@@ -235,15 +276,19 @@ Other country information from: https://en.wikipedia.org
 Works:
 - Simple country selection works
 - Picking a random country works
+- Carousel mode in search view works: "play" countries indefinitely
 - The UI is mobile friendly and responsive
 - Countries and capitals have correct translations now (in Italian and Dutch)
 - Using wikipedia maps to show for countries
 - Quiz works
+- Keep track of quiz results
+
+Ongoing:
+- Keep track of last-use-time + active-version in browser storage
+- Keep track of settings / quiz stats in browser storage
+- Create combined `Settings / Stats` page
+- Allow importing/exporting settings + quiz stats
 
 Still todo:
-- Keep track of quiz results
-- Keep track of quiz stats in browser storage
-- Create `Quiz Stats` page
-- Allow importing/exporting quiz stats
 - Add world/google map of all countries
-
+- Add 'difficult' country set: those with most errors

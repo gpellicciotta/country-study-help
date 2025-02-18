@@ -15,11 +15,9 @@ const STORAGE_KEY = 'com.pellicciotta.countries';
  *  The main application view.
  */
 export class AppView extends EventTargetMixin(Object) {
-  constructor(parentElement) {
+  constructor(settings) {
     super();
-    if (parentElement) {
-      this.attach(parentElement);
-    }
+    this.settings = settings;
   }
 
   attach(parentElement) {

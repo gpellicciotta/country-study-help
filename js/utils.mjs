@@ -1,10 +1,11 @@
 export function normalizeName(name) {
   return name
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace('%20', '_')
-    .replace(/[+ ]/g, '_');
+    .replace(/([a-z0-9])([A-Z])/g, '$1-$2')         // fooBar -> foo-Bar
+    .toLowerCase()                                  // FOO -> foo
+    .normalize('NFD')                               // é -> e
+    .replace(/[\u0300-\u036f]/g, '')                // é -> e 
+    .replace('%20', '-')                            // foo%20bar -> foo-bar
+    .replace(/[+ ]/g, '-');                         // foo+bar -> foo-bar, foo bar -> foo-bar
 }
 
 export function capitalize(str) {
@@ -12,6 +13,13 @@ export function capitalize(str) {
     return '';
   }
   return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+export function createOptionElement(value, innerHTML) {
+  let option = document.createElement('option');
+  option.value = value;
+  option.innerHTML = innerHTML || value;
+  return option;
 }
 
 export function createLink(href, text, target = null) {
@@ -57,5 +65,6 @@ export default {
   normalizeName,
   capitalize,
   createLink,
+  createOptionElement,
   formatDuration
 }

@@ -1,6 +1,6 @@
 import log from './logging.mjs';
 import countries from './countries.mjs';
-
+import utils from './utils.mjs';
 import { EventTargetMixin } from './event-target-mixin.mjs';
 import { CountryView } from './country-view.mjs';
 import { Quiz } from './quiz.mjs';
@@ -78,7 +78,7 @@ export class SearchView extends EventTargetMixin(Object) {
     }
     searchTerms = Array.from(searchTerms).sort();
     for (let st of searchTerms) {
-      this.searchList.appendChild(this._createOptionElement(st));
+      this.searchList.appendChild(utils.createOptionElement(st));
     }
   }
 
@@ -103,12 +103,6 @@ export class SearchView extends EventTargetMixin(Object) {
   }
 
   // Actions: 
-
-  _createOptionElement(text) {
-    let option = document.createElement('option');
-    option.value = text;
-    return option;
-  }
 
   _updateUrl(view, country) {
     let newUrl = `${window.location.origin}/${view}`

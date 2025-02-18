@@ -1,6 +1,5 @@
 import log from './logging.mjs';
-import countries from './countries.mjs';
-import { Quiz } from './quiz.mjs';
+import { DISPLAY_LANGUAGES, COUNTRY_SETS, QUIZ_TYPES, QUIZ_LENGTHS } from './settings.mjs';
 import utils from './utils.mjs';
 
 /**
@@ -15,27 +14,60 @@ export class SettingsView {
 
   attach(parentElement, app) {
     this.app = app;
-    this.parent = parentElement; 
-    this.quizResults = null;
-    this.maxScore = 0;
+    this.parent = parentElement;
 
     // Get UI elements:
+    this.displayLanguageSelect = this.parent.querySelector("#setting-display-language");
+    this.searchCountrySetSelect = this.parent.querySelector("#setting-search-country-set");
+    this.carouselCountrySetSelect = this.parent.querySelector("#setting-carousel-country-set");
+    this.carouselShowTimeInput = this.parent.querySelector("#setting-carousel-show-time");
+    this.carouselRevealTimeInput = this.parent.querySelector("#setting-carousel-reveal-time");
+    this.carouselShowTypeSelect = this.parent.querySelector("#setting-carousel-show-type");
+    this.quizTypeSelect = this.parent.querySelector("#setting-quiz-type");
+    this.quizCountrySetSelect = this.parent.querySelector("#setting-quiz-country-set");
+    this.quizLengthSelect = this.parent.querySelector("#setting-quiz-length");
     this.saveSettingsButton = this.parent.querySelector("#save-settings");
     this.importSettingsButton = this.parent.querySelector("#import-settings");
     this.exportSettingsButton = this.parent.querySelector("#export-settings");
-
     this.settingsImportFileInput = this.parent.querySelector("#settings-import-file");
+
+    // Add select options:
+    this.displayLanguageSelect.innerHTML = '';
+    for (let lang of DISPLAY_LANGUAGES) {
+      this.displayLanguageSelect.appendChild(utils.createOptionElement(lang.name, `<img src="${lang.flag}" class="language">${lang.description}`));
+    }
+    this.searchCountrySetSelect.innerHTML = '';
+    for (let cs of COUNTRY_SETS) {
+      this.searchCountrySetSelect.appendChild(utils.createOptionElement(cs.name, cs.description));
+    }
+    this.carouselCountrySetSelect.innerHTML = '';
+    for (let cs of COUNTRY_SETS) {
+      this.carouselCountrySetSelect.appendChild(utils.createOptionElement(cs.name, cs.description));
+    }
+    this.quizTypeSelect.innerHTML = '';
+    for (let qt of QUIZ_TYPES) {
+      this.quizTypeSelect.appendChild(utils.createOptionElement(qt.name, qt.description));
+    }
+    this.quizCountrySetSelect.innerHTML = '';
+    for (let cs of COUNTRY_SETS) {
+      this.quizCountrySetSelect.appendChild(utils.createOptionElement(cs.name, cs.description));
+    }
+    this.quizLengthSelect.innerHTML = '';
+    for (let ql of QUIZ_LENGTHS) {
+      this.quizLengthSelect.appendChild(utils.createOptionElement(ql.name, ql.description));
+    }
 
     // Event handlers:
     this.saveSettingsButton.addEventListener('click', this.onSaveSettings.bind(this));
     this.importSettingsButton.addEventListener('click', this.onImportSettings.bind(this));
     this.exportSettingsButton.addEventListener('click', this.onExportSettings.bind(this));
-
     this.settingsImportFileInput.addEventListener('change', this.onSettingsImportFileChange.bind(this));
   }
 
   activate() {
     this._updateUrl('settings', null);
+
+    this._updateSettings();
 
     this.importSettingsButton.setAttribute('disabled', 'disabled');	
   }
@@ -61,37 +93,50 @@ export class SettingsView {
     }
   }
 
+  _updateSettings() {
+    this.displayLanguageSelect.value = this.app.settings.getSetting('display-language', 'en');
+    this.searchCountrySetSelect.value = this.app.settings.getSetting('search-country-set', 'all');
+    this.carouselCountrySetSelect.value = this.app.settings.getSetting('carousel-country-set', 'all');
+    this.carouselShowTimeInput.value = this.app.settings.getSetting('carousel-show-time', '00:00:05');
+    this.carouselRevealTimeInput.value = this.app.settings.getSetting('carousel-reveal-time', '00:00:10');
+    this.carouselShowTypeSelect.value = this.app.settings.getSetting('carousel-show-type', 'all');
+    this.quizTypeSelect.value = this.app.settings.getSetting('default-quiz-type', 'guess-capital');
+    this.quizCountrySetSelect.value = this.app.settings.getSetting('default-quiz-country-set', 'none');
+    this.quizLengthSelect.value = this.app.settings.getSetting('default-quiz-length', '10');
+  }
+
   // Event Handlers:
 
   onImportSettings(event) {
     log.info('Importing settings');
-    this.importSettingsButton.removeAttribute('disabled');
+    const file = this.settingsImportFileInput.files[0];
+    if (file) {
+      this.app.settings.importSettings(file).then(() => {
+        this._updateSettings();
+        this.importSettingsButton.removeAttribute('disabled');
+      });
+    }
   }
 
   onSaveSettings(event) {
     log.info('Saving settings:', this.quizResults);
-    this.app._saveQuizResults(this.quizResults);
+    this.app.settings.setSetting('display-language', this.displayLanguageSelect.value);
+    this.app.settings.setSetting('search-country-set', this.searchCountrySetSelect.value);
+    this.app.settings.setSetting('carousel-country-set', this.carouselCountrySetSelect.value);
+    this.app.settings.setSetting('carousel-show-time', this.carouselShowTimeInput.value);
+    this.app.settings.setSetting('carousel-reveal-time', this.carouselRevealTimeInput.value);
+    this.app.settings.setSetting('carousel-show-type', this.carouselShowTypeSelect.value);
+    this.app.settings.setSetting('default-quiz-type', this.quizTypeSelect.value);
+    this.app.settings.setSetting('default-quiz-country-set', this.quizCountrySetSelect.value);
+    this.app.settings.setSetting('default-quiz-length', this.quizLengthSelect.value);
+ 
+    this.app.settings.saveSettings();
     this.saveQuizResultsButton.setAttribute('disabled', 'disabled');
   }
 
   onExportSettings(event) {
     log.info('Exporting settings');
-    const settings = localStorage.getItem('com.pellicciotta.countries');
-    if (settings) {
-      const blob = new Blob([settings], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'countries-settings.json';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-      log.info('Settings exported successfully');
-    } 
-    else {
-      log.error('No settings found in local storage');
-    }
+    this.app.settings.exportSettings();
   }
 
   onSettingsImportFileChange(event) {
@@ -99,20 +144,8 @@ export class SettingsView {
     this.importSettingsButton.setAttribute('disabled', 'disabled');
     const file = event.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        try {
-          const settings = JSON.parse(e.target.result);
-          log.info('Settings imported:', settings);
-          this.importSettingsButton.removeAttribute('disabled');
-          this.importedSettings = settings;
-          // You can now use the settings object as needed
-        } 
-        catch (error) {
-          log.error('Error parsing settings file:', error);
-        }
-      };
-      reader.readAsText(file);
+      this.app.settings.importSettings(file);
+      this.importSettingsButton.removeAttribute('disabled');
     }
   }
 }
