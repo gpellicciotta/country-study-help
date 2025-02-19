@@ -273,7 +273,7 @@ Other country information from: https://en.wikipedia.org
 
 ## What works, and what doesn't
 
-Works:
+### Works:
 - Simple country selection works
 - Picking a random country works
 - Carousel mode in search view works: "play" countries indefinitely
@@ -283,14 +283,15 @@ Works:
 - Quiz works and results can be stored locally
 - Settings UI is available and settings can be imported/exported and saved locally
 
-Ongoing:
+### Ongoing:
+- Make sure country/capital names are not put in a table, but "move up"
 - Keep track of last-use-time + active-version in browser storage
 - Keep track of quiz stats in browser storage
 - Create combined `Settings / Stats` page
 - Allow importing/exporting quiz stats
 - Ensure quiz setup takes setting into account
 
-Still todo:
+### Still todo:
 - Add world/google map of all countries
 - Add 'difficult' country set: those with most errors
 - Add events to Settings class so that logging can listen for event with log-level change

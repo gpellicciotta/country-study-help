@@ -59,6 +59,7 @@ export class CarouselView extends EventTargetMixin(Object) {
     this._updateUrl('carousel', null);
     this.countryPanel.classList.add('carousel-paused');
     this.countryPanel.classList.remove('no-country-found');
+    this.countryView.setInfoLanguages(this.app.settings.getSetting('info-languages', []));
     this.startCarouselButton.removeAttribute('disabled');
     this.pauseCarouselButton.setAttribute('disabled', 'disabled');
     this.onStartCarousel();

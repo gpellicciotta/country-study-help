@@ -18,6 +18,9 @@ export class SettingsView {
 
     // Get UI elements:
     this.displayLanguageSelect = this.parent.querySelector("#setting-display-language");
+    this.enInfoLanguageCheck = this.parent.querySelector("#setting-info-language-en");
+    this.nlInfoLanguageCheck = this.parent.querySelector("#setting-info-language-nl");  
+    this.itInfoLanguageCheck = this.parent.querySelector("#setting-info-language-it");
     this.searchCountrySetSelect = this.parent.querySelector("#setting-search-country-set");
     this.carouselCountrySetSelect = this.parent.querySelector("#setting-carousel-country-set");
     this.carouselSwitchTimeInput = this.parent.querySelector("#setting-carousel-switch-time");
@@ -95,6 +98,9 @@ export class SettingsView {
 
   _updateSettings() {
     this.displayLanguageSelect.value = this.app.settings.getSetting('display-language', 'en');
+    this.enInfoLanguageCheck.checked = this.app.settings.getSetting('info-languages', []).includes('en');
+    this.nlInfoLanguageCheck.checked = this.app.settings.getSetting('info-languages', []).includes('nl');
+    this.itInfoLanguageCheck.checked = this.app.settings.getSetting('info-languages', []).includes('it');
     this.searchCountrySetSelect.value = this.app.settings.getSetting('search-country-set', 'all');
     this.carouselCountrySetSelect.value = this.app.settings.getSetting('carousel-country-set', 'all');
     this.carouselSwitchTimeInput.value = utils.fromMillisToElapsedTimeStr(this.app.settings.getSetting('carousel-switch-time', 5000));
@@ -121,6 +127,17 @@ export class SettingsView {
   onSaveSettings(event) {
     log.info('Saving settings:', this.quizResults);
     this.app.settings.setSetting('display-language', this.displayLanguageSelect.value);
+    let infoLanguages = [];
+    if (this.enInfoLanguageCheck.checked) {
+      infoLanguages.push('en');
+    }
+    if (this.nlInfoLanguageCheck.checked) {
+      infoLanguages.push('nl');
+    }
+    if (this.itInfoLanguageCheck.checked) {
+      infoLanguages.push('it');
+    }
+    this.app.settings.setSetting('info-languages', infoLanguages);
     this.app.settings.setSetting('search-country-set', this.searchCountrySetSelect.value);
     this.app.settings.setSetting('carousel-country-set', this.carouselCountrySetSelect.value);
     this.app.settings.setSetting('carousel-switch-time', utils.getMillisFromElapsedTimeStr(this.carouselSwitchTimeInput.value));

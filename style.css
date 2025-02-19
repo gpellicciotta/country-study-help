@@ -117,6 +117,19 @@ body > * {
   display: initial;
 }
 
+#settings input[type=checkbox] {
+  justify-self: start;
+  align-self: center;
+}
+
+#settings label {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 @media (min-width: 600px) {
   #settings {
     display: grid;
@@ -528,7 +541,7 @@ body[data-mode="quiz-results"] #results {
   justify-content: start;
   justify-items: stretch;
   align-content: start;
-  align-items: start;
+  align-items: center;
 
   column-gap: 0.5rem;
 }

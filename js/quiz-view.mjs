@@ -58,6 +58,7 @@ export class QuizView extends EventTargetMixin(Object) {
     this.quiz = new Quiz(this.selectedCountries);
 
     this.countryPanel.classList.remove("not-found");
+    this.countryView.setInfoLanguages(this.app.settings.getSetting('info-languages', []));
     this.askNextQuestion();
   }
 

@@ -89,6 +89,7 @@ export class SearchView extends EventTargetMixin(Object) {
     else {
       this.countryPanel.classList.remove('no-country-found');
     }
+    this.countryView.setInfoLanguages(this.app.settings.getSetting('info-languages', []));
     this.countryView.showAll();
     this.searchBoxInput.value = '';
     this.searchBoxInput.classList.remove('not-found');
@@ -125,7 +126,7 @@ export class SearchView extends EventTargetMixin(Object) {
     }
     this.activeCountry = countries.getCountryByCode(countryCode);
 
-    this.countryView.setInfoLanguages(this.app.settings.getSetting('info-languages', ['en']));
+    this.countryView.setInfoLanguages(this.app.settings.getSetting('info-languages', []));
     this.countryView.showAll();
     this.countryView.render(this.activeCountry);
 
