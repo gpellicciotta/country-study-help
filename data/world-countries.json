@@ -2480,7 +2480,7 @@
             ]
         },
         "capital": [
-            "Gitega"
+            "Gitega", "Bujumbura (former)"
         ],
         "altSpellings": [
             "BI",
@@ -2498,12 +2498,12 @@
             "nld": {
                 "common": "Burundi",
                 "official": "Republiek Burundi",
-                "capital": "Gitega"
+                "capital": "Gitega, Bujumbura (former)"
             },
             "ita": {
                 "common": "Burundi",
                 "official": "Repubblica del Burundi",
-                "capital": "Gitega"
+                "capital": "Gitega, Bujumbura (former)"
             }
         },
         "latlng": [
