@@ -60,9 +60,53 @@ export function formatDuration(milliseconds) {
   return `${formattedHours}${formattedMinutes}${formattedSeconds}`;
 }
 
+
+export function isNumber(value) {
+  value = +value;
+  return typeof value === 'number' && isFinite(value);
+}
+
+/**
+ *  Converts a time string in the formats 'hh:mm', 'hh:mm:ss' or 'ss' to milliseconds.
+ * 
+ *  @param {*} timeStr The time string in the format 'hh:mm:ss'.
+ *  @returns The time in milliseconds.
+ */
+export function getMillisFromElapsedTimeStr(timeStr) {
+  let [hours, minutes, seconds] = timeStr.split(':').map(Number);
+  if (seconds === undefined) {
+    seconds = minutes;
+    minutes = hours;
+    hours = 0;
+  }
+  if (seconds === undefined) {
+    seconds = minutes;
+    minutes = 0;
+  }
+  return (hours * 3600 + minutes * 60 + seconds) * 1000;
+}
+
+/**
+ *  Converts milliseconds to a time string in the format 'hh:mm:ss'.
+ * 
+ *  @param {*} millis The time in milliseconds.
+ *  @returns The time string in the format 'hh:mm:ss'.
+ */
+export function fromMillisToElapsedTimeStr(millis) {
+  const totalSeconds = Math.floor(millis / 1000);
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+
+  return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+}
+
 export default {
   /* Utility functions */
   normalizeName,
+  isNumber,
+  getMillisFromElapsedTimeStr,
+  fromMillisToElapsedTimeStr,
   capitalize,
   createLink,
   createOptionElement,

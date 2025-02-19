@@ -3,6 +3,7 @@ import countries from './countries.mjs';
 
 import { EventTargetMixin } from './event-target-mixin.mjs';
 import { SearchView } from './search-view.mjs';
+import { CarouselView } from './carousel-view.mjs';
 import { AboutView } from './about-view.mjs';
 import { SettingsView } from './settings-view.mjs';
 import { QuizView } from './quiz-view.mjs';
@@ -29,6 +30,7 @@ export class AppView extends EventTargetMixin(Object) {
     // View elements:
     this.aboutView = new AboutView(this.parent, this);
     this.searchView = new SearchView(this.parent, this);
+    this.carouselView = new CarouselView(this.parent, this);
     this.settingsView = new SettingsView(this.parent, this);
     this.quizView = new QuizView(this.parent, this);
     this.quizSetupView = new QuizSetupView(this.parent, this);
@@ -95,12 +97,16 @@ export class AppView extends EventTargetMixin(Object) {
   switchToView(view, data) {
     let event = null
     if (view !== this.activeViewMode) {
+      this.activeView.deactivate();
       this.activeViewMode = view;
       this.parent.setAttribute("data-mode", view);
       event = new CustomEvent('viewChange', { detail: view });
     }
     if (this.activeViewMode === 'search') {
       this.activeView = this.searchView;
+    }
+    else if (this.activeViewMode === 'carousel') {
+      this.activeView = this.carouselView;
     }
     else if (this.activeViewMode === 'quiz-setup') {
       this.activeView = this.quizSetupView;

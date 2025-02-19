@@ -20,7 +20,7 @@ export class SettingsView {
     this.displayLanguageSelect = this.parent.querySelector("#setting-display-language");
     this.searchCountrySetSelect = this.parent.querySelector("#setting-search-country-set");
     this.carouselCountrySetSelect = this.parent.querySelector("#setting-carousel-country-set");
-    this.carouselShowTimeInput = this.parent.querySelector("#setting-carousel-show-time");
+    this.carouselSwitchTimeInput = this.parent.querySelector("#setting-carousel-switch-time");
     this.carouselRevealTimeInput = this.parent.querySelector("#setting-carousel-reveal-time");
     this.carouselShowTypeSelect = this.parent.querySelector("#setting-carousel-show-type");
     this.quizTypeSelect = this.parent.querySelector("#setting-quiz-type");
@@ -97,8 +97,8 @@ export class SettingsView {
     this.displayLanguageSelect.value = this.app.settings.getSetting('display-language', 'en');
     this.searchCountrySetSelect.value = this.app.settings.getSetting('search-country-set', 'all');
     this.carouselCountrySetSelect.value = this.app.settings.getSetting('carousel-country-set', 'all');
-    this.carouselShowTimeInput.value = this.app.settings.getSetting('carousel-show-time', '00:00:05');
-    this.carouselRevealTimeInput.value = this.app.settings.getSetting('carousel-reveal-time', '00:00:10');
+    this.carouselSwitchTimeInput.value = utils.fromMillisToElapsedTimeStr(this.app.settings.getSetting('carousel-switch-time', 5000));
+    this.carouselRevealTimeInput.value = utils.fromMillisToElapsedTimeStr(this.app.settings.getSetting('carousel-reveal-time', 10000));
     this.carouselShowTypeSelect.value = this.app.settings.getSetting('carousel-show-type', 'all');
     this.quizTypeSelect.value = this.app.settings.getSetting('default-quiz-type', 'guess-capital');
     this.quizCountrySetSelect.value = this.app.settings.getSetting('default-quiz-country-set', 'none');
@@ -123,15 +123,14 @@ export class SettingsView {
     this.app.settings.setSetting('display-language', this.displayLanguageSelect.value);
     this.app.settings.setSetting('search-country-set', this.searchCountrySetSelect.value);
     this.app.settings.setSetting('carousel-country-set', this.carouselCountrySetSelect.value);
-    this.app.settings.setSetting('carousel-show-time', this.carouselShowTimeInput.value);
-    this.app.settings.setSetting('carousel-reveal-time', this.carouselRevealTimeInput.value);
+    this.app.settings.setSetting('carousel-switch-time', utils.getMillisFromElapsedTimeStr(this.carouselSwitchTimeInput.value));
+    this.app.settings.setSetting('carousel-reveal-time', utils.getMillisFromElapsedTimeStr(this.carouselRevealTimeInput.value));
     this.app.settings.setSetting('carousel-show-type', this.carouselShowTypeSelect.value);
     this.app.settings.setSetting('default-quiz-type', this.quizTypeSelect.value);
     this.app.settings.setSetting('default-quiz-country-set', this.quizCountrySetSelect.value);
     this.app.settings.setSetting('default-quiz-length', this.quizLengthSelect.value);
  
     this.app.settings.saveSettings();
-    this.saveQuizResultsButton.setAttribute('disabled', 'disabled');
   }
 
   onExportSettings(event) {

@@ -4,7 +4,7 @@ import { Settings } from './settings.mjs';
 import { AppView } from './app-view.mjs';
 
 // Set up logging:
-log.setLogLevel(log.DEBUG);
+log.setLogLevel(log.INFO);
 
 // Set up application view:
 window.addEventListener("load", fireDomReady, false);
@@ -22,6 +22,7 @@ async function fireDomReady() {
   let settings = new Settings();
   settings.loadSettings();
   log.info("App settings have been loaded:", settings);
+  log.setLogLevel(settings.getSetting('log-level', log.INFO));
     
   // Initialize the application view
   let appView = new AppView(settings);

@@ -280,15 +280,17 @@ Works:
 - The UI is mobile friendly and responsive
 - Countries and capitals have correct translations now (in Italian and Dutch)
 - Using wikipedia maps to show for countries
-- Quiz works
-- Keep track of quiz results
+- Quiz works and results can be stored locally
+- Settings UI is available and settings can be imported/exported and saved locally
 
 Ongoing:
 - Keep track of last-use-time + active-version in browser storage
-- Keep track of settings / quiz stats in browser storage
+- Keep track of quiz stats in browser storage
 - Create combined `Settings / Stats` page
-- Allow importing/exporting settings + quiz stats
+- Allow importing/exporting quiz stats
+- Ensure quiz setup takes setting into account
 
 Still todo:
 - Add world/google map of all countries
 - Add 'difficult' country set: those with most errors
+- Add events to Settings class so that logging can listen for event with log-level change

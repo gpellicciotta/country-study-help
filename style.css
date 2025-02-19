@@ -11,7 +11,7 @@ html, body {
 
 /* 
    Data attributes:
-     mode: 'about', 'search', 'quiz-setup', 'quiz-play' or 'quiz-stat
+     mode: 'about', 'search', 'carousel', 'quiz-setup', 'quiz-play' or 'quiz-stat
  */
 body {
   font-family: 'Roboto', sans-serif;
@@ -80,7 +80,6 @@ body > * {
 }
 
 @media (min-width: 500px) {
-
   #settings-controls > h1 {
     padding-right: 3rem;
   }  
@@ -90,7 +89,6 @@ body > * {
   grid-area: content;
 
   padding: 1rem 3rem;
-  width: 50em;
 
   display: flex;
   flex-direction: column;
@@ -120,7 +118,6 @@ body > * {
 }
 
 @media (min-width: 600px) {
-
   #settings {
     display: grid;
     grid-template-columns: min-content 1fr;
@@ -213,7 +210,6 @@ body:not([data-mode="about"]) #about {
 }
 
 @media (min-width: 500px) {
-
   #search-controls > h1 {
     padding-right: 3rem;
   }  
@@ -236,6 +232,31 @@ body:not([data-mode="search"]) #search-controls {
   #search-controls input {
     min-width: 10em;
   }  
+}
+
+/* Styles for the carousel section */
+#carousel-controls {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  justify-items: center;
+  align-items: center;
+  gap: 0.5rem;
+  padding-left: 0.5rem;
+}
+
+#carousel-controls > h1 {
+  font-size: 1.5rem;
+}
+
+@media (min-width: 500px) {
+  #carousel-controls > h1 {
+    padding-right: 3rem;
+  }  
+}
+
+body:not([data-mode="carousel"]) #carousel-controls {
+  display: none;
 }
 
 /* Styles for the quiz setup section */
@@ -329,6 +350,7 @@ body:not([data-mode="quiz-setup"]) #quiz-setup {
 }
 
 body[data-mode="search"] #quiz-results,
+body[data-mode="carousel"] #quiz-results,
 body[data-mode="settings"] #quiz-results,
 body[data-mode="about"] #quiz-results,
 body[data-mode="quiz-play"] #quiz-results,
@@ -425,11 +447,19 @@ body[data-mode="quiz-results"] #results {
   }
 }
 
-#results:not(.not-found) .no-country-panel {
+#results:not(.carousel-paused) .carousel-paused-panel {
   display: none;
 }
 
-#results.not-found .country-panel {
+#results.carousel-paused .carousel-paused-panel {
+  display: none;
+}
+
+#results:not(.no-country-found) .no-country-panel {
+  display: none;
+}
+
+#results.no-country-found .country-panel {
   display: none;
 }
 
@@ -675,30 +705,43 @@ button:disabled {
 }
 
 body[data-mode="search"] .dropdown-button > .about-mode,
+body[data-mode="search"] .dropdown-button > .carousel-mode,
 body[data-mode="search"] .dropdown-button > .settings-mode,
 body[data-mode="search"] .dropdown-button > .quiz-mode {
   display: none;
 }
 
+body[data-mode="carousel"] .dropdown-button > .about-mode,
+body[data-mode="carousel"] .dropdown-button > .search-mode,
+body[data-mode="carousel"] .dropdown-button > .settings-mode,
+body[data-mode="carousel"] .dropdown-button > .quiz-mode {
+  display: none;
+}
+
 body[data-mode="settings"] .dropdown-button > .quiz-mode,
+body[data-mode="settings"] .dropdown-button > .carousel-mode,
 body[data-mode="settings"] .dropdown-button > .about-mode,
 body[data-mode="settings"] .dropdown-button > .search-mode {
   display: none;
 }
 
 body[data-mode="quiz-setup"] .dropdown-button > .about-mode,
+body[data-mode="quiz-setup"] .dropdown-button > .carousel-mode,
 body[data-mode="quiz-setup"] .dropdown-button > .search-mode,
 body[data-mode="quiz-setup"] .dropdown-button > .settings-mode,
 body[data-mode="quiz-results"] .dropdown-button > .about-mode,
+body[data-mode="quiz-results"] .dropdown-button > .carousel-mode,
 body[data-mode="quiz-results"] .dropdown-button > .search-mode,
 body[data-mode="quiz-results"] .dropdown-button > .settings-mode,
 body[data-mode="quiz-play"] .dropdown-button > .about-mode,
+body[data-mode="quiz-play"] .dropdown-button > .carousel-mode,
 body[data-mode="quiz-play"] .dropdown-button > .search-mode,
 body[data-mode="quiz-play"] .dropdown-button > .settings-mode {
   display: none;
 }
 
 body[data-mode="about"] .dropdown-button > .quiz-mode,
+body[data-mode="about"] .dropdown-button > .carousel-mode,
 body[data-mode="about"] .dropdown-button > .settings-mode,
 body[data-mode="about"] .dropdown-button > .search-mode {
   display: none;

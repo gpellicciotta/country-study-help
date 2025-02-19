@@ -6,12 +6,13 @@ const SETTINGS_KEY = 'com.pellicciotta.countries.settings';
 export const DEFAULT_SETTINGS = {
   // Global app settings:
   "display-language": "en",
+  "log-level": "info",
   // Search settings:
   "search-country-set": "oceania",
   // Carousel settings:
   "carousel-country-set": "americas",
   "carousel-reveal-time": "00:00:04",
-  "carousel-show-time": "00:00:08",
+  "carousel-switch-time": "00:00:08",
   "carousel-show-type": "flag",
   // Quiz settings:
   "default-quiz-type": "guess-country-by-map",

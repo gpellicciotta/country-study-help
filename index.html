@@ -21,12 +21,14 @@
       <section id="mode-switch" class="dropdown">
         <button class="dropdown-button">
           <i class="search-mode fa-solid fa-search"></i>
+          <i class="carousel-mode fa-solid fa-camera-rotate"></i>
           <i class="quiz-mode fa-solid fa-question"></i>
           <i class="settings-mode fa-solid fa-gear"></i>
           <i class="about-mode fa-solid fa-info"></i>
         </button>
         <div class="dropdown-content">
           <button class="option-button" data-mode="search"><i class="fa-solid fa-search"></i><label>Search</label></button>
+          <button class="option-button" data-mode="carousel"><i class="fa-solid fa-camera-rotate"></i><label>Carousel</label></button>
           <button class="option-button" data-mode="quiz-setup"><i class="fa-solid fa-question"></i><label>Quiz</label></button>
           <button class="option-button" data-mode="settings"><i class="fa-solid fa-gear"></i><label>Settings</label></button>
           <button class="option-button" data-mode="about"><i class="fa-solid fa-info"></i><label>About</label></button>
@@ -52,8 +54,19 @@
         <datalist id="search-list"></datalist>
         <button id='search-country'><i class="fa-solid fa-magnifying-glass"></i><label class="ls">Search</label></button>
         <button id='random-country'><i class="fa-solid fa-dice"></i><label class="ls">Pick Any</label></button>
+      </section>  
+      
+      <!-- Search View: actions --> 
+      <section id="carousel-controls">
+        <h1 class="ls">Carousel</h1>
         <button id='start-carousel'><i class="fa-solid fa-play"></i><label class="ls">Play</label></button>
-        <button id='stop-carousel' disabled><i class="fa-solid fa-stop"></i><label class="ls">Stop</label></button>
+        <div id="progress">
+          <span id='shown-countries'>0</span>
+          <span class="separator">out of</span>
+          <span id='total-countries'>0</span>
+          <span id='progress-percentage'>?</span>
+        </div>        
+        <button id='pause-carousel' disabled><i class="fa-solid fa-pause"></i><label class="ls">Stop</label></button>
       </section>  
 
       <!-- Quiz Setup View: actions -->
@@ -74,7 +87,7 @@
           <span id='good-answers'>0</span>
           <span class="separator">/</span>
           <span id='bad-answers'>0</span>
-          <span id='score-percentage'>?</span>
+          <span id='score-percentage'> (0%)</span>
         </div>
         <button id='bad-answer' disabled><i class="fa-regular fa-thumbs-down"></i><label class="ls">Bad Answer</label></button>      
         <span class="separator">|</span>
@@ -184,8 +197,8 @@
       <label for="setting-carousel-reveal-time">Time before revealing missing country info</label>
       <input id="setting-carousel-reveal-time" type="time">
 
-      <label for="setting-carousel-show-time">Time before switching to next country</label>
-      <input id="setting-carousel-show-time" type="time">
+      <label for="setting-carousel-switch-time">Time before switching to next country</label>
+      <input id="setting-carousel-switch-time" type="time">
       
       <label for="setting-carousel-show-type">Carousel country info shown</label>
       <select id='setting-carousel-show-type'>
@@ -230,11 +243,16 @@
     </section>    
 
     <!-- Quiz & Search Views: -->   
-    <section id='results' class="not-found">
+    <section id='results' class="no-country-found hide-name hide-capital hide-flag">
       <div class="no-country-panel">
         <h1 class="no-country">No country found</h1>
         <p class="no-country">Please try another search term</p>
       </div>
+
+      <div class="carousel-paused-panel">
+        <h1 class="carousel-paused">Carousel Paused</h1>
+        <p class="carousel-paused">Press the 'Play' button to re-start the country carousel.</p>
+      </div>      
 
       <div class="country-panel">        
         <img id='flag' class="flag" src="/img/flags/4x3/xx.svg" alt='Flag of {{COUNTRY}}'>

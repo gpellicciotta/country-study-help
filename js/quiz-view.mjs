@@ -1,6 +1,6 @@
 import log from './logging.mjs';
 import countries from './countries.mjs';
-
+import utils from './utils.mjs';
 import { EventTargetMixin } from './event-target-mixin.mjs';
 import { CountryView } from './country-view.mjs';
 import { Quiz } from './quiz.mjs';
@@ -52,7 +52,7 @@ export class QuizView extends EventTargetMixin(Object) {
     const countrySet = countries.getCountrySet(quizOptions.set.id);
     this.quizOptions = quizOptions;
     this.selectedCountries = countrySet.codes.sort(() => 0.5 - Math.random());
-    if (this.isNumber(quizOptions.limit)) {
+    if (utils.isNumber(quizOptions.limit)) {
       this.selectedCountries = this.selectedCountries.slice(0, +quizOptions.limit);
     }
     this.quiz = new Quiz(this.selectedCountries);
@@ -69,13 +69,6 @@ export class QuizView extends EventTargetMixin(Object) {
     this.parent.removeChild(this.element);
     this.parent = null;
     this.app = null;
-  }
-
-  // Utility functions:
-
-  isNumber(value) {
-    value = +value;
-    return typeof value === 'number' && isFinite(value);
   }
 
   // Actions: 
