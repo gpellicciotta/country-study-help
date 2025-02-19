@@ -51,6 +51,10 @@ export class AppView extends EventTargetMixin(Object) {
     window.addEventListener('popstate', this.onSwitchView.bind(this));
     window.addEventListener('resize', this.onWindowResize.bind(this));
 
+    // Set display language
+    const displayLanguage = this.settings.getSetting('display-language', 'en');
+    this.parent.setAttribute('lang', displayLanguage);
+    
     // Activate correct, initial view
     history.replaceState({ view: 'search', country: null }, '', `${window.location.origin}/search`);    
     this.switchToView(window.location.pathname?.replaceAll('/', '') || 'search', window.location.hash?.substring(1));

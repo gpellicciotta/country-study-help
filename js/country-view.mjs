@@ -55,6 +55,19 @@ export class CountryView {
     this.mapEl.src = `img/maps/${country.code}.svg`;
   }
 
+  setInfoLanguages(languages) {
+    this.parent.classList.forEach((className) => {
+      if (className.startsWith('lang-')) {
+        this.parent.classList.remove(className);
+      }
+    });
+    languages.forEach((lang) => {
+      this.parent.classList.add(`lang-${lang}`);
+    });
+    this.parent.setAttribute('data-info-languages', languages.join(' '));
+    this.parent.setAttribute('data-info-languages-count', languages.length);
+  }
+
   hideAll() {
    this.hide(['name', 'capital', 'flag', 'map']);
   }

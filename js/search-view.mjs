@@ -125,6 +125,7 @@ export class SearchView extends EventTargetMixin(Object) {
     }
     this.activeCountry = countries.getCountryByCode(countryCode);
 
+    this.countryView.setInfoLanguages(this.app.settings.getSetting('info-languages', ['en']));
     this.countryView.showAll();
     this.countryView.render(this.activeCountry);
 

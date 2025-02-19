@@ -6,6 +6,7 @@ const SETTINGS_KEY = 'com.pellicciotta.countries.settings';
 export const DEFAULT_SETTINGS = {
   // Global app settings:
   "display-language": "en",
+  "info-languages": [ "en", "nl", "it" ],	
   "log-level": "info",
   // Search settings:
   "search-country-set": "oceania",
