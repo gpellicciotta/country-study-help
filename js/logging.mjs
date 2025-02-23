@@ -159,23 +159,23 @@ export function debug(...args) {
 }
 
 export default {
-    /* Log levels */
-    ALL: 'all',
-    DEBUG: 'debug',
-    INFO: 'info',
-    WARN: 'warn',
-    ERROR: 'error',
-    OFF: 'off',
-    /* Config functions */
-    setLogLevelIndicator,
-    setLogDestination,
-    setLogMessagePrefixFormat,
-    setLogLevel,
-    getLogMessagePrefix,
-    /* Logging functions */
-    log,
-    error,
-    warn,
-    info,
-    debug
+  /* Log levels */
+  ALL: 'all',
+  DEBUG: 'debug',
+  INFO: 'info',
+  WARN: 'warn',
+  ERROR: 'error',
+  OFF: 'off',
+  /* Config functions */
+  setLogLevelIndicator,
+  setLogDestination,
+  setLogMessagePrefixFormat,
+  setLogLevel,
+  getLogMessagePrefix,
+  /* Logging functions */
+  log,
+  error,
+  warn,
+  info,
+  debug
 }

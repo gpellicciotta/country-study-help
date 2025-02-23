@@ -1,6 +1,8 @@
 import log from './logging.mjs';
 import countries from './countries.mjs';
 import { Quiz } from './quiz.mjs';
+import { QUIZ_TYPES, QUIZ_LENGTHS, COUNTRY_SETS } from './settings.mjs';
+import utils from './utils.mjs';
 
 /**
  *  The quiz setup view.
@@ -25,20 +27,28 @@ export class QuizSetupView {
     // Attach event handlers:
     this.startQuizButton.addEventListener('click', this.onStartQuiz.bind(this));
 
+    // Fill quiz type options:
+    this.quizTypeSelect.innerHTML = '';
+    for (let qt of QUIZ_TYPES) {
+      this.quizTypeSelect.appendChild(utils.createOptionElement(qt.name, qt.description));
+    }
     // Fill country sets available:
     this.quizCountrySetSelect.innerHTML = '';
-    let sets = Object.values(countries.getCountrySets());
-    sets.sort((cs1, cs2) => cs1.name === "all" ? -1 : cs2.name === "all" ? +1 : cs1.name.localeCompare(cs2.name));
-    sets.forEach((cs) => {
-      let option = document.createElement("option");
-      option.value = cs.name;
-      option.textContent = cs.description;
-      this.quizCountrySetSelect.appendChild(option);
-    });
+    for (let cs of COUNTRY_SETS) {
+      this.quizCountrySetSelect.appendChild(utils.createOptionElement(cs.name, cs.description));
+    }
+    // Fill quiz length options:
+    this.quizLengthSelect.innerHTML = '';
+    for (let ql of QUIZ_LENGTHS) {
+      this.quizLengthSelect.appendChild(utils.createOptionElement(ql.name, ql.description));
+    }
   }
 
   activate() {
     this._updateUrl('quiz', 'setup');
+    this.quizTypeSelect.value = this.app.settings.getSetting('default-quiz-type', QUIZ_TYPES[0].name);
+    this.quizCountrySetSelect.value = this.app.settings.getSetting('default-quiz-country-set', COUNTRY_SETS[0].name);
+    this.quizLengthSelect.value = this.app.settings.getSetting('default-quiz-length', QUIZ_LENGTHS[0].name);    
   }
 
   deactivate() {
@@ -70,13 +80,14 @@ export class QuizSetupView {
     let quizCountrySetDescription = this.quizCountrySetSelect.options[this.quizCountrySetSelect.selectedIndex].textContent;
     let quizLength = this.quizLengthSelect.value;
     log.info(`Starting quiz with type '${quizType}', set '${quizCountrySetId}' and length '${quizLength}'`);
-    this.app._startQuiz({
+    const quizOptions = {
       'type': quizType,
       'limit': quizLength,
       'set': {
         'id': quizCountrySetId,
         'description': quizCountrySetDescription
        }
-    });
+    };
+    this.app.switchToView('quiz-play', quizOptions);
   }
 }

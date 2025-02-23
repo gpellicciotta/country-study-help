@@ -24,6 +24,7 @@ export class QuizResultsView {
 
     this.quizResultsRemarks = this.parent.querySelector("#results-quiz-remarks");
     this.quizElapsedTime = this.parent.querySelector("#results-quiz-elapsed-time");
+    this.quizTotalQuestionsNumber = this.parent.querySelector("#results-quiz-total-questions");
     this.quizQuestionsAnsweredNumber = this.parent.querySelector("#results-quiz-questions-answered");
     this.quizGoodAnswersNumber = this.parent.querySelector("#results-quiz-good-answers");
     this.quizBadAnswersNumber = this.parent.querySelector("#results-quiz-bad-answers");
@@ -40,17 +41,18 @@ export class QuizResultsView {
     this.saveQuizResultsButton.removeAttribute('disabled');
     this.parent.classList.remove("pr");
 
-    this.quizResultsRemarks.value = `Quiz with ${quizResults.totalQuestions} questions.`;
-    this.quizElapsedTime.value = utils.formatDuration(quizResults.elapsedTime);
-    let questionsAnswered = quizResults.goodAnswers + quizResults.badAnswers;
+    this.quizResultsRemarks.value = `Quiz with ${quizResults.questions.length} questions.`;
+    this.quizElapsedTime.value = utils.toDurationStr(quizResults.duration);
+    this.quizTotalQuestionsNumber.value = quizResults.questions.length;
+    let questionsAnswered = quizResults["correct-answers"].length + quizResults["incorrect-answers"].length;
     this.quizQuestionsAnsweredNumber.value = questionsAnswered;
-    this.quizGoodAnswersNumber.value = quizResults.goodAnswers;
-    this.quizBadAnswersNumber.value = quizResults.badAnswers;
-    let score = "No score"
+    this.quizGoodAnswersNumber.value = quizResults["correct-answers"].length;
+    this.quizBadAnswersNumber.value = quizResults["incorrect-answers"].length;
+    let score = 0.0;
     if (questionsAnswered) {
-      score = (quizResults.goodAnswers / questionsAnswered * 100).toFixed(0) + '%';
+      score = (quizResults["correct-answers"].length / quizResults.questions.length);
     }
-    this.quizScoreText.value = score;
+    this.quizScoreText.value = score ? `${(score * 100).toFixed(0)}%` : "No score";
     if (score > this.maxScore) {
       this.maxScore = score;
       this.quizResults.pr = true;
@@ -58,6 +60,7 @@ export class QuizResultsView {
     }
     else {
       this.quizResults.pr = false;
+      this.parent.classList.remove("pr");
     }
   }
 
@@ -89,5 +92,6 @@ export class QuizResultsView {
     log.info('Saving quiz results:', this.quizResults);
     this.app._saveQuizResults(this.quizResults);
     this.saveQuizResultsButton.setAttribute('disabled', 'disabled');
+    this.app.switchToView('quiz-stats');
   }
 }

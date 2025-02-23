@@ -57,7 +57,7 @@ export class QuizView extends EventTargetMixin(Object) {
     }
     this.quiz = new Quiz(this.selectedCountries);
 
-    this.countryPanel.classList.remove("not-found");
+    this.countryPanel.classList.remove("no-country-found");
     this.countryView.setInfoLanguages(this.app.settings.getSetting('info-languages', []));
     this.askNextQuestion();
   }
@@ -116,9 +116,11 @@ export class QuizView extends EventTargetMixin(Object) {
 
   evaluateAnswer(isCorrect) {
     let progress = this.quiz.recordAnswer(isCorrect);
-    this.goodAnswersCounter.textContent = progress.goodAnswers;
-    this.badAnswersCounter.textContent = progress.badAnswers;
-    this.scorePercentage.textContent = (progress.goodAnswers / (progress.goodAnswers + progress.badAnswers) * 100).toFixed(0);
+    let correct = progress["correct-answers"].length;
+    let incorrect = progress["incorrect-answers"].length;
+    this.goodAnswersCounter.textContent = correct;
+    this.badAnswersCounter.textContent = incorrect;
+    this.scorePercentage.textContent = (correct / (correct + incorrect) * 100).toFixed(0);
     this.askNextQuestion();
   }
 
@@ -128,7 +130,7 @@ export class QuizView extends EventTargetMixin(Object) {
     this.dispatchEvent(new CustomEvent('quiz-done', { detail: { goodAnswers: this.quiz.getGoodAnswers(), badAnswers: this.quiz.getBadAnswers() } }));
     let results = this.quiz.getProgress();
     results.options = this.quizOptions;
-    this.app._stopQuiz(results);
+    this.app.switchToView('quiz-results', results);
   }
 
   _updateUrl(view, quizOptions) {

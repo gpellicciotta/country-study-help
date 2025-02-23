@@ -30,9 +30,9 @@ export class SettingsView {
     this.quizCountrySetSelect = this.parent.querySelector("#setting-quiz-country-set");
     this.quizLengthSelect = this.parent.querySelector("#setting-quiz-length");
     this.saveSettingsButton = this.parent.querySelector("#save-settings");
-    this.importSettingsButton = this.parent.querySelector("#import-settings");
+    this.importFileInput = this.parent.querySelector("#settings-import-file");
+    this.importButton = this.parent.querySelector("#import-settings");
     this.exportSettingsButton = this.parent.querySelector("#export-settings");
-    this.settingsImportFileInput = this.parent.querySelector("#settings-import-file");
 
     // Add select options:
     this.displayLanguageSelect.innerHTML = '';
@@ -62,9 +62,9 @@ export class SettingsView {
 
     // Event handlers:
     this.saveSettingsButton.addEventListener('click', this.onSaveSettings.bind(this));
-    this.importSettingsButton.addEventListener('click', this.onImportSettings.bind(this));
+    this.importFileInput.addEventListener('change', this.onSettingsImportFileChange.bind(this));
+    this.importButton.addEventListener('click', this.onImportSettings.bind(this));
     this.exportSettingsButton.addEventListener('click', this.onExportSettings.bind(this));
-    this.settingsImportFileInput.addEventListener('change', this.onSettingsImportFileChange.bind(this));
   }
 
   activate() {
@@ -72,7 +72,7 @@ export class SettingsView {
 
     this._updateSettings();
 
-    this.importSettingsButton.setAttribute('disabled', 'disabled');	
+    this.importButton.setAttribute('disabled', 'disabled');	
   }
 
   deactivate() {
@@ -115,13 +115,31 @@ export class SettingsView {
 
   onImportSettings(event) {
     log.info('Importing settings');
-    const file = this.settingsImportFileInput.files[0];
+    const file = this.importFileInput.files[0];
     if (file) {
       this.app.settings.importSettings(file).then(() => {
         this._updateSettings();
-        this.importSettingsButton.removeAttribute('disabled');
+        this.importButton.removeAttribute('disabled');
       });
     }
+    else {
+      this.importButton.setAttribute('disabled', 'disabled');
+    }
+  }
+  
+  onSettingsImportFileChange(event) {
+    log.info('Settings import file changed');
+    this.importButton.setAttribute('disabled', 'disabled');
+    const file = event.target.files[0];
+    if (file) {
+      this.app.settings.importSettings(file);
+      this.importButton.removeAttribute('disabled');
+    }
+  }
+
+  onExportSettings(event) {
+    log.info('Exporting settings');
+    this.app.settings.exportSettings();
   }
 
   onSaveSettings(event) {
@@ -148,20 +166,5 @@ export class SettingsView {
     this.app.settings.setSetting('default-quiz-length', this.quizLengthSelect.value);
  
     this.app.settings.saveSettings();
-  }
-
-  onExportSettings(event) {
-    log.info('Exporting settings');
-    this.app.settings.exportSettings();
-  }
-
-  onSettingsImportFileChange(event) {
-    log.info('Settings import file changed');
-    this.importSettingsButton.setAttribute('disabled', 'disabled');
-    const file = event.target.files[0];
-    if (file) {
-      this.app.settings.importSettings(file);
-      this.importSettingsButton.removeAttribute('disabled');
-    }
   }
 }

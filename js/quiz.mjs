@@ -1,6 +1,8 @@
 import log from './logging.mjs';
 import { normalizeName } from './utils.mjs';
 
+const STORAGE_KEY = 'com.pellicciotta.countries.stats';
+
 export class Quiz 
 {
   /**
@@ -12,8 +14,8 @@ export class Quiz
     this.questions = questions;
     this.currentQuestionIndex = 0;
     this.askedQuestions = new Set();
-    this.goodAnswers = [];
-    this.badAnswers = [];
+    this.correctAnswers = [];
+    this.incorrectAnswers = [];
   }
   
   /**
@@ -41,11 +43,11 @@ export class Quiz
   }
 
   getGoodAnswers() {
-    return [...this.goodAnswers];
+    return [...this.correctAnswers];
   }
 
   getBadAnswers() {
-    return [...this.badAnswers];
+    return [...this.incorrectAnswers];
   }
 
   /**
@@ -57,10 +59,10 @@ export class Quiz
   recordAnswer(isCorrect) {
     let currentQuestion = this.questions[this.currentQuestionIndex];
     if (isCorrect) {
-      this.goodAnswers.push(currentQuestion);
+      this.correctAnswers.push(currentQuestion);
     }
     else {
-      this.badAnswers.push(currentQuestion);
+      this.incorrectAnswers.push(currentQuestion);
     }
     return this.getProgress();
   }
@@ -71,12 +73,11 @@ export class Quiz
    */
   getProgress() {
     return {
-      startTime: this.startTime,
-      elapsedTime: (new Date() - this.startTime),
-      totalQuestions: this.questions.length,
-      questionsAsked: this.askedQuestions.size,
-      goodAnswers: this.goodAnswers.length,
-      badAnswers: this.badAnswers.length
+      "start-time": this.startTime,
+      "duration": (new Date() - this.startTime),
+      "questions": this.questions,
+      "correct-answers": this.correctAnswers,
+      "incorrect-answers": this.incorrectAnswers
     };
   }
 
@@ -85,8 +86,8 @@ export class Quiz
    */
   resetQuiz() {
     this.currentQuestionIndex = 0;
-    this.goodAnswers = [];
-    this.badAnswers = [];
+    this.correctAnswers = [];
+    this.incorrectAnswers = [];
     this.askedQuestions.clear();
   }
 }

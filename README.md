@@ -199,28 +199,24 @@ The interface will simply be a web-page with following pages:
    This data set comes originally from https://restcountries.com/v3.1/all but is enriched with additional "wikipedia" links,
    map and flag links and also "capital" translations in Dutch and Italian. All these come from https://en.wikipedia.org. 
 
-- `settings.json`: App settings, kept locally on device, can be exported/imported as following JSON object:
+- `country-study-help-settings.json`: App settings, kept locally on device, can be exported/imported as following JSON object:
   ```json
   {
-    "display-language": "en",           // en, it, nl
-    "default-search-country-set": "all",
+    "display-language": "en",               // en, it, nl
+    "info-languages": [ "en", "it", "nl" ],
+    "log-level": "info",                    // debug, warn, error
+    "search-country-set": "all",
+    "carousel-country-set": "all",
+    "carousel-reveal-time": "00:00:04",
+    "carousel-switch-time": "00:00:08",
+    "carousel-show-type": "flag", 
+    "default-quiz-type": "capital",
     "default-quiz-country-set": "all",
-    "default-quiz-country-count": "all",
-    "default-quiz-type": "capital"
+    "default-quiz-length": "all",
   }
   ```
 
-- `app-data.json`: App data, kept locally on device, can be exported/imported as following object JSON object:
-  ```json
-  {
-    "last-use-time": "2025-01-22T13:55:66Z",
-    "active-version": "1.2.0",
-    "settings": { },   // See above: settings.json
-    "quiz-stats": { }, // See below: quiz-stats.json    
-  }
-  ```
-
-- `quiz-stats.json`: Quiz statistics, kept locally on device, can be exported/imported as following JSON object, with as keys the start times:
+- `country-study-help-results.json`: Quiz results and statistics, kept locally on device, can be exported/imported as following JSON object, with as keys the start times:
   ```json
   { 
     "last-play-time": "2025-01-22T13:55:66Z",
@@ -235,7 +231,7 @@ The interface will simply be a web-page with following pages:
     "play-data": {                                 // Play info, with as key the start-time
       "2025-01-22T13:55:66Z": {
         "start-time": "2025-01-22T13:55:66Z",
-        "time-in-millis": 12565254,
+        "duration": 12565254,
         "answers": 88,
         "score": 0.7254,
         "quiz-settings": {
@@ -282,13 +278,14 @@ Other country information from: https://en.wikipedia.org
 - Using wikipedia maps to show for countries
 - Quiz works and results can be stored locally
 - Settings UI is available and settings can be imported/exported and saved locally
+- Keep track of quiz results in browser storage
+- A quiz stats page lists a summary of quiz results
+  and new quiz results can be added
 
 ### Ongoing:
+- Make 'initial splash screen view'
 - Make sure country/capital names are not put in a table, but "move up"
 - Keep track of last-use-time + active-version in browser storage
-- Keep track of quiz stats in browser storage
-- Create combined `Settings / Stats` page
-- Allow importing/exporting quiz stats
 - Ensure quiz setup takes setting into account
 
 ### Still todo:

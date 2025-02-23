@@ -1,7 +1,8 @@
 import log from './logging.mjs';
 import utils from './utils.mjs';
 
-const SETTINGS_KEY = 'com.pellicciotta.countries.settings';
+const STORAGE_KEY = 'com.pellicciotta.countries.settings';
+const DEFAULT_FILE_NAME = 'country-study-help-settings.json';
 
 export const DEFAULT_SETTINGS = {
   // Global app settings:
@@ -68,12 +69,12 @@ export const QUIZ_TYPES = [
 
 export class Settings {
   constructor() {
-    this.settingsKey = 'com.pellicciotta.countries.settings';
+    this.settingsKey = STORAGE_KEY;
     this.settings = this._normalizeSettings(DEFAULT_SETTINGS);
   }
 
   /**
-   *  Load settings from local storage.
+   * Load settings from local storage.
    */
   loadSettings() {
     let loadedSettings = localStorage.getItem(this.settingsKey);
@@ -118,7 +119,7 @@ export class Settings {
   }
 
   /**
-   *  Save settings to local storage.
+   * Save settings to local storage.
    */
   saveSettings() {
     try {
@@ -133,7 +134,7 @@ export class Settings {
   /**
    * Export settings to a file.
    */
-  exportSettings(fileName = 'settings.json') {
+  exportSettings(fileName = DEFAULT_FILE_NAME) {
     const blob = new Blob([JSON.stringify(this.settings)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');

@@ -22,14 +22,16 @@
         <button class="dropdown-button">
           <i class="search-mode fa-solid fa-search"></i>
           <i class="carousel-mode fa-solid fa-camera-rotate"></i>
-          <i class="quiz-mode fa-solid fa-question"></i>
+          <i class="quiz-mode fa-solid fa-gamepad"></i>
+          <i class="quiz-stats-mode fa-solid fa-ranking-star"></i>
           <i class="settings-mode fa-solid fa-gear"></i>
           <i class="about-mode fa-solid fa-info"></i>
         </button>
         <div class="dropdown-content">
           <button class="option-button" data-mode="search"><i class="fa-solid fa-search"></i><label>Search</label></button>
           <button class="option-button" data-mode="carousel"><i class="fa-solid fa-camera-rotate"></i><label>Carousel</label></button>
-          <button class="option-button" data-mode="quiz-setup"><i class="fa-solid fa-question"></i><label>Quiz</label></button>
+          <button class="option-button" data-mode="quiz-setup"><i class="fa-solid fa-gamepad"></i><label>Quiz</label></button>
+          <button class="option-button" data-mode="quiz-stats"><i class="fa-solid fa-ranking-star"></i><label>Stats</label></button>
           <button class="option-button" data-mode="settings"><i class="fa-solid fa-gear"></i><label>Settings</label></button>
           <button class="option-button" data-mode="about"><i class="fa-solid fa-info"></i><label>About</label></button>
         </div>
@@ -100,6 +102,11 @@
         <button id='save-quiz-results'><i class="fa-solid fa-bookmark"></i><label>Save Result</label></button>        
       </section>
 
+      <!-- Quiz Stats View: actions -->
+      <section id="quiz-stats-controls">
+        <h1 class="ls">Quiz Stats</h1>
+      </section>      
+
     </section>
 
     <!-- About View: -->
@@ -152,6 +159,9 @@
       <h1>Quiz Results</h1>
       <p id="results-quiz-remarks"></p>
 
+      <label for="results-quiz-total-questions">Total questions</label>
+      <input id='results-quiz-total-questions' type="number" readonly>
+
       <label for="results-quiz-questions-answered">Questions answered</label>
       <input id='results-quiz-questions-answered' type="number" readonly>
 
@@ -172,6 +182,49 @@
       </span>  
     </section>
 
+    <!-- Quiz Results View: -->
+    <section id="quiz-stats">
+      <h1>Quiz Stats</h1>
+      <label for="quiz-stats-last-played">Last play date</label>
+      <input id='quiz-stats-last-played' type="text" readonly>
+      <label for="quiz-stats-total-played">Quizzes played</label>
+      <input id='quiz-stats-total-played' type="number" readonly>
+      <label for="quiz-stats-total-answered">Questions answered</label>
+      <input id='quiz-stats-total-answered' type="number" readonly>
+      <label for="quiz-stats-average-duration">Average duration</label>
+      <input id='quiz-stats-average-duration' type="text" readonly>
+      <label for="quiz-stats-average-score">Average score</label>
+      <input id='quiz-stats-average-score' type="text" readonly>
+
+      <h1>Top Scores</h1>
+      <label for="quiz-stats-top-under20-score">Best score &lt;20 answers</label>
+      <div class="top-score">
+        <input id='quiz-stats-top-under20-score' type="text" value="80%" readonly> 
+        <input id='quiz-stats-top-under20-score-date' type="text" value="2025-01-04" readonly> 
+      </div>
+      <label for="quiz-stats-top-score-from20to50">Best score [21, 50] answers</label>
+      <div class="top-score">
+        <input id='quiz-stats-top-score-from20to50' type="text" value="70%" readonly> 
+        <input id='quiz-stats-top-score-from20to50-date' type="text" value="2025-01-03" readonly> 
+      </div>
+      <label for="quiz-stats-top-score-from50to100">Best score [51, 100] answers</label>
+      <div class="top-score">
+        <input id='quiz-stats-top-score-from50to100' type="text" value="60%" readonly> 
+        <input id='quiz-stats-top-score-from50to100-date' type="text" value="2025-01-02" readonly> 
+      </div>
+      <label for="quiz-stats-top-score-over100">Best score &gt;100 answers</label>
+      <div class="top-score">
+        <input id='quiz-stats-top-score-over100' type="text" value="50%" readonly> 
+        <input id='quiz-stats-top-score-over100-date' type="text" value="2025-01-01" readonly> 
+      </div>
+
+      <h1>Import &amp; Export</h1>
+      <input id='quiz-stats-import-file' type="file" accept=".json" title="Import stats from a file">
+      <button id='quiz-stats-import'><i class="fa-solid fa-file-arrow-up"></i><label>Import Stats</label></button>
+      <button id='quiz-stats-export'><i class="fa-solid fa-file-arrow-down"></i><label>Export Stats</label></button>
+
+    </section>
+
     <!-- Settings View: -->
     <section id="settings">
       <h1>Global App Settings</h1>
@@ -183,15 +236,19 @@
       </select>  
 
       <h1>Country Info Languages</h1>
-      <label for="setting-info-language-en" value='en'><img class="language" src="/img/flags/1x1/gb-eng.svg"> English</label>
-      <input id="setting-info-language-en" type="checkbox" checked>
-      
-      <label for="setting-info-language-nl" value='nl'><img class="language" src="/img/flags/1x1/nl.svg"> Nederlands</label>
-      <input id="setting-info-language-nl" type="checkbox" checked>
-      
-      <label for="setting-info-language-it" value='it'><img class="language" src="/img/flags/1x1/it.svg"> Italiano</label>     
-      <input id="setting-info-language-it" type="checkbox" checked>
-      
+      <div class="checkbox-setting">
+        <label for="setting-info-language-en" value='en'><img class="language" src="/img/flags/1x1/gb-eng.svg"> English</label>
+        <input id="setting-info-language-en" type="checkbox" checked>
+      </div>
+      <div class="checkbox-setting">
+        <label for="setting-info-language-nl" value='nl'><img class="language" src="/img/flags/1x1/nl.svg"> Nederlands</label>
+        <input id="setting-info-language-nl" type="checkbox" checked>
+      </div>
+      <div class="checkbox-setting">
+        <label for="setting-info-language-it" value='it'><img class="language" src="/img/flags/1x1/it.svg"> Italiano</label>     
+        <input id="setting-info-language-it" type="checkbox" checked>
+      </div>
+
       <h1>Search Settings</h1>
       <label for="setting-search-country-set">Default search country set</label>
       <select id='setting-search-country-set'>
@@ -248,8 +305,8 @@
 
       <h1>Import &amp; Export</h1>
       <input id='settings-import-file' type="file" accept=".json" title="Import settings from a file">
-      <button id='import-settings'><i class="fa-solid fa-file-arrow-up"></i><label class="ls">Import Settings</label></button>
-      <button id='export-settings'><i class="fa-solid fa-file-arrow-down"></i><label class="ls">Export Settings</label></button>
+      <button id='import-settings'><i class="fa-solid fa-file-arrow-up"></i><label>Import Settings</label></button>
+      <button id='export-settings'><i class="fa-solid fa-file-arrow-down"></i><label>Export Settings</label></button>
     </section>    
 
     <!-- Quiz & Search Views: -->   

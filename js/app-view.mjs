@@ -9,6 +9,7 @@ import { SettingsView } from './settings-view.mjs';
 import { QuizView } from './quiz-view.mjs';
 import { QuizSetupView } from './quiz-setup-view.mjs';
 import { QuizResultsView } from './quiz-results-view.mjs';
+import { QuizStatsView } from './quiz-stats-view.mjs';
 
 const STORAGE_KEY = 'com.pellicciotta.countries';	
 
@@ -16,9 +17,10 @@ const STORAGE_KEY = 'com.pellicciotta.countries';
  *  The main application view.
  */
 export class AppView extends EventTargetMixin(Object) {
-  constructor(settings) {
+  constructor(settings, results) {
     super();
     this.settings = settings;
+    this.results = results;
   }
 
   attach(parentElement) {
@@ -35,6 +37,7 @@ export class AppView extends EventTargetMixin(Object) {
     this.quizView = new QuizView(this.parent, this);
     this.quizSetupView = new QuizSetupView(this.parent, this);
     this.quizResultsView = new QuizResultsView(this.parent, this);
+    this.quizStatsView = new QuizStatsView(this.parent, this);
 
     this.activeView = this.searchView;
 
@@ -62,40 +65,13 @@ export class AppView extends EventTargetMixin(Object) {
 
   detach() {
     this.parent = null;
-    this.country = null;
     this.activeViewMode = 'initial';
   }
 
   // Actions:
 
-  _startQuiz(quizOptions) {
-    log.info('Starting quiz', quizOptions);
-    this.activeViewMode = 'quiz-play';
-    this.parent.setAttribute("data-mode", 'quiz-play');
-    this.activeView = this.quizView;
-    this.activeView.activate(quizOptions);
-  }
-
-  _stopQuiz(quizResults) {
-    log.info('Stopping quiz with results:', quizResults);
-    this.activeViewMode = 'quiz-results';
-    this.parent.setAttribute("data-mode", 'quiz-results');
-    this.activeView = this.quizResultsView;
-    this.activeView.activate(quizResults);
-  }
-
   _saveQuizResults(quizResults) {
-    log.info('Saving quiz results:', quizResults);
-    const savedResults = JSON.parse(localStorage.getItem(STORAGE_KEY)) || { };
-    savedResults[quizResults.startTime] = quizResults;
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(savedResults));
-  }
-
-  _importQuizStats() {
-  }
-
-  _exportQuizStats() {
-
+    this.results.addNewResult(quizResults);
   }
 
   switchToView(view, data) {
@@ -120,6 +96,9 @@ export class AppView extends EventTargetMixin(Object) {
     }
     else if (this.activeViewMode === 'quiz-results') {
       this.activeView = this.quizResultsView;
+    }
+    else if (this.activeViewMode === 'quiz-stats') {
+      this.activeView = this.quizStatsView;
     }
     else if (this.activeViewMode === 'settings') {
       this.activeView = this.settingsView;

@@ -123,9 +123,11 @@ export class CarouselView extends EventTargetMixin(Object) {
       }, this.carouselRevealTimeMillis);
     }
     // Progress:
-    this.shownCountriesSpan.textContent = progress.questionsAsked;
-    this.totalCountriesSpan.textContent = this.carouselCountryCodes.length;
-    this.progressPercentageSpan.textContent = ' ('+ (progress.questionsAsked / this.carouselCountryCodes.length * 100).toFixed(0) + '%)';
+    const availableQuestions = progress.questions.length;
+    const answersGiven = progress.correctAnswers.length + progress.incorrectAnswers.length;
+    this.shownCountriesSpan.textContent = answersGiven;
+    this.totalCountriesSpan.textContent = availableQuestions;
+    this.progressPercentageSpan.textContent = ' ('+ (answersGiven / availableQuestions * 100).toFixed(0) + '%)';
   }
 
   // Event Handlers:

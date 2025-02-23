@@ -47,7 +47,7 @@ export function createLink(href, text, target = null) {
   return a;
 }
 
-export function formatDuration(milliseconds) {
+export function toDurationStr(milliseconds) {
   const totalSeconds = Math.floor(milliseconds / 1000);
   const hours = Math.floor(totalSeconds / 3600);
   const minutes = Math.floor((totalSeconds % 3600) / 60);
@@ -101,6 +101,58 @@ export function fromMillisToElapsedTimeStr(millis) {
   return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 }
 
+/**
+ *  Converts a value to a relative time string representation.
+ * 
+ *  @param {*} value A date value.
+ *  @returns A string representation of the relative time from now.
+ */
+export function toRelativeTimeStr(value) {
+  const now = new Date();
+  const diff = now - new Date(value);
+
+  if (diff < 1000) {
+    return 'just now';
+  }
+  if (diff < 60 * 1000) {
+    return `${Math.floor(diff / 1000)} seconds ago`;
+  }
+  if (diff < 60 * 60 * 1000) {
+    return `${Math.floor(diff / (60 * 1000))} minutes ago`;
+  }
+  if (diff < 24 * 60 * 60 * 1000) {
+    return `${Math.floor(diff / (60 * 60 * 1000))} hours ago`;
+  }
+  if (diff < 7 * 24 * 60 * 60 * 1000) {
+    return `${Math.floor(diff / (24 * 60 * 60 * 1000))} days ago`;
+  }
+  if (diff < 30 * 24 * 60 * 60 * 1000) {
+    return `${Math.floor(diff / (7 * 24 * 60 * 60 * 1000))} weeks ago`;
+  }
+  if (diff < 365 * 24 * 60 * 60 * 1000) {
+    return `${Math.floor(diff / (30 * 24 * 60 * 60 * 1000))} months ago`;
+  }
+  return `${Math.floor(diff / (365 * 24 * 60 * 60 * 1000))} years ago`;
+}
+
+/**
+ *  Converts a value to a percentage string representation.
+ * 
+ *  @param {*} value A value.
+ *  @returns A percentage string representation of the value, with two decimal digits.
+ */
+export function toPercentageStr(value) {
+  return `${Math.round(value * 100).toFixed(2)}%`;
+}
+
+export function toDateTimeStr(value) {
+  if (!value) {
+    return '?';
+  }
+  let date = new Date(value);
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}:${String(date.getSeconds()).padStart(2, '0')}`;
+}
+
 export default {
   /* Utility functions */
   normalizeName,
@@ -110,5 +162,8 @@ export default {
   capitalize,
   createLink,
   createOptionElement,
-  formatDuration
+  toDurationStr,
+  toRelativeTimeStr,
+  toPercentageStr,
+  toDateTimeStr
 }
