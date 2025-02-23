@@ -60,9 +60,7 @@ export class CarouselView extends EventTargetMixin(Object) {
     this.countryPanel.classList.add('carousel-paused');
     this.countryPanel.classList.remove('no-country-found');
     this.countryView.setInfoLanguages(this.app.settings.getSetting('info-languages', []));
-    this.startCarouselButton.removeAttribute('disabled');
-    this.pauseCarouselButton.setAttribute('disabled', 'disabled');
-    this.onStartCarousel();
+    this.onPauseCarousel();
   }
 
   deactivate() {
@@ -102,6 +100,7 @@ export class CarouselView extends EventTargetMixin(Object) {
       cc = this.carouselInRandomOrder.getNextQuestion();
     }
     log.debug('Next country selected:', cc);
+    this.carouselInRandomOrder.recordAnswer(true); // Pretend good answer
     const progress = this.carouselInRandomOrder.getProgress();
     this.activeCountry = countries.getCountryByCode(cc);
     // Country:
@@ -124,7 +123,7 @@ export class CarouselView extends EventTargetMixin(Object) {
     }
     // Progress:
     const availableQuestions = progress.questions.length;
-    const answersGiven = progress.correctAnswers.length + progress.incorrectAnswers.length;
+    const answersGiven = progress["correct-answers"].length; // Since always pretending a good answer
     this.shownCountriesSpan.textContent = answersGiven;
     this.totalCountriesSpan.textContent = availableQuestions;
     this.progressPercentageSpan.textContent = ' ('+ (answersGiven / availableQuestions * 100).toFixed(0) + '%)';
@@ -141,6 +140,7 @@ export class CarouselView extends EventTargetMixin(Object) {
       clearInterval(this.carouselSwitchTimer);
       this.carouselSwitchTimer = null;
     }
+    this.showNextCountry();
     this.carouselSwitchTimer = setInterval(() => { this.showNextCountry(); }, this.carouselSwitchTimeMillis);
   }
 
