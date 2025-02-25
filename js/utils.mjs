@@ -1,3 +1,12 @@
+// General purpose utility functions
+
+/**
+ *  Normalizes a name by converting it to lowercase, replacing spaces with hyphens
+ *  and removing diacritics.
+ * 
+ *  @param {*} name The name to normalize.
+ *  @returns The normalized name.
+ */
 export function normalizeName(name) {
   return name
     .replace(/([a-z0-9])([A-Z])/g, '$1-$2')         // fooBar -> foo-Bar
@@ -8,6 +17,12 @@ export function normalizeName(name) {
     .replace(/[+ ]/g, '-');                         // foo+bar -> foo-bar, foo bar -> foo-bar
 }
 
+/**
+ *  Capitalizes the first letter of a string.
+ * 
+ *  @param {*} str The string to capitalize.
+ *  @returns The capitalized string.
+ */
 export function capitalize(str) {
   if (typeof str !== 'string' || str.length === 0) {
     return '';
@@ -15,6 +30,13 @@ export function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
+/**
+ *  Creates an option element with the given value and innerHTML.
+ * 
+ *  @param {*} value The value of the option.
+ *  @param {*} innerHTML The inner HTML of the option.   
+ *  @returns The created option element. 
+ */
 export function createOptionElement(value, innerHTML) {
   let option = document.createElement('option');
   option.value = value;
@@ -22,6 +44,14 @@ export function createOptionElement(value, innerHTML) {
   return option;
 }
 
+/**
+ *  Creates an anchor element with the given href, text and target.
+ * 
+ *  @param {string} href The URL of the link.
+ *  @param {string} text The text of the link.
+ *  @param {string} target The target of the link.
+ *  @returns The created anchor element.
+ */ 
 export function createLink(href, text, target = null) {
   let a = Object.assign(document.createElement("a"), {
     href: href,
@@ -47,6 +77,12 @@ export function createLink(href, text, target = null) {
   return a;
 }
 
+/**
+ *  Converts milliseconds to a duration string representation.
+ *  @param {*} milliseconds The duration in milliseconds.  
+ *  @returns A string representation of the duration in the formats 
+ *           hh'h' mm'm' ss's', mm'm' ss's' or ss's'. 
+ */
 export function toDurationStr(milliseconds) {
   const totalSeconds = Math.floor(milliseconds / 1000);
   const hours = Math.floor(totalSeconds / 3600);
@@ -61,6 +97,12 @@ export function toDurationStr(milliseconds) {
 }
 
 
+/**
+ *  Checks if a value is a number.
+ * 
+ *  @param {*} value The value to check.
+ *  @returns True if the value is a number, false otherwise.
+ */
 export function isNumber(value) {
   value = +value;
   return typeof value === 'number' && isFinite(value);
