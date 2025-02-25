@@ -7,6 +7,105 @@
   "background_color": "#0e6eb8",
   "theme_color": "#0e6eb8",
   "display": "standalone",
-  "shortcuts": [],
-  "icons": []
+  "shortcuts": [
+    {
+      "name": "Search",
+      "url": "/search",
+      "description": "Search for specific countries",
+      "icons": [
+        {
+          "src": "/img/magnifying-glass-solid.svg",
+          "type": "image/svg+xml",
+          "sizes": "150x150"
+        }
+      ]
+    },
+    {
+      "name": "Carousel",
+      "url": "/carousel",
+      "description": "Country slideshow",
+      "icons": [
+        {
+          "src": "/img/camera-rotate-solid.svg",
+          "type": "image/svg+xml",
+          "sizes": "188x150"
+        }
+      ]
+    },
+    {
+      "name": "Quiz",
+      "url": "/quiz-setup",
+      "description": "Play a country quiz",
+      "icons": [
+        {
+          "src": "/img/gamepad-solid.svg",
+          "type": "image/svg+xml",
+          "sizes": "188x150"
+        }
+      ]
+    }, 
+    {
+      "name": "Stats",
+      "url": "/quiz-stats",
+      "description": "Quiz results & stats",
+      "icons": [
+        {
+          "src": "/img/ranking-star-solid.svg",
+          "type": "image/svg+xml",
+          "sizes": "188x150"
+        }
+      ]
+    },            
+    {
+      "name": "Settings",
+      "url": "/settings",
+      "description": "App settings",
+      "icons": [
+        {
+          "src": "/img/gear-solid.svg",
+          "type": "image/svg+xml",
+          "sizes": "150x150"
+        }
+      ]
+    }, 
+    {
+      "name": "About",
+      "url": "/about",
+      "description": "App info and credits",
+      "icons": [
+        {
+          "src": "/img/info-solid.svg",
+          "type": "image/svg+xml",
+          "sizes": "56x150"
+        }
+      ]
+    }        
+  ],
+  "icons": [
+    {
+      "src": "/img/globe-solid.svg",
+      "type": "image/svg+xml",
+      "sizes": "150x150"
+    },
+    {
+      "src": "/img/globe-solid-512x512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    },
+    {
+      "src": "/img/globe-solid-256x256.png",
+      "type": "image/png",
+      "sizes": "256x256"
+    },
+    {
+      "src": "/img/globe-solid-144x144.png",
+      "type": "image/png",
+      "sizes": "144x144"
+    },
+    {
+      "src": "/img/globe-solid-96x96.png",
+      "type": "image/png",
+      "sizes": "96x96"
+    }
+  ]
 }

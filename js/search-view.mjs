@@ -96,6 +96,7 @@ export class SearchView extends EventTargetMixin(Object) {
     this.searchBoxInput.removeAttribute('disabled');
     this.searchCountryButton.removeAttribute('disabled');
     this.randomCountryButton.removeAttribute('disabled');	
+    this.searchBoxInput.focus();
   }
 
   deactivate() {

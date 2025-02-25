@@ -59,8 +59,9 @@ export class AppView extends EventTargetMixin(Object) {
     this.parent.setAttribute('lang', displayLanguage);
     
     // Activate correct, initial view
-    history.replaceState({ view: 'search', country: null }, '', `${window.location.origin}/search`);    
-    this.switchToView(window.location.pathname?.replaceAll('/', '') || 'search', window.location.hash?.substring(1));
+    const initialView = window.location.pathname?.replaceAll('/', '') || 'about';
+    history.replaceState({ view: initialView, country: null }, '', `${window.location.origin}/search`);    
+    this.switchToView(initialView, window.location.hash?.substring(1));
   }
 
   detach() {
