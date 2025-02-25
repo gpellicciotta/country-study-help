@@ -13,11 +13,9 @@
       "url": "/search",
       "description": "Search for specific countries",
       "icons": [
-        {
-          "src": "/img/magnifying-glass-solid.svg",
-          "type": "image/svg+xml",
-          "sizes": "150x150"
-        }
+        { "src": "/img/magnifying-glass-solid.svg",         "type": "image/svg+xml", "sizes": "any" },
+        { "src": "/img/magnifying-glass-solid-512x512.png", "type": "image/png",     "sizes": "512x512" },
+        { "src": "/img/magnifying-glass-solid-256x256.png", "type": "image/png",     "sizes": "256x256" }
       ]
     },
     {
@@ -25,11 +23,9 @@
       "url": "/carousel",
       "description": "Country slideshow",
       "icons": [
-        {
-          "src": "/img/camera-rotate-solid.svg",
-          "type": "image/svg+xml",
-          "sizes": "188x150"
-        }
+        { "src": "/img/camera-rotate-solid.svg",         "type": "image/svg+xml", "sizes": "any" },
+        { "src": "/img/camera-rotate-solid-512x512.png", "type": "image/png",     "sizes": "512x512" },
+        { "src": "/img/camera-rotate-solid-256x256.png", "type": "image/png",     "sizes": "256x256" }
       ]
     },
     {
@@ -37,11 +33,9 @@
       "url": "/quiz-setup",
       "description": "Play a country quiz",
       "icons": [
-        {
-          "src": "/img/gamepad-solid.svg",
-          "type": "image/svg+xml",
-          "sizes": "188x150"
-        }
+        { "src": "/img/gamepad-solid.svg",          "type": "image/svg+xml",   "sizes": "any" },
+        { "src": "/img/gamepad-solid-512x512.png",  "type": "image/png",       "sizes": "512x512" },
+        { "src": "/img/gamepad-solid-256x256.png",  "type": "image/png",       "sizes": "256x256" }
       ]
     }, 
     {
@@ -49,11 +43,9 @@
       "url": "/quiz-stats",
       "description": "Quiz results & stats",
       "icons": [
-        {
-          "src": "/img/ranking-star-solid.svg",
-          "type": "image/svg+xml",
-          "sizes": "188x150"
-        }
+        { "src": "/img/ranking-star-solid.svg",         "type": "image/svg+xml", "sizes": "any"  },
+        { "src": "/img/ranking-star-solid-512x512.png", "type": "image/png",     "sizes": "512x512" },
+        { "src": "/img/ranking-star-solid-256x256.png", "type": "image/png",     "sizes": "256x256" }
       ]
     },            
     {
@@ -61,11 +53,9 @@
       "url": "/settings",
       "description": "App settings",
       "icons": [
-        {
-          "src": "/img/gear-solid.svg",
-          "type": "image/svg+xml",
-          "sizes": "150x150"
-        }
+        { "src": "/img/gear-solid.svg",          "type": "image/svg+xml",    "sizes": "any" },
+        { "src": "/img/gear-solid-512x512.png",  "type": "image/png",        "sizes": "512x512" },
+        { "src": "/img/gear-solid-256x256.png",  "type": "image/png",        "sizes": "256x256" }
       ]
     }, 
     {
@@ -73,11 +63,9 @@
       "url": "/about",
       "description": "App info and credits",
       "icons": [
-        {
-          "src": "/img/info-solid.svg",
-          "type": "image/svg+xml",
-          "sizes": "56x150"
-        }
+        { "src": "/img/info-solid.svg",         "type": "image/svg+xml",  "sizes": "any" },
+        { "src": "/img/info-solid-512x512.png", "type": "image/png",      "sizes": "512x512" },
+        { "src": "/img/info-solid-256x256.png", "type": "image/png",      "sizes": "256x256" }
       ]
     }        
   ],
