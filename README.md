@@ -283,10 +283,10 @@ Other country information from: https://en.wikipedia.org
   and new quiz results can be added
 
 ### Ongoing:
+- Make 404.html page so GitHub pages can serve all URLs that are part of the SPA, by always redirecting to index.html
 - Make 'initial splash screen view'
 - Make sure country/capital names are not put in a table, but "move up"
 - Keep track of last-use-time + active-version in browser storage
-- Ensure quiz setup takes setting into account
 
 ### Still todo:
 - Add world/google map of all countries
