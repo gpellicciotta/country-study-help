@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Page Not Found</title>
+    <meta charset='utf-8'>
+    <meta name='description' content='Countries of the World Study Help'>
+    <meta name='keywords' content='Search info about a country, or a do a quiz to memory flags, countries and capitals'>
+    <meta name='author' content='Giovanni Pellicciotta'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <meta name='theme-color' content='#0e6eb8'>
+
+    <!-- Always redirect to main page: -->
+    <meta http-equiv="refresh" content="0;url=index.html">
+
+    <link rel='manifest' href='./manifest.json'>
+    <link rel='shortcut icon' href='./img/globe-solid.svg'>
+    <link type='text/css' rel='preload' as='style' onload='this.rel="stylesheet"' href='https://fonts.googleapis.com/css?family=Roboto&display=swap'>
+    <link href='./style.css' rel='stylesheet'>
+    <script src="https://kit.fontawesome.com/1c60ca333d.js" crossorigin="anonymous"></script>
+
+    <script>
+      // List of paths to redirect to index.html
+      const redirectPaths = ['/search', '/about', '/carousel', '/settings', '/quiz', '/quiz-setup', '/quiz-play', '/quiz-results', '/quiz-stats'];
+      // Get the current path
+      const currentPath = window.location.pathname;
+      // Check if the current path is in the list of redirect paths
+      if (redirectPaths.includes(currentPath)) {
+        // Redirect to index.html
+        window.location.replace('index.html');
+      }
+      else {
+        // Display a 404 message
+        document.write('<h1>404 - Page Not Found</h1>');
+        document.write('<p>The page you are looking for does not exist.</p>');
+      }
+    </script>
+  </head>
+  <body></body>
+</html>
