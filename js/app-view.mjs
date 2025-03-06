@@ -67,6 +67,7 @@ export class AppView extends EventTargetMixin(Object) {
   #getInitialView() {
     const redirectHref = window.sessionStorage.getItem("redirectedFrom404");
     if (redirectHref) {
+      log.info("Redirected from 404 page with URL: ", redirectHref);
       window.sessionStorage.removeItem("redirectedFrom404");
       const url = new URL(redirectHref);
       const view = url.pathname?.replaceAll('/', '') || 'about';
@@ -92,6 +93,7 @@ export class AppView extends EventTargetMixin(Object) {
   }
 
   switchToView(view, data) {
+    log.info("Switching to view:", view, "with data:", data);
     let event = null
     if (view !== this.activeViewMode) {
       this.activeView.deactivate();
