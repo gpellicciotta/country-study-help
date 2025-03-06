@@ -21,11 +21,14 @@
         "name": "Run Tools",
         "request": "launch",
         "runtimeArgs": [
-          "run-script",
-          "tools",
-          "help"
+          "js/cache-tools.mjs",
+          "generate",
+          "--input-dir",
+          ".",
+          "--output-file",
+          "cache-data.json"
         ],
-        "runtimeExecutable": "npm",
+        "runtimeExecutable": "node",
         "skipFiles": [
           "<node_internals>/**"
         ],

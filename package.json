@@ -7,7 +7,8 @@
   "scripts": {
     "test": "mocha \"**/*.test.mjs\"",
     "test:watch": "nodemon --watch \"./**/*.mjs\" --exec \"npm test\"",
-    "tools": "node \"js/geo-tools.mjs\"",
+    "geo-tools": "node \"js/geo-tools.mjs\"",
+    "cache-tools": "node \"js/cache-tools.mjs\"",
     "live-server": "live-server --verbose --port=5500"
   },
   "keywords": [],
