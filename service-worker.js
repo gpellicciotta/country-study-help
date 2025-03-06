@@ -1,4 +1,7 @@
-const CACHE_NAME = 'v3';
+import log from './js/logging.mjs';
+
+const CACHE_NAME = 'v5';
+
 const urlsToCache = [
   '/data/world-countries.csv',
   '/data/world-countries.json',
@@ -23,7 +26,7 @@ self.addEventListener('install', event => {
               return cache.put(url, response);
             })
             .catch(error => {
-              console.error(`Failed to cache ${url}`);
+              log.error(`Failed to cache ${url}`);
             });
         });
 
@@ -46,7 +49,7 @@ self.addEventListener('install', event => {
                   return cache.put(url, response);
                 })
                 .catch(error => {
-                  console.warn(`Failed to cache ${url}`, error);
+                  log.warn(`Failed to cache ${url}`, error);
                 })
             );
           });
@@ -70,6 +73,7 @@ self.addEventListener('fetch', event => {
 });
 
 self.addEventListener('activate', event => {
+  log.info('Service worker activated');
   const cacheWhitelist = [CACHE_NAME];
   event.waitUntil(
     caches.keys().then(cacheNames => {

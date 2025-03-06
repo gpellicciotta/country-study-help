@@ -37,7 +37,7 @@ async function fireDomReady() {
 
 async function registerServiceWorker() {
   navigator.serviceWorker
-    .register('/service-worker.js')
+    .register('/service-worker.js', { type: 'module' })
     .then(registration => {
         log.debug('Service worker registration successful with scope: ', registration.scope);
      }, err => {
