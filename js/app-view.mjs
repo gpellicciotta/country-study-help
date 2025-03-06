@@ -11,8 +11,6 @@ import { QuizSetupView } from './quiz-setup-view.mjs';
 import { QuizResultsView } from './quiz-results-view.mjs';
 import { QuizStatsView } from './quiz-stats-view.mjs';
 
-const STORAGE_KEY = 'com.pellicciotta.countries';	
-
 /**
  *  The main application view.
  */

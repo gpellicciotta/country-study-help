@@ -1,6 +1,7 @@
 {
   "short_name": "Country Study Help",
   "name": "Country Study Help",
+  "version": "1.0.2-pre",
   "description": "Search info about a country, or a do a quiz to memory flags, countries and capitals.",
   "scope": "/",
   "start_url": "/",

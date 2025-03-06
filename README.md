@@ -281,12 +281,13 @@ Other country information from: https://en.wikipedia.org
 - Keep track of quiz results in browser storage
 - A quiz stats page lists a summary of quiz results
   and new quiz results can be added
+- Keeping track of last-activation-time + active-version in browser storage
 
 ### Ongoing:
 - Make 404.html page so GitHub pages can serve all URLs that are part of the SPA, by always redirecting to index.html
 - Make 'initial splash screen view'
 - Make sure country/capital names are not put in a table, but "move up"
-- Keep track of last-use-time + active-version in browser storage
+- Send message to service-worker to rebuild cache if active app version is newer than the last used one
 
 ### Still todo:
 - Add world/google map of all countries

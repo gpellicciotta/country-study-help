@@ -1,8 +1,15 @@
 import log from './logging.mjs';
 import countries from './countries.mjs';
+import utils from './utils.mjs';
 import { Settings } from './settings.mjs';
 import { QuizStats } from './quiz-stats.mjs';
 import { AppView } from './app-view.mjs';
+
+const STORAGE_KEY = 'com.pellicciotta.countries.app';
+const DEFAULT_APP = {
+  name: 'Country Study Help',	
+  version: '0.0.1-unversioned+' + utils.toDateTimeStr(),
+};
 
 // Set up logging:
 log.setLogLevel(log.INFO);
@@ -28,6 +35,21 @@ async function fireDomReady() {
   // Load country data
   let cnt = await countries.loadCountryData();
   log.info(`Country data has loaded: ${cnt} countries are known`); 
+
+  // Get app manifest 
+  let manifest = await utils.getAppManifest();
+  let app = JSON.parse(localStorage.getItem(STORAGE_KEY)) || DEFAULT_APP;
+  if (manifest) {
+    log.info("App manifest has been loaded:", manifest);    
+    app.name = manifest.name;
+    app.version = manifest.version;
+    app["last-activation-time"] = utils.toDateTimeStr();
+  } 
+  else {
+    log.error("App manifest could not be loaded:", manifest);
+  }
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(app));
+  log.info(`App '${app.name}' version ${app.version} is initializing...`);
 
   // Initialize the application view
   let appView = new AppView(settings, results);

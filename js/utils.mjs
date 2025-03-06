@@ -187,12 +187,44 @@ export function toPercentageStr(value) {
   return `${Math.round(value * 100).toFixed(2)}%`;
 }
 
+/**
+ *  Converts a value to a date-time string representation.
+ * 
+ *  @param {*} value A date-time value.
+ *  @returns A string representation of the date-time value in the format 'YYYY-MM-DD HH:MM:SS'.
+ */
 export function toDateTimeStr(value) {
   if (!value) {
-    return '?';
+    value = new Date();
   }
   let date = new Date(value);
   return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}:${String(date.getSeconds()).padStart(2, '0')}`;
+}
+
+let manifest = null;
+
+/**
+ *  Gets (and caches) the app manifest object.
+ * 
+ *  @param {boolean} [ignoreCache=false] If true, the cache will be ignored.
+ *  @returns The app manifest object, or null if the manifest could not be loaded. Will return a cached version if available.
+ */
+export async function getAppManifest(ignoreCache = false) {
+  if (!ignoreCache && (manifest !== null)) {
+    return manifest;
+  }
+  try {
+    const response = await fetch('/manifest.json');
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    manifest = await response.json();
+  } 
+  catch (error) {
+    log.error('Failed to load app manifest:', error);
+    manifest = null;
+  }
+  return manifest;
 }
 
 export default {
@@ -207,5 +239,6 @@ export default {
   toDurationStr,
   toRelativeTimeStr,
   toPercentageStr,
-  toDateTimeStr
+  toDateTimeStr,
+  getAppManifest
 }
