@@ -59,9 +59,25 @@ export class AppView extends EventTargetMixin(Object) {
     this.parent.setAttribute('lang', displayLanguage);
     
     // Activate correct, initial view
-    const initialView = window.location.pathname?.replaceAll('/', '') || 'about';
-    history.replaceState({ view: initialView, country: null }, '', `${window.location.origin}/search`);    
-    this.switchToView(initialView, window.location.hash?.substring(1));
+    const { initialView, initialData } = this.#getInitialView();
+    history.replaceState({ view: initialView, country: initialData }, '', `${window.location.origin}/search`);    
+    this.switchToView(initialView, initialData);
+  }
+
+  #getInitialView() {
+    const redirectHref = window.sessionStorage.getItem("redirectedFrom404");
+    if (redirectHref) {
+      window.sessionStorage.removeItem("redirectedFrom404");
+      const url = new URL(redirectHref);
+      const view = url.pathname?.replaceAll('/', '') || 'about';
+      const data = url.hash?.substring(1); // Remove leading '#'
+      return { view, data }
+    }
+    else {
+      const view = window.location.pathname?.replaceAll('/', '') || 'about';
+      const data = window.location.hash?.substring(1); // Remove leading '#'
+      return { view, data };
+    }
   }
 
   detach() {

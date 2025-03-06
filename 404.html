@@ -28,6 +28,7 @@
       if (redirectPaths.includes(currentPath)) {
         // Redirect to index.html
         console.log('404.html: redirecting to index.html from: ', currentPath);
+        window.sessionStorage.setItem('redirectedFrom404', window.location.href);
         window.location.replace('index.html');
       }
       else {
