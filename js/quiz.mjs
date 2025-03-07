@@ -1,8 +1,6 @@
 import log from './logging.mjs';
 import { normalizeName } from './utils.mjs';
 
-const STORAGE_KEY = 'com.pellicciotta.countries.stats';
-
 export class Quiz 
 {
   /**

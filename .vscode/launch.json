@@ -23,10 +23,8 @@
         "runtimeArgs": [
           "js/cache-tools.mjs",
           "generate",
-          "--input-dir",
-          ".",
-          "--output-file",
-          "cache-data.json"
+          "--input-dirs",  "data,js,img",
+          "--output-file", "cache-data.json"
         ],
         "runtimeExecutable": "node",
         "skipFiles": [

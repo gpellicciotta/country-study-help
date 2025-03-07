@@ -1,7 +1,7 @@
 import log from './logging.mjs';
 import utils from './utils.mjs';
 
-const STORAGE_KEY = 'com.pellicciotta.countries.settings';
+const SETTING_STORAGE_KEY = 'com.pellicciotta.countries.settings';
 const DEFAULT_FILE_NAME = 'country-study-help-settings.json';
 
 export const DEFAULT_SETTINGS = {
@@ -69,7 +69,7 @@ export const QUIZ_TYPES = [
 
 export class Settings {
   constructor() {
-    this.settingsKey = STORAGE_KEY;
+    this.settingsKey = SETTING_STORAGE_KEY;
     this.settings = this._normalizeSettings(DEFAULT_SETTINGS);
   }
 

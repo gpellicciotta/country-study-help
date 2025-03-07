@@ -84,9 +84,11 @@ export function setLogMessagePrefixFormat(format) {
 }
 
 export function getLogMessagePrefix(level) {
-  return _logMessagePrefixFormat
+  const p = _logMessagePrefixFormat
              .replace('${log-level}', _logLevelIndicator[level] || '')
-             .replace('${log-time}', new Date().toISOString());
+             .replace('${log-time}', new Date().toISOString())
+             .trimEnd();
+  return p;
 }
 
 /**

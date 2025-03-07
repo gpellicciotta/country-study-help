@@ -1,27 +1,20 @@
 import log from './logging.mjs';
 import countries from './countries.mjs';
 import utils from './utils.mjs';
+import constants from './constants.mjs';
 import { Settings } from './settings.mjs';
 import { QuizStats } from './quiz-stats.mjs';
 import { AppView } from './app-view.mjs';
 
-const STORAGE_KEY = 'com.pellicciotta.countries.app';
-const DEFAULT_APP = {
-  name: 'Country Study Help',	
-  version: '0.0.1-unversioned+' + utils.toDateTimeStr(),
-};
-
 // Set up logging:
 log.setLogLevel(log.INFO);
+log.setLogMessagePrefixFormat("app: ${log-level}");
 
 // Set up application view:
 window.addEventListener("load", fireDomReady, false);
 
 async function fireDomReady() {
-  log.info("DOM is ready.");
-
-  // Register service worker
-  registerServiceWorker();
+  log.info("DOM is ready");
 
   let settings = new Settings();
   settings.loadSettings();
@@ -38,19 +31,34 @@ async function fireDomReady() {
 
   // Get app manifest 
   let manifest = await utils.getAppManifest();
-  let app = JSON.parse(localStorage.getItem(STORAGE_KEY)) || DEFAULT_APP;
+  let updateServiceWorker = false;
+  const installedApp = JSON.parse(localStorage.getItem(constants.APP_STORAGE_KEY));
+  let app = JSON.parse(localStorage.getItem(constants.APP_STORAGE_KEY)) || { name: constants.APP_NAME, version: constants.APP_VERSION };
   if (manifest) {
     log.info("App manifest has been loaded:", manifest);    
     app.name = manifest.name;
     app.version = manifest.version;
     app["last-activation-time"] = utils.toDateTimeStr();
+    if (installedApp && (installedApp.version !== app.version)) {
+      updateServiceWorker = true;
+    }
   } 
   else {
     log.error("App manifest could not be loaded:", manifest);
+    if (installedApp) {
+      app = installedApp;
+    }
   }
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(app));
+  localStorage.setItem(constants.APP_STORAGE_KEY, JSON.stringify(app));
   log.info(`App '${app.name}' version ${app.version} is initializing...`);
 
+  // Register service worker
+  await registerServiceWorker().then(() => {
+    if (updateServiceWorker) {
+      navigator.serviceWorker.controller.postMessage({ type: 'reload-caches', data: 'all' });
+    }
+  });
+  
   // Initialize the application view
   let appView = new AppView(settings, results);
   appView.attach(document.body);
@@ -58,7 +66,7 @@ async function fireDomReady() {
 }
 
 async function registerServiceWorker() {
-  navigator.serviceWorker
+  return navigator.serviceWorker
     .register('/service-worker.js', { type: 'module' })
     .then(registration => {
         log.debug('Service worker registration successful with scope: ', registration.scope);
