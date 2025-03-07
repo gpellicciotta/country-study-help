@@ -57,7 +57,7 @@ export class AppView extends EventTargetMixin(Object) {
     this.parent.setAttribute('lang', displayLanguage);
     
     // Activate correct, initial view
-    const { initialView, initialData } = this.#getInitialView();
+    const [ initialView, initialData ] = this.#getInitialView();
     history.replaceState({ view: initialView, country: initialData }, '', `${window.location.origin}/search`);    
     this.switchToView(initialView, initialData);
   }
@@ -70,12 +70,12 @@ export class AppView extends EventTargetMixin(Object) {
       const url = new URL(redirectHref);
       const view = url.pathname?.replaceAll('/', '') || 'about';
       const data = url.hash?.substring(1); // Remove leading '#'
-      return { view, data }
+      return [ view, data ]
     }
     else {
       const view = window.location.pathname?.replaceAll('/', '') || 'about';
       const data = window.location.hash?.substring(1); // Remove leading '#'
-      return { view, data };
+      return [ view, data ];
     }
   }
 

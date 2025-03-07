@@ -272,6 +272,7 @@ Other country information from: https://en.wikipedia.org
 ### Works:
 - Simple country selection works
 - Picking a random country works
+- Searching for a known country works now too
 - Carousel mode in search view works: "play" countries indefinitely
 - The UI is mobile friendly and responsive
 - Countries and capitals have correct translations now (in Italian and Dutch)
@@ -286,8 +287,6 @@ Other country information from: https://en.wikipedia.org
 ### Ongoing:
 - Make 404.html page so GitHub pages can serve all URLs that are part of the SPA, by always redirecting to index.html
 - Make 'initial splash screen view'
-- Make sure country/capital names are not put in a table, but "move up"
-- Send message to service-worker to rebuild cache if active app version is newer than the last used one
 
 ### Still todo:
 - Add world/google map of all countries

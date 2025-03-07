@@ -47,32 +47,43 @@ export class SearchView extends EventTargetMixin(Object) {
     
     // Attach auto-complete data:
     this.searchList.innerHTML = '';
-    let searchTerms = new Set();
+    this.countryLookup = new Map();
+    let searchTerms = [];
     for (let cc of this.searchCountryCodes) {
       let country = countries.getCountryByCode(cc);
       log.debug(`Adding search items for country with code '${cc}'`, country);
-      searchTerms.add(country.dutch_country_name);
-      searchTerms.add(country.dutch_capital_name);
-      searchTerms.add(country.italian_country_name);
-      searchTerms.add(country.italian_capital_name);
-      searchTerms.add(country.name.common);
-      searchTerms.add(country.name.official);
+      searchTerms.push(country.dutch_country_name);
+      this.countryLookup.set(utils.normalizeName(country.dutch_country_name), cc);
+      searchTerms.push(country.dutch_capital_name);
+      this.countryLookup.set(utils.normalizeName(country.dutch_capital_name), cc);
+      searchTerms.push(country.italian_country_name);
+      this.countryLookup.set(utils.normalizeName(country.italian_country_name), cc);
+      searchTerms.push(country.italian_capital_name);
+      this.countryLookup.set(utils.normalizeName(country.italian_capital_name), cc);
+      searchTerms.push(country.name.common);
+      this.countryLookup.set(utils.normalizeName(country.name.common), cc);
+      searchTerms.push(country.name.official);
+      this.countryLookup.set(utils.normalizeName(country.name.official), cc);
       if (country.capital) {
         for (let capital of country.capital) {
-          searchTerms.add(capital);
+          searchTerms.push(capital);
+          this.countryLookup.set(utils.normalizeName(capital), cc);
         }
       }
       if (country.cca2) {
-        searchTerms.add(country.cca2);
+        searchTerms.push(country.cca2);
+        this.countryLookup.set(utils.normalizeName(country.cca2), cc);
       }
       if (country.cca3) {
-        searchTerms.add(country.cca3);
+        searchTerms.push(country.cca3);
+        this.countryLookup.set(utils.normalizeName(country.cca3), cc);
       }
       if (country.ccn3) {
-        searchTerms.add(country.ccn3);
+        searchTerms.push(country.ccn3);
+        this.countryLookup.set(utils.normalizeName(country.ccn3), cc);
       }
     }
-    searchTerms = Array.from(searchTerms).sort();
+    searchTerms.sort();
     for (let st of searchTerms) {
       this.searchList.appendChild(utils.createOptionElement(st));
     }
@@ -140,7 +151,7 @@ export class SearchView extends EventTargetMixin(Object) {
   }
 
   tryToShowCountry(countryQuery) {
-    let cc = countries.getCountryCode(countryQuery);
+    let cc = this.countryLookup.get(utils.normalizeName(countryQuery));
     if (cc) {
       this.showCountry(cc);
       return true;
@@ -173,7 +184,7 @@ export class SearchView extends EventTargetMixin(Object) {
     let searchValue = this.searchBoxInput.value;
     log.debug(`Search country for search term '${searchValue}'`);
     // Handle input value changes
-    let cc = countries.getCountryCode(searchValue);
+    let cc = this.countryLookup.get(utils.normalizeName(searchValue));
     if (cc) {
       this.searchBoxInput.classList.remove('not-found');
       log.debug("Country code found:", cc);
@@ -189,7 +200,7 @@ export class SearchView extends EventTargetMixin(Object) {
     let searchValue = this.searchBoxInput.value;
     log.debug('Input box event fired:', event.target.value);
     // Handle input value changes
-    let cc = countries.getCountryCode(searchValue);
+    let cc = this.countryLookup.get(utils.normalizeName(searchValue));
     if (cc) {
       this.searchBoxInput.classList.remove('not-found');
       log.debug("Country code found:", cc);
