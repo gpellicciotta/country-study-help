@@ -63,6 +63,7 @@ export class AppView extends EventTargetMixin(Object) {
   }
 
   #getInitialView() {
+    log.info("Referred from:", document.referrer);
     const redirectHref = window.sessionStorage.getItem("redirectedFrom404");
     if (redirectHref) {
       log.info("Redirected from 404 page with URL: ", redirectHref);
