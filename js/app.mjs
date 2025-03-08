@@ -32,8 +32,9 @@ async function fireDomReady() {
   // Get app manifest 
   let manifest = await utils.getAppManifest();
   let updateServiceWorker = false;
-  const installedApp = JSON.parse(localStorage.getItem(constants.APP_STORAGE_KEY));
-  let app = JSON.parse(localStorage.getItem(constants.APP_STORAGE_KEY)) || { name: constants.APP_NAME, version: constants.APP_VERSION };
+  const defaultApp = { name: constants.APP_NAME, version: constants.APP_VERSION };
+  const installedApp = JSON.parse(localStorage.getItem(constants.APP_STORAGE_KEY)) || {};
+  let app = {...installedApp, ...defaultApp};
   if (manifest) {
     log.info("App manifest has been loaded:", manifest);    
     if (manifest.name) {
