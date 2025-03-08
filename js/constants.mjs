@@ -1,6 +1,6 @@
 // App identity:
 export const APP_NAME = "Country Study Help";
-export const APP_VERSION = "1.0.4-pre";
+export const APP_VERSION = "1.0.5-pre";
 
 // Storage keys:
 export const APP_STORAGE_KEY = 'com.pellicciotta.countries.app';
