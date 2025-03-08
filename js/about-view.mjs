@@ -1,9 +1,7 @@
 import log from './logging.mjs';
-import countries from './countries.mjs';
+import constants from './constants.mjs';
 
 import { EventTargetMixin } from './event-target-mixin.mjs';
-import { CountryView } from './country-view.mjs';
-import { Quiz } from './quiz.mjs';
 
 /**
  *  The search view.
@@ -27,6 +25,12 @@ export class AboutView extends EventTargetMixin(Object) {
     // Get UI control elements:
 
     // Get UI display elements:
+    this.parent.querySelector('.app-name').forEach(el => {
+      el.textContent = constants.APP_NAME;
+    });
+    this.parent.querySelector('.app-version').forEach(el => {
+      el.textContent = constants.APP_VERSION;
+    });
 
     // Attach event handlers: 
   }
