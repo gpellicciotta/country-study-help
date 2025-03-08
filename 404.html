@@ -13,7 +13,6 @@
     <!-- Always redirect to index.html: -->
     <script>
       console.log('404: Redirecting to index.html from: ', window.location.href);
-      window.sessionStorage.setItem('redirectedFrom404', window.location.href);
       window.location.replace('index.html');
     </script>
   </head>

@@ -63,12 +63,9 @@ export class AppView extends EventTargetMixin(Object) {
   }
 
   #getInitialView() {
-    log.info("Referred from:", document.referrer);
-    const redirectHref = window.sessionStorage.getItem("redirectedFrom404");
-    if (redirectHref) {
-      log.info("Redirected from 404 page with URL: ", redirectHref);
-      window.sessionStorage.removeItem("redirectedFrom404");
-      const url = new URL(redirectHref);
+    if (document.referrer) {
+      log.info("Redirected from: ", document.referrer);
+      const url = new URL(document.referrer);
       const view = url.pathname?.replaceAll('/', '') || 'about';
       const data = url.hash?.substring(1); // Remove leading '#'
       return [ view, data ]
