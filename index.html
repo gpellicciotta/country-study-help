@@ -61,14 +61,17 @@
       <!-- Search View: actions --> 
       <section id="carousel-controls">
         <h1 class="ls">Carousel</h1>
-        <button id='start-carousel'><i class="fa-solid fa-play"></i><label class="ls">Play</label></button>
         <div id="progress">
           <span id='shown-countries'>0</span>
           <span class="separator">out of</span>
           <span id='total-countries'>0</span>
           <span id='progress-percentage'>?</span>
         </div>        
-        <button id='pause-carousel' disabled><i class="fa-solid fa-pause"></i><label class="ls">Stop</label></button>
+        <div class="action-bar">
+          <button id='start-carousel'><i class="fa-solid fa-play"></i><label class="ls">Play</label></button>
+          <button id='pause-carousel' disabled><i class="fa-solid fa-pause"></i><label class="ls">Stop</label></button>
+          <button id='full-screen-carousel'><i class="fa-solid fa-maximize"></i><i class="fa-solid fa-minimize"></i><label class="ls">Toggle Full Screen</label></button>
+        </div>
       </section>  
 
       <!-- Quiz Setup View: actions -->

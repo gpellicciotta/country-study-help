@@ -284,11 +284,10 @@ Other country information from: https://en.wikipedia.org
   and new quiz results can be added
 - Keeping track of last-activation-time + active-version in browser storage
 - There is now a 404.html page so GitHub pages can serve all URLs that are part of the SPA, by always redirecting to index.html
+- There is a full-screen mode now for the carousel view
 
 ### Ongoing:
 - Make 'initial splash screen view' + split 'views'
-- Use document.referrer
-- 
 
 ### Still todo:
 - Add world/google map of all countries

@@ -268,6 +268,16 @@ body:not([data-mode="search"]) #search-controls {
   padding-left: 0.5rem;
 }
 
+.action-bar {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  justify-items: center;
+  align-items: center;
+  gap: 0.5rem;
+  padding-left: 0.5rem;
+}
+
 #carousel-controls > h1 {
   font-size: 1.5rem;
 }
@@ -279,6 +289,14 @@ body:not([data-mode="search"]) #search-controls {
 }
 
 body:not([data-mode="carousel"]) #carousel-controls {
+  display: none;
+}
+
+html.full-screen #full-screen-carousel .fa-maximize {
+  display: none;
+}
+
+html:not(.full-screen) #full-screen-carousel .fa-minimize {
   display: none;
 }
 

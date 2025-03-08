@@ -42,6 +42,7 @@ export class CarouselView extends EventTargetMixin(Object) {
     // Get UI control elements:
     this.startCarouselButton = this.parent.querySelector('#start-carousel');
     this.pauseCarouselButton = this.parent.querySelector('#pause-carousel');
+    this.fullSCreenCarouselButton = this.parent.querySelector('#full-screen-carousel');
     this.countryPanel = this.parent.querySelector('#results');
     this.shownCountriesSpan = this.parent.querySelector('#shown-countries');
     this.totalCountriesSpan = this.parent.querySelector('#total-countries');  
@@ -53,6 +54,8 @@ export class CarouselView extends EventTargetMixin(Object) {
     // Attach event handlers:
     this.startCarouselButton.addEventListener('click', this.onStartCarousel.bind(this));
     this.pauseCarouselButton.addEventListener('click', this.onPauseCarousel.bind(this));
+    this.fullSCreenCarouselButton.addEventListener('click', this.onClickToggleFullScreen.bind(this));
+    document.documentElement.addEventListener('fullscreenchange', this.onFullScreenModeChange.bind(this));
   }
 
   activate() {
@@ -130,6 +133,24 @@ export class CarouselView extends EventTargetMixin(Object) {
   }
 
   // Event Handlers:
+
+  onFullScreenModeChange(event) {
+    if (document.fullscreenElement) {
+      document.documentElement.classList.add('full-screen');
+    }
+    else {
+      document.documentElement.classList.remove('full-screen');
+    }
+  }
+
+  onClickToggleFullScreen(event) {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+    } 
+    else if (document.exitFullscreen) {
+      document.exitFullscreen();
+    }
+  }
 
   onStartCarousel(event) {
     log.debug('Start carousel button clicked.');
