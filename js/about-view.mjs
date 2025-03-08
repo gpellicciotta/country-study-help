@@ -25,10 +25,10 @@ export class AboutView extends EventTargetMixin(Object) {
     // Get UI control elements:
 
     // Get UI display elements:
-    this.parent.querySelector('.app-name').forEach(el => {
+    this.parent.querySelectorAll('.app-name').forEach(el => {
       el.textContent = constants.APP_NAME;
     });
-    this.parent.querySelector('.app-version').forEach(el => {
+    this.parent.querySelectorAll('.app-version').forEach(el => {
       el.textContent = constants.APP_VERSION;
     });
 

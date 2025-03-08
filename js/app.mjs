@@ -36,8 +36,12 @@ async function fireDomReady() {
   let app = JSON.parse(localStorage.getItem(constants.APP_STORAGE_KEY)) || { name: constants.APP_NAME, version: constants.APP_VERSION };
   if (manifest) {
     log.info("App manifest has been loaded:", manifest);    
-    app.name = manifest.name;
-    app.version = manifest.version;
+    if (manifest.name) {
+      app.name = manifest.name;
+    }
+    if (manifest.version) {
+      app.version = manifest.version;
+    }
     app["last-activation-time"] = utils.toDateTimeStr();
     if (installedApp && (installedApp.version !== app.version)) {
       updateServiceWorker = true;
