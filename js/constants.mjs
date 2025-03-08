@@ -14,7 +14,7 @@ export const LANGUAGE_CODES = [ "ad", "ae", "af", "ag", "ai", "al", "am", "ao", 
 export const STATIC_CACHE_DATA = [
   '/index.html',
   '/404.html',
-  '/style.css'
+  '/css/style.css'
 ];
 
 export const GENERATED_CACHE_DATA = [
